@@ -1,7 +1,6 @@
 {
   "projects": [
     {
-      "id": "historia-labiales-mate",
       "title": "Historia Labiales Mate",
       "brand": "Ligne D'Or",
       "kind": "Animación 3D · Historia vertical",
@@ -12,6 +11,7 @@
       "duration": "3 días",
       "tools": "Blender · After Effects",
       "format": "Vertical 9:16",
+      "id": "historia-labiales-mate",
       "cover": "media/historia-labiales.jpg",
       "video": "media/historia-labiales.mp4",
       "portrait": true,
@@ -19,7 +19,6 @@
       "model": ""
     },
     {
-      "id": "bolso-3d",
       "title": "Bolso 3D",
       "brand": "Le Collezioni",
       "kind": "Modelado 3D",
@@ -30,6 +29,7 @@
       "duration": "",
       "tools": "Blender · Photoshop",
       "format": "",
+      "id": "bolso-3d",
       "cover": "",
       "video": "",
       "portrait": false,
@@ -37,7 +37,6 @@
       "model": "media/models/bolso.glb"
     },
     {
-      "id": "set-de-lapices",
       "title": "Set de lápices",
       "brand": "",
       "kind": "Modelado 3D",
@@ -48,6 +47,7 @@
       "duration": "",
       "tools": "Blender",
       "format": "",
+      "id": "set-de-lapices",
       "cover": "",
       "video": "",
       "portrait": false,
