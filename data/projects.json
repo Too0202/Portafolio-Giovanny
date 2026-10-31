@@ -41,11 +41,11 @@
       "pdf": ""
     },
     {
-      "title": "Set de lápices",
+      "title": "Delineadores 24-SIETE",
       "category": "Modelado 3D",
-      "brand": "",
+      "brand": "Ligne D'or",
       "kind": "Modelado 3D",
-      "summary": "Ocho lápices modelados y texturizados en Blender. Gíralos, acércate a las puntas y activa la malla para ver el modelado.",
+      "summary": "Composición geométrica y minimalista que resalta la variedad de colores y la textura de los lápices delineadores sobre un fondo limpio",
       "objective": "",
       "role": "",
       "result": "",
@@ -56,8 +56,56 @@
       "cover": "",
       "video": "",
       "portrait": false,
-      "images": [],
+      "images": [
+        "media/p/set-de-lapices/img-mvw10l77-3.jpg",
+        "media/p/set-de-lapices/img-mvw10lgg-1.jpg",
+        "media/p/set-de-lapices/img-mvw10lgm-2.jpg"
+      ],
       "model": "media/models/lapices.glb",
+      "pdf": ""
+    },
+    {
+      "title": "Fotografía de modelo",
+      "category": "Fotografía",
+      "brand": "Ligne D'or",
+      "kind": "Fotografía para redes sociales",
+      "summary": "Se realizo una fotografía en donde se muestra detalladamente el producto y su contenido",
+      "objective": "",
+      "role": "Fotografía y edición",
+      "result": "",
+      "duration": "",
+      "tools": "Photoshop",
+      "format": "Vertical 9:16",
+      "id": "fotografia-de-modelo",
+      "cover": "media/p/fotografia-de-modelo/cover-mvw0vczj-portada-brillo.jpg",
+      "video": "",
+      "portrait": false,
+      "images": [
+        "media/p/fotografia-de-modelo/img-mvw0u8m3-portada-brillo.jpg"
+      ],
+      "model": "",
+      "pdf": ""
+    },
+    {
+      "title": "Color intenso y textura perfecta",
+      "category": "Fotografía",
+      "brand": "Ligne D'or",
+      "kind": "Fotografía de producto",
+      "summary": "Detalle de textura y color vibrante en labial líquido sobre fondo limpio y minimalista.",
+      "objective": "",
+      "role": "",
+      "result": "",
+      "duration": "",
+      "tools": "Photoshop",
+      "format": "Cuadrada 1:1",
+      "id": "color-intenso-y-textura-perfecta",
+      "cover": "media/p/color-intenso-y-textura-perfecta/cover-mvw0yx3n-carrusel-1.jpg",
+      "video": "",
+      "portrait": false,
+      "images": [
+        "media/p/color-intenso-y-textura-perfecta/img-mvw0yx3n-carrusel-1.jpg"
+      ],
+      "model": "",
       "pdf": ""
     }
   ]
