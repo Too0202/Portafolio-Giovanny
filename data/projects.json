@@ -71,6 +71,24 @@
       "portrait": false,
       "images": [],
       "model": "media/p/tintes-maxybelt/model-mvvs3npp-pendon-copia-3.glb"
+    },
+    {
+      "title": "Video Comercial",
+      "brand": "Maxybelt",
+      "kind": "Reels Instagram",
+      "summary": "Se realizo un video de un paso a paso de la aplicación de un producto, en el cual cuenta con mucho detalle y mucho movimiento dando dinamismo al video",
+      "objective": "Mostrar la utilización de los productos",
+      "role": "Grabación y edición del video",
+      "result": "Se publico en redes sociales de la marca consiguiendo vistas y likes",
+      "duration": "",
+      "tools": "Premiere Pro",
+      "format": "Vertical 9:16",
+      "id": "video-comercial",
+      "cover": "media/p/video-comercial/cover-mvvspytp-portada-semi-permanen.jpg",
+      "video": "media/p/video-comercial/video-mvvsosbx-video-paso-a-paso-semipermanente-descomprimido.mp4",
+      "portrait": true,
+      "images": [],
+      "model": ""
     }
   ]
 }
