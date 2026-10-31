@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Portafolio Giovanny Buitrago</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -59,6 +64,17 @@ h1,h2,h3,h4{margin:0;font-family:var(--display);font-weight:700;letter-spacing:-
 .exp:hover{background:var(--sky)}
 .exp{display:none}
 .side[data-open="true"]{box-shadow:0 20px 60px rgba(0,0,0,.4)}
+/* Proyectos dinamicos */
+.linkb{border:0;background:transparent;color:inherit;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:3px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-top:8px}
+.pgrid .proj{aspect-ratio:4/3;min-height:0}
+.pnone{color:var(--muted);padding:10px 0}
+.pvid{border-radius:18px;overflow:hidden;background:#000;aspect-ratio:16/9;margin-bottom:16px}
+.pvid video{width:100%;height:100%;display:block;object-fit:contain}
+.pgal{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:0 0 18px}
+.pgal img{width:100%;border-radius:14px;display:block;background:var(--card-2)}
+.pcover{width:100%;border-radius:18px;display:block;margin-bottom:16px}
+.p3d{margin:10px 0 4px}
 /* Visor 3D de modelos */
 .proj.cube{background:radial-gradient(90% 90% at 70% 20%,#2c5675,#0d1824)}
 .proj.cube::before{background:linear-gradient(0deg,rgba(6,12,19,.55),transparent 60%)}
@@ -118,7 +134,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--display);font-weight:700;letter-spacing:-
 }
 
 /* Principal */
-.main{display:grid;grid-template-rows:auto minmax(0,1fr);gap:14px;min-width:0;min-height:0;transition:filter .5s,opacity .5s}
+.main{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:14px;min-width:0;min-height:0;transition:filter .5s,opacity .5s}
 .has-win .main{filter:blur(3px) brightness(.8)}
 .topbar{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;position:relative;z-index:40}
 .greet b{display:block;font-family:var(--display);font-size:20px;letter-spacing:-.035em;line-height:1.1}
@@ -165,11 +181,11 @@ button.live.editable:hover{background:rgba(255,255,255,.35)}
 .card-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
 
 /* Portada — título */
-.hero{grid-column:1/4;grid-row:1/3;padding:clamp(22px,3vw,40px);background:#0d1824;color:#f1f7fd;display:flex;flex-direction:column;justify-content:center;gap:clamp(14px,2vw,24px);overflow:auto;background-image:radial-gradient(70% 90% at 90% 0%,rgba(93,183,245,.28),transparent 60%)}
+.hero{grid-column:1/4;grid-row:1/3;padding:clamp(22px,3vw,40px);background:#0d1824;color:#f1f7fd;display:flex;flex-direction:column;justify-content:safe center;gap:clamp(12px,1.6vw,20px);overflow:auto;background-image:radial-gradient(70% 90% at 90% 0%,rgba(93,183,245,.28),transparent 60%)}
 .hero .mono{color:#7f9bb5}
-.ttl{margin:0;font-family:var(--display);font-weight:800;font-size:clamp(34px,5.4vw,84px);line-height:.95;letter-spacing:-.05em;color:#fff;text-wrap:balance}
+.ttl{margin:0;font-family:var(--display);font-weight:800;font-size:clamp(30px,min(4.4vw,7vh),76px);line-height:.95;letter-spacing:-.05em;color:#fff;text-wrap:balance}
 .ttl em{font-style:normal;color:var(--sky)}
-.hero .lead2{margin:0;max-width:56ch;font-size:clamp(14px,1.25vw,17px);line-height:1.55;color:#c9dbeb}
+.hero .lead2{margin:0;max-width:56ch;font-size:clamp(13px,1.15vw,16px);line-height:1.55;color:#c9dbeb}
 .prompt{display:flex;align-items:center;gap:12px;width:min(100%,560px);height:54px;padding:0 7px 0 8px;border:0;border-radius:999px;background:#fff;color:var(--ink);cursor:pointer;text-align:left;font-weight:600;transition:transform .2s,box-shadow .2s}
 .prompt:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,.35)}
 .prompt .pl{flex:0 0 38px;height:38px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center}
@@ -266,7 +282,7 @@ button.live.editable:hover{background:rgba(255,255,255,.35)}
 
 /* Hoja de vida y experiencia */
 .hero-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.hero-actions .prompt{flex:1 1 300px;width:auto;max-width:560px}
+.hero-actions .prompt{flex:1 1 220px;min-width:0;width:auto;max-width:560px}
 .cvbtn{display:inline-flex;align-items:center;gap:8px;height:54px;padding:0 22px;border-radius:999px;background:rgba(255,255,255,.18);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.45);color:#fff;font-weight:700;text-decoration:none;white-space:nowrap;transition:background .2s,color .2s}
 .cvbtn:hover{background:#fff;color:var(--ink)}
 .btn.line{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
@@ -342,7 +358,8 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
   .logo .dot{flex-basis:46px;height:46px}
   .nav-btn{padding:0;width:46px;justify-content:center}
   .main{margin-top:0;gap:12px}
-  .bento{grid-template-columns:1fr;grid-template-rows:none}
+  .bento{grid-template-columns:minmax(0,1fr);grid-template-rows:none}
+  .hero{min-width:0}
   .hero,.projects,.skills,.edu,.status{grid-column:1;grid-row:auto}
   .hero{min-height:0}
   .plist{grid-template-rows:none;grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -376,6 +393,8 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
 })();
 </script>
 
+</head>
+<body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2c.6 5.4 4.6 9.4 10 10-5.4.6-9.4 4.6-10 10-.6-5.4-4.6-9.4-10-10 5.4-.6 9.4-4.6 10-10z" fill="currentColor"/></symbol>
   <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 9.5V20h14V9.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -414,7 +433,7 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
     <button class="logo" type="button" data-act="home" aria-label="Inicio"><span class="dot"><svg width="22" height="22"><use href="#i-star"/></svg></span><b>Giovanny<br>Buitrago</b></button>
     <button class="nav-btn" type="button" data-act="home" id="nb-home" aria-label="Inicio" aria-current="true"><svg width="20" height="20"><use href="#i-home"/></svg><span>Inicio</span></button>
     <button class="nav-btn" type="button" data-win="about" id="nb-about" aria-label="Sobre mí"><svg width="20" height="20"><use href="#i-user"/></svg><span>Sobre mí</span></button>
-    <button class="nav-btn" type="button" data-win="labiales" id="nb-labiales" aria-label="Proyectos"><svg width="20" height="20"><use href="#i-grid"/></svg><span>Proyectos</span></button>
+    <button class="nav-btn" type="button" data-win="projects" id="nb-projects" aria-label="Proyectos"><svg width="20" height="20"><use href="#i-grid"/></svg><span>Proyectos</span></button>
     <button class="nav-btn" type="button" data-win="models" id="nb-models" aria-label="Modelado 3D"><svg width="20" height="20"><use href="#i-cube"/></svg><span>3D</span></button>
     <button class="nav-btn" type="button" data-win="tools" id="nb-tools" aria-label="Programas"><svg width="20" height="20"><use href="#i-bars"/></svg><span>Programas</span></button>
     <button class="nav-btn" type="button" data-win="contact" id="nb-contact" aria-label="Contacto"><svg width="20" height="20"><use href="#i-mail"/></svg><span>Contacto</span></button>
@@ -437,7 +456,6 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
 
     <div class="bento" id="bento">
       <section class="card hero" style="--i:2" aria-label="Presentación">
-        <span class="mono">Giovanny Buitrago · Diseñador multimedia</span>
         <h1 class="ttl" id="ttl">El <em>punto cero</em> de las grandes ideas visuales</h1>
         <p class="lead2">Creación visual pura desde el origen. Soluciones de diseño, branding y comunicación estratégica hechas para transformar marcas y captar la atención a gran escala.</p>
         <div class="hero-actions">
@@ -447,20 +465,8 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
       </section>
 
       <section class="card projects" style="--i:3" aria-label="Proyectos">
-        <div class="card-head"><h3>Proyectos</h3><span class="mono">01 / 03</span></div>
-        <div class="plist">
-          <button class="proj" type="button" data-win="labiales" aria-label="Abrir el proyecto Historia Labiales Mate">
-            <img src="media/historia-labiales.jpg" alt="" loading="lazy">
-            <span class="n">01</span>
-            <span class="nm"><small>Ligne D'Or · 3D</small>Historia Labiales Mate</span>
-          </button>
-          <button class="proj cube" type="button" data-win="models" aria-label="Abrir el visor de modelado 3D">
-            <span class="big"><svg width="54" height="54"><use href="#i-cube"/></svg></span>
-            <span class="n">02</span>
-            <span class="nm"><small>Visor interactivo</small>Modelado 3D</span>
-          </button>
-          <div class="proj empty"><span class="nm">03<br>Próximamente</span></div>
-        </div>
+        <div class="card-head"><h3>Proyectos</h3><button class="mono linkb" type="button" data-win="projects" id="pcount">Ver todos</button></div>
+        <div class="plist" id="plist"></div>
       </section>
 
       <section class="card skills" style="--i:4" aria-label="Habilidades">
@@ -584,25 +590,10 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
   </div>
 </template>
 
-<template id="tpl-labiales">
-  <div class="wcase">
-    <div class="wphone"><video muted loop playsinline preload="none" poster="media/historia-labiales.jpg" aria-label="Animación Historia Labiales Mate" data-src="media/historia-labiales.mp4"></video></div>
-    <div>
-      <span class="mono" style="color:var(--muted)">Ligne D'Or · Animación 3D · Historia vertical</span>
-      <h2 style="margin-top:6px">Historia Labiales Mate</h2>
-      <div class="blocks">
-        <div><h4>Objetivo</h4><p>Mostrar los diferentes tonos de labiales que la marca Ligne D'Or tenía en lanzamiento.</p></div>
-        <div><h4>Mi trabajo</h4><p>Hice el proceso completo yo solo: el modelado del producto, la texturización y la animación.</p></div>
-        <div><h4>Resultado</h4><p>La pieza se publicó en las redes sociales de la marca, en formato historia.</p></div>
-      </div>
-      <dl class="facts">
-        <div><dt class="mono">Marca</dt><dd>Ligne D'Or</dd></div>
-        <div><dt class="mono">Duración</dt><dd>3 días</dd></div>
-        <div><dt class="mono">Programas</dt><dd>Blender · After Effects</dd></div>
-        <div><dt class="mono">Formato</dt><dd>Vertical 9:16</dd></div>
-      </dl>
-    </div>
-  </div>
+<template id="tpl-projects">
+  <h2>Proyectos</h2>
+  <p class="lead">Mis trabajos más recientes. Toca uno para verlo con detalle.</p>
+  <div class="pgrid" data-grid></div>
 </template>
 
 <template id="tpl-tools">
@@ -678,8 +669,7 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
     }else{loader.hidden=true;root.classList.add('booted')}
   }
   if(root.classList.contains('intro')){
-    var ready=false,im=new Image();
-    im.onload=im.onerror=function(){ready=true};im.src='media/historia-labiales.jpg';
+    var ready=true;
     var t0=performance.now(),MIN=1900,fin=false;
     (function tick(now){
       var el=now-t0,p=Math.min(el/MIN,1),e=1-Math.pow(1-p,3),v=Math.min(e,ready?1:.92);
@@ -717,7 +707,7 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
   /* Ventanas dentro de la pantalla */
   var WIN={
     about:{title:'Sobre mí',icon:'i-user',w:780,tpl:'tpl-about'},
-    labiales:{title:'Historia Labiales Mate',icon:'i-grid',w:940,tpl:'tpl-labiales'},
+    projects:{title:'Proyectos',icon:'i-grid',w:980,tpl:'tpl-projects'},
     models:{title:'Modelado 3D',icon:'i-cube',w:980,tpl:'tpl-models'},
     tools:{title:'Programas',icon:'i-bars',w:660,tpl:'tpl-tools'},
     contact:{title:'Contacto',icon:'i-mail',w:640,tpl:'tpl-contact'}
@@ -764,28 +754,37 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
   function syncNav(){
     var any=Object.keys(open).length>0;
     root.classList.toggle('has-win',any);
-    ['about','labiales','models','tools','contact'].forEach(function(k){$('#nb-'+k).setAttribute('aria-current',open[k]?'true':'false')});
+    ['about','projects','models','tools','contact'].forEach(function(k){$('#nb-'+k).setAttribute('aria-current',open[k]?'true':'false')});
     $('#nb-home').setAttribute('aria-current',any?'false':'true');
   }
   function front(el){z+=1;el.style.zIndex=z}
   function place(el,idx){
-    var cw=wrap.clientWidth,ch=wrap.clientHeight,cfg=WIN[el.dataset.id];
+    var cw=wrap.clientWidth,ch=wrap.clientHeight,cfg=cfgOf(el.dataset.id);
     if(narrow())return;
     var w=Math.min(cfg.w,cw-28);el.style.width=w+'px';
     var h=el.offsetHeight,off=(idx%4)*26;
     el.style.left=Math.max(14,(cw-w)/2+off-30)+'px';
     el.style.top=Math.max(14,(ch-h)/2+off-20)+'px';
   }
+  function cfgOf(id){
+    if(WIN[id])return WIN[id];
+    if(id.indexOf('p:')===0){
+      var p=projById(id.slice(2));
+      if(p)return {title:p.title,icon:'i-grid',w:p.portrait?900:860,build:function(b){buildProject(b,p)}};
+    }
+    return null;
+  }
   function openWin(id){
-    if(!WIN[id])return;
+    if(id.indexOf('p:')===0){var pp=projById(id.slice(2));if(pp&&pp.model){showModel(pp.id);return}}
+    if(!cfgOf(id))return;
     if(open[id]){front(open[id]);open[id].focus();return}
     if(narrow())closeAll(true);
-    var cfg=WIN[id],el=document.createElement('div');
+    var cfg=cfgOf(id),el=document.createElement('div');
     el.className='win';el.dataset.id=id;el.tabIndex=-1;
     el.setAttribute('role','dialog');el.setAttribute('aria-label',cfg.title);
     el.innerHTML='<div class="wbar"><span class="wi"><svg width="15" height="15"><use href="#'+cfg.icon+'"/></svg></span><span class="ti"></span><button class="wclose" type="button" aria-label="Cerrar ventana"><svg width="14" height="14"><use href="#i-x"/></svg></button></div><div class="wbody"></div>';
     $('.ti',el).textContent=cfg.title;
-    $('.wbody',el).appendChild(document.getElementById(cfg.tpl).content.cloneNode(true));
+    if(cfg.build)cfg.build($('.wbody',el));else $('.wbody',el).appendChild(document.getElementById(cfg.tpl).content.cloneNode(true));
     wrap.appendChild(el);open[id]=el;front(el);
     place(el,Object.keys(open).length-1);
     var v=$('video[data-src]',el);
@@ -802,6 +801,7 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
     fillSlots(el);
     if(id==='tools')runBars(el);
     if(id==='models')startViewer(el);
+    if(id==='projects')fillProjects(el);
     syncNav();
     setTimeout(function(){el.focus({preventScroll:true})},60);
   }
@@ -871,11 +871,7 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
   });
 
   /* Visor 3D de modelos. Para agregar uno: sube media/models/<id>.js y añade un objeto a MODELS */
-  var MODELS=[
-    {id:'bolso',title:'Bolso 3D',tag:'Le Collezioni',desc:'Trabajo 3D para Le Collezioni: bolso de la marca Furla, hecho con Blender y Photoshop. Gíralo y acércate para ver el cuero y los detalles.',src:'media/models/bolso.js'},
-    {id:'lapices',title:'Set de lápices',tag:'Blender',desc:'Ocho lápices modelados y texturizados en Blender. Gíralos, acércate a las puntas y activa la malla para ver el modelado.',src:'media/models/lapices.js'}
-    /* {id:'otro',title:'…',tag:'Blender',desc:'…',src:'media/models/otro.js',final:{type:'video',src:'media/models/otro.mp4'}} */
-  ];
+  var MODELS=[],pendingModel=null;
   var V=null,libsP=null;
   function loadScript(u){return new Promise(function(ok,no){var x=document.createElement('script');x.src=u;x.onload=ok;x.onerror=function(){no(new Error(u))};document.head.appendChild(x)})}
   function loadLibs(){
@@ -895,6 +891,7 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
     var q=function(sel){return $(sel,el)},msg=q('[data-msg]'),stage=q('.mv-stage'),cv=q('.mv-cv'),strip=q('[data-strip]'),hint=q('[data-hint]');
     var cache={},idx=0,thumbs=[],wire=false,spin=!calm;
     var st={dead:false};V=st;
+    if(!MODELS.length){say2('Aún no hay modelos 3D publicados.');return}
     function say2(t){msg.textContent=t;msg.hidden=!t}
     /* tarjetas de la tira */
     MODELS.forEach(function(m,i){
@@ -953,17 +950,18 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
       }
       function load(m){
         if(cache[m.id])return Promise.resolve(cache[m.id]);
-        return new Promise(function(ok,no){
-          var done=function(){
-            try{
-              var raw=atob(window.MODELS_B64[m.id]),u=new Uint8Array(raw.length);
-              for(var i=0;i<raw.length;i++)u[i]=raw.charCodeAt(i);
-              new THREE.GLTFLoader().parse(u.buffer,'',function(g){cache[m.id]=g.scene;ok(g.scene)},no);
-            }catch(e){no(e)}
-          };
-          if(window.MODELS_B64&&window.MODELS_B64[m.id])return done();
-          var x=document.createElement('script');x.src=m.src;x.onload=done;x.onerror=function(){no(new Error('src'))};document.head.appendChild(x);
-        });
+        function parse(buf){return new Promise(function(ok,no){new THREE.GLTFLoader().parse(buf,'',function(g){cache[m.id]=g.scene;ok(g.scene)},no)})}
+        function fromB64(){
+          return new Promise(function(ok,no){
+            var done=function(){
+              try{var raw=atob(window.MODELS_B64[m.id]),u=new Uint8Array(raw.length);for(var i=0;i<raw.length;i++)u[i]=raw.charCodeAt(i);ok(u.buffer)}catch(e){no(e)}
+            };
+            if(window.MODELS_B64&&window.MODELS_B64[m.id])return done();
+            if(!m.legacy)return no(new Error('nolegacy'));
+            var x=document.createElement('script');x.src=m.legacy;x.onload=done;x.onerror=function(){no(new Error('src'))};document.head.appendChild(x);
+          });
+        }
+        return fetch(m.src).then(function(r){if(!r.ok)throw new Error('http');return r.arrayBuffer()}).catch(fromB64).then(parse);
       }
       var tabsEl=q('[data-tabs]'),finalEl=q('[data-final]');
       function showTab(t){
@@ -1014,12 +1012,88 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
         if(e.key==='ArrowLeft'){show(idx-1);e.preventDefault()}else if(e.key==='ArrowRight'){show(idx+1);e.preventDefault()}
         else if(e.key==='+'||e.key==='='){zoom(.72)}else if(e.key==='-'){zoom(1.38)}
       });
+      $$('[data-act="spin"]',el);
       if(MODELS.length<2)$$('.mv-nav',el).forEach(function(b){b.hidden=true});
       setTimeout(function(){hint.classList.add('off')},7000);
       (function loop(){if(st.dead)return;st.raf=requestAnimationFrame(loop);controls.update();renderer.render(scene,camera)})();
-      show(0);
+      var st0=0;if(pendingModel){MODELS.forEach(function(m,k){if(m.id===pendingModel)st0=k});pendingModel=null}
+      show(st0);
     }).catch(function(){say2('No se pudo iniciar el visor 3D en este navegador.')});
   }
+
+  /* Proyectos: se leen de data/projects.json (los agrega el panel admin.html) */
+  var PROJECTS=[];
+  function projById(i){for(var k=0;k<PROJECTS.length;k++)if(PROJECTS[k].id===i)return PROJECTS[k];return null}
+  function el2(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
+  function safeSrc(u){u=String(u||'');return /^(javascript|data):/i.test(u)?'':u}
+  function projCard(p,n){
+    var b=el2('button','proj');b.type='button';b.dataset.win='p:'+p.id;b.setAttribute('aria-label','Abrir '+p.title);
+    if(p.cover){var im=document.createElement('img');im.src=safeSrc(p.cover);im.alt='';im.loading='lazy';b.appendChild(im)}
+    else{b.classList.add('cube');var big=el2('span','big');big.innerHTML='<svg width="54" height="54"><use href="#i-cube"/></svg>';b.appendChild(big)}
+    b.appendChild(el2('span','n',(n<10?'0':'')+n));
+    var nm=el2('span','nm');nm.appendChild(el2('small','',[p.brand,p.model?'3D':p.kind].filter(Boolean).join(' · ')));nm.appendChild(document.createTextNode(p.title));b.appendChild(nm);
+    return b;
+  }
+  function renderPlist(){
+    var pl=$('#plist');pl.textContent='';
+    PROJECTS.slice(0,3).forEach(function(p,i){pl.appendChild(projCard(p,i+1))});
+    for(var i=PROJECTS.length;i<3;i++){var e=el2('div','proj empty');e.innerHTML='<span class="nm">0'+(i+1)+'<br>Próximamente</span>';pl.appendChild(e)}
+    $('#pcount').textContent=PROJECTS.length>3?'Ver los '+PROJECTS.length:'Ver todos';
+  }
+  function fillProjects(el){
+    var g=$('[data-grid]',el);g.textContent='';
+    if(!PROJECTS.length){g.appendChild(el2('p','pnone','Pronto habrá proyectos aquí.'));return}
+    PROJECTS.forEach(function(p,i){g.appendChild(projCard(p,i+1))});
+  }
+  function buildProject(body,p){
+    var info=el2('div'),vid=null;
+    function fact(dl,k,v){if(!v)return;var d=el2('div');d.appendChild(el2('dt','mono',k));d.appendChild(el2('dd','',v));dl.appendChild(d)}
+    var meta=[p.brand,p.kind].filter(Boolean).join(' · ');
+    if(meta){var m=el2('span','mono',meta);m.style.color='var(--muted)';info.appendChild(m)}
+    var h=el2('h2','',p.title);h.style.marginTop='6px';info.appendChild(h);
+    if(p.summary)info.appendChild(el2('p','lead',p.summary));
+    if(p.model){var b3=el2('button','btn p3d','Ver en 3D interactivo');b3.type='button';b3.dataset.win='models';b3.addEventListener('click',function(){showModel(p.id)});info.appendChild(b3)}
+    var bl=el2('div','blocks');
+    [['Objetivo',p.objective],['Mi trabajo',p.role],['Resultado',p.result]].forEach(function(x){if(!x[1])return;var d=el2('div');d.appendChild(el2('h4','',x[0]));d.appendChild(el2('p','',x[1]));bl.appendChild(d)});
+    if(bl.children.length)info.appendChild(bl);
+    var dl=el2('dl','facts');fact(dl,'Marca',p.brand);fact(dl,'Duración',p.duration);fact(dl,'Programas',p.tools);fact(dl,'Formato',p.format);
+    if(dl.children.length)info.appendChild(dl);
+    var imgs=(p.images||[]).filter(Boolean);
+    function gal(){
+      var g=el2('div','pgal');imgs.forEach(function(u){var im=document.createElement('img');im.src=safeSrc(u);im.alt=p.title;im.loading='lazy';g.appendChild(im)});return g;
+    }
+    if(p.video&&p.portrait){
+      var w=el2('div','wcase'),ph=el2('div','wphone');
+      vid=document.createElement('video');vid.muted=true;vid.loop=true;vid.playsInline=true;vid.preload='none';if(p.cover)vid.poster=safeSrc(p.cover);vid.setAttribute('data-src',safeSrc(p.video));vid.setAttribute('aria-label','Video: '+p.title);
+      ph.appendChild(vid);w.appendChild(ph);w.appendChild(info);body.appendChild(w);
+      if(imgs.length)body.appendChild(gal());
+    }else{
+      if(p.video){var pv=el2('div','pvid');vid=document.createElement('video');vid.muted=true;vid.loop=true;vid.playsInline=true;vid.controls=true;vid.preload='none';if(p.cover)vid.poster=safeSrc(p.cover);vid.setAttribute('data-src',safeSrc(p.video));pv.appendChild(vid);body.appendChild(pv)}
+      else if(p.cover){var cv=document.createElement('img');cv.className='pcover';cv.src=safeSrc(p.cover);cv.alt=p.title;body.appendChild(cv)}
+      if(imgs.length)body.appendChild(gal());
+      body.appendChild(info);
+    }
+  }
+  function showModel(pid){
+    pendingModel=pid;
+    var w=open.models;
+    if(w&&V&&V.show){var k=0;MODELS.forEach(function(m,i){if(m.id===pid)k=i});V.show(k);pendingModel=null;front(w);return}
+    openWin('models');
+  }
+  function applyProjects(list){
+    PROJECTS=(list||[]).filter(function(p){return p&&p.id&&p.title});
+    MODELS.length=0;
+    PROJECTS.forEach(function(p){
+      if(!p.model)return;
+      var fin=p.video?{type:'video',src:safeSrc(p.video)}:((p.images&&p.images[0])?{type:'img',src:safeSrc(p.images[0])}:null);
+      var m={id:p.id,title:p.title,tag:p.brand||p.tools||'3D',desc:[p.brand&&('Para '+p.brand+'.'),p.summary].filter(Boolean).join(' ')||'Modelo 3D interactivo.',src:safeSrc(p.model),legacy:p.legacy||''};
+      if(fin)m.final=fin;MODELS.push(m);
+    });
+    renderPlist();
+    for(var i=IDX.length-1;i>=0;i--)if(IDX[i].proj)IDX.splice(i,1);
+    PROJECTS.forEach(function(p){IDX.splice(1,0,{t:p.title,d:[p.brand,p.kind].filter(Boolean).join(' · ')||'Proyecto',w:'p:'+p.id,proj:1,k:[p.brand,p.kind,p.tools,p.summary,p.objective,p.role,p.result].join(' ')})});
+  }
+  fetch('data/projects.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(j){applyProjects(j&&j.projects)}).catch(function(){applyProjects([])});
 
   /* Estado de disponibilidad: se lee de status.json y el dueño lo cambia desde el menú */
   var STATES={
@@ -1076,14 +1150,13 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
   /* Búsqueda */
   var IDX=[
     {t:'Sobre mí',d:'Formación, estilo y habilidades',w:'about',k:'sobre mi formacion sena ecci estilo habilidades marcas clientes bachiller pasatiempos'},
-    {t:'Modelado 3D',d:'Visor interactivo de mis modelos',w:'models',k:'3d modelos visor blender lapices bolso furla le collezioni modelado malla'},
-    {t:'Historia Labiales Mate',d:"Proyecto para Ligne D'Or",w:'labiales',k:'ligne d or labiales mate blender animacion 3d proyecto after effects'},
+    {t:'Modelado 3D',d:'Visor interactivo de mis modelos',w:'models',k:'3d modelos visor blender malla'},
     {t:'Programas',d:'After Effects, Premiere, Blender y más',w:'tools',k:'programas software after effects premiere pro illustrator photoshop blender capcut canva ia inteligencia artificial'},
     {t:'Contacto',d:'Correo, celular y WhatsApp',w:'contact',k:'contacto correo celular telefono whatsapp escribir'},
     {t:'Experiencia',d:'EXECUTIVE SAS, Soluciones Audiovisuales y Laboratorios Lissia',w:'about',k:'experiencia trabajo laboral executive practicante lissia soluciones audiovisuales asistente produccion disenador grafico'},
     {t:'Hoja de vida',d:'Descargar en PDF',cv:true,k:'hoja de vida cv curriculum descargar pdf'}
   ];
-  function norm(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')}
+  function norm(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')}
   var q=$('#q'),res=$('#results');
   function closeResults(){res.classList.remove('on')}
   function render(){
@@ -1104,3 +1177,5 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
   document.addEventListener('pointerdown',function(e){if(!e.target.closest('#search'))closeResults()});
 })();
 </script>
+</body>
+</html>

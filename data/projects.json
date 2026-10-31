@@ -1,0 +1,58 @@
+{
+  "projects": [
+    {
+      "id": "historia-labiales-mate",
+      "title": "Historia Labiales Mate",
+      "brand": "Ligne D'Or",
+      "kind": "Animación 3D · Historia vertical",
+      "summary": "",
+      "objective": "Mostrar los diferentes tonos de labiales que la marca Ligne D'Or tenía en lanzamiento.",
+      "role": "Hice el proceso completo yo solo: el modelado del producto, la texturización y la animación.",
+      "result": "La pieza se publicó en las redes sociales de la marca, en formato historia.",
+      "duration": "3 días",
+      "tools": "Blender · After Effects",
+      "format": "Vertical 9:16",
+      "cover": "media/historia-labiales.jpg",
+      "video": "media/historia-labiales.mp4",
+      "portrait": true,
+      "images": [],
+      "model": ""
+    },
+    {
+      "id": "bolso-3d",
+      "title": "Bolso 3D",
+      "brand": "Le Collezioni",
+      "kind": "Modelado 3D",
+      "summary": "Trabajo 3D para Le Collezioni: bolso de la marca Furla, hecho con Blender y Photoshop. Gíralo y acércate para ver el cuero y los detalles.",
+      "objective": "",
+      "role": "",
+      "result": "",
+      "duration": "",
+      "tools": "Blender · Photoshop",
+      "format": "",
+      "cover": "",
+      "video": "",
+      "portrait": false,
+      "images": [],
+      "model": "media/models/bolso.glb"
+    },
+    {
+      "id": "set-de-lapices",
+      "title": "Set de lápices",
+      "brand": "",
+      "kind": "Modelado 3D",
+      "summary": "Ocho lápices modelados y texturizados en Blender. Gíralos, acércate a las puntas y activa la malla para ver el modelado.",
+      "objective": "",
+      "role": "",
+      "result": "",
+      "duration": "",
+      "tools": "Blender",
+      "format": "",
+      "cover": "",
+      "video": "",
+      "portrait": false,
+      "images": [],
+      "model": "media/models/lapices.glb"
+    }
+  ]
+}
