@@ -53,6 +53,24 @@
       "portrait": false,
       "images": [],
       "model": "media/models/lapices.glb"
+    },
+    {
+      "title": "Tintes Maxybelt",
+      "brand": "MAxybelt",
+      "kind": "Animación 3D",
+      "summary": "Se realizo un modelado 3D de los productos tintes maxybelt en el cual se usaron para pendones y otra publicidad de la marca",
+      "objective": "Dar a conocer los productos en ferias",
+      "role": "Realice el trabajo desde 0 hasta texturización",
+      "result": "",
+      "duration": "",
+      "tools": "Blender y Phostoshop",
+      "format": "Varios",
+      "id": "tintes-maxybelt",
+      "cover": "",
+      "video": "",
+      "portrait": false,
+      "images": [],
+      "model": "media/p/tintes-maxybelt/model-mvvs3npp-pendon-copia-3.glb"
     }
   ]
 }
