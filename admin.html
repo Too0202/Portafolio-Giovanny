@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>Panel · Portafolio Giovanny</title>
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Manrope:wght@400;500;700&display=swap">
 <style>
@@ -161,6 +164,11 @@ details summary{cursor:pointer;font-weight:700}
           <div><label for="f-tools">Programas</label><input id="f-tools" type="text" placeholder="Ej: Blender · Photoshop"></div>
           <div><label for="f-format">Formato</label><input id="f-format" type="text" placeholder="Ej: Vertical 9:16"></div>
         </div>
+
+        <h3 style="font-size:18px;margin-top:22px">Habilidades que muestra este trabajo</h3>
+        <p style="margin:4px 0 8px;color:var(--muted)">Marca las que apliquen: el trabajo aparecerá en esa sección de “Habilidades” de la página.</p>
+        <div id="skillbox" style="display:flex;flex-wrap:wrap;gap:8px 18px"></div>
+        <div style="margin-top:10px"><label for="f-skillx">Otra habilidad <small>(opcional; separa con comas)</small></label><input id="f-skillx" type="text" placeholder="Ej: Ilustración"></div>
 
         <h3 style="font-size:18px;margin-top:22px">Archivos</h3>
         <div class="row">
@@ -364,11 +372,31 @@ details summary{cursor:pointer;font-weight:700}
   FIELDS.forEach(function(k){form[k]=$('#f-'+k)});
   $('#btnNew').addEventListener('click',function(){openForm(-1)});
   $('#btnCancel').addEventListener('click',closeForm);
+  var BASE_SKILLS=['Catálogos','Video','3D en Blender','Fotografía','Animación y GIF','Redes sociales'];
+  function skillSet(p){return Array.isArray(p.skills)?p.skills:[]}
+  function drawSkills(p){
+    var box=$('#skillbox');box.textContent='';
+    var all=BASE_SKILLS.slice();
+    state.projects.forEach(function(q){skillSet(q).forEach(function(n){if(all.indexOf(n)<0)all.push(n)})});
+    var mine=skillSet(p),extra=[];
+    mine.forEach(function(n){if(all.indexOf(n)<0)extra.push(n)});
+    all.concat(extra).forEach(function(n){
+      var l=document.createElement('label');l.style.cssText='display:flex;gap:8px;align-items:center;font-weight:600';
+      var c=document.createElement('input');c.type='checkbox';c.value=n;c.checked=mine.indexOf(n)>-1;
+      l.appendChild(c);l.appendChild(document.createTextNode(n));box.appendChild(l);
+    });
+    $('#f-skillx').value='';
+  }
+  function readSkills(){
+    var l=[].slice.call(document.querySelectorAll('#skillbox input:checked')).map(function(c){return c.value});
+    $('#f-skillx').value.split(',').forEach(function(x){x=x.trim();if(x&&l.indexOf(x)<0)l.push(x)});
+    return l;
+  }
   function openForm(i){
     var p=i>=0?JSON.parse(JSON.stringify(state.projects[i])):{id:'',title:'',category:'',brand:'',kind:'',summary:'',objective:'',role:'',result:'',duration:'',tools:'',format:'',cover:'',video:'',portrait:false,images:[],model:'',pdf:''};
     editing={idx:i,p:p,newFiles:{},removed:[]};
     FIELDS.forEach(function(k){form[k].value=p[k]||''});
-    $('#f-portrait').checked=!!p.portrait;
+    $('#f-portrait').checked=!!p.portrait;drawSkills(p);
     ['cover','video','images','model','pdf'].forEach(function(k){$('#f-'+k).value=''});
     $('#formTitle').textContent=i>=0?'Editar proyecto':'Nuevo proyecto';
     msg($('#formMsg'),'');renderFiles();
@@ -433,7 +461,7 @@ details summary{cursor:pointer;font-weight:700}
     if(model&&!/\.glb$/i.test(model.name)){msg($('#formMsg'),'El modelo debe ser un archivo .glb.','err');return}
     $('#btnSave').disabled=true;msg($('#formMsg'),'Procesando archivos…','info');
     var p=editing.p,id=pid();p.id=id;
-    FIELDS.forEach(function(k){p[k]=form[k].value.trim()});p.portrait=$('#f-portrait').checked;
+    FIELDS.forEach(function(k){p[k]=form[k].value.trim()});p.portrait=$('#f-portrait').checked;p.skills=readSkills();
     var jobs=[];
     if(cover)jobs.push(processImage(cover).then(function(r){return stage(id,'cover',null,r)}).then(function(path){drop(p.cover);p.cover=path}));
     if(video)jobs.push(stage(id,'video',video).then(function(path){drop(p.video);p.video=path}));
@@ -500,7 +528,7 @@ details summary{cursor:pointer;font-weight:700}
     });
   }
   function clean(p){
-    var o={};FIELDS.concat(['id','cover','video','portrait','images','model','pdf']).forEach(function(k){o[k]=p[k]===undefined?(k==='images'?[]:(k==='portrait'?false:'')):p[k]});
+    var o={};FIELDS.concat(['id','cover','video','portrait','images','skills','model','pdf']).forEach(function(k){o[k]=p[k]===undefined?((k==='images'||k==='skills')?[]:(k==='portrait'?false:'')):p[k]});
     if(p.legacy)o.legacy=p.legacy;
     return o;
   }
