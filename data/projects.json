@@ -64,7 +64,9 @@
       "cover": "",
       "video": "",
       "portrait": false,
-      "images": [],
+      "images": [
+        "media/p/set-de-lapices/img-mvwnufp5-3.jpg"
+      ],
       "skills": [
         "3D en Blender"
       ],
