@@ -1,6 +1,7 @@
 {
   "projects": [
     {
+      "id": "historia-labiales-mate",
       "title": "Historia Labiales Mate",
       "brand": "Ligne D'Or",
       "kind": "Animación 3D · Historia vertical",
@@ -11,14 +12,16 @@
       "duration": "3 días",
       "tools": "Blender · After Effects",
       "format": "Vertical 9:16",
-      "id": "historia-labiales-mate",
       "cover": "media/historia-labiales.jpg",
       "video": "media/historia-labiales.mp4",
       "portrait": true,
       "images": [],
-      "model": ""
+      "model": "",
+      "category": "Animaciones y GIF",
+      "pdf": ""
     },
     {
+      "id": "bolso-3d",
       "title": "Bolso 3D",
       "brand": "Le Collezioni",
       "kind": "Modelado 3D",
@@ -29,14 +32,16 @@
       "duration": "",
       "tools": "Blender · Photoshop",
       "format": "",
-      "id": "bolso-3d",
       "cover": "",
       "video": "",
       "portrait": false,
       "images": [],
-      "model": "media/models/bolso.glb"
+      "model": "media/models/bolso.glb",
+      "category": "Modelado 3D",
+      "pdf": ""
     },
     {
+      "id": "set-de-lapices",
       "title": "Set de lápices",
       "brand": "",
       "kind": "Modelado 3D",
@@ -47,48 +52,13 @@
       "duration": "",
       "tools": "Blender",
       "format": "",
-      "id": "set-de-lapices",
       "cover": "",
       "video": "",
       "portrait": false,
       "images": [],
-      "model": "media/models/lapices.glb"
-    },
-    {
-      "title": "Tintes Maxybelt",
-      "brand": "MAxybelt",
-      "kind": "Animación 3D",
-      "summary": "Se realizo un modelado 3D de los productos tintes maxybelt en el cual se usaron para pendones y otra publicidad de la marca",
-      "objective": "Dar a conocer los productos en ferias",
-      "role": "Realice el trabajo desde 0 hasta texturización",
-      "result": "",
-      "duration": "",
-      "tools": "Blender y Phostoshop",
-      "format": "Varios",
-      "id": "tintes-maxybelt",
-      "cover": "",
-      "video": "",
-      "portrait": false,
-      "images": [],
-      "model": "media/p/tintes-maxybelt/model-mvvs3npp-pendon-copia-3.glb"
-    },
-    {
-      "title": "Video Comercial",
-      "brand": "Maxybelt",
-      "kind": "Reels Instagram",
-      "summary": "Se realizo un video de un paso a paso de la aplicación de un producto, en el cual cuenta con mucho detalle y mucho movimiento dando dinamismo al video",
-      "objective": "Mostrar la utilización de los productos",
-      "role": "Grabación y edición del video",
-      "result": "Se publico en redes sociales de la marca consiguiendo vistas y likes",
-      "duration": "",
-      "tools": "Premiere Pro",
-      "format": "Vertical 9:16",
-      "id": "video-comercial",
-      "cover": "media/p/video-comercial/cover-mvvspytp-portada-semi-permanen.jpg",
-      "video": "media/p/video-comercial/video-mvvte419-video-paso-a-paso-semipermanente-2.mp4",
-      "portrait": true,
-      "images": [],
-      "model": ""
+      "model": "media/models/lapices.glb",
+      "category": "Modelado 3D",
+      "pdf": ""
     }
   ]
 }

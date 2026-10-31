@@ -23,7 +23,7 @@
 :root[data-theme="dark"]{--stage:#070c12;--stage-glow:#1b3a54;--screen:#10171f;--screen-ink:#eaf4fc;--screen-muted:#8da3b8;color-scheme:dark}
 *{box-sizing:border-box}
 html{background:var(--stage)}
-body{margin:0;background:var(--stage);color:var(--screen-ink);font-family:var(--sans);font-size:15px;line-height:1.55;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0;overflow-x:hidden}
+body{margin:0;background:var(--stage);color:var(--screen-ink);font-family:var(--sans);font-size:15px;line-height:1.55;padding:0;overflow-x:hidden}
 button{font:inherit;color:inherit}
 a{color:inherit}
 :focus-visible{outline:3px solid var(--sky-deep);outline-offset:2px}
@@ -64,6 +64,20 @@ h1,h2,h3,h4{margin:0;font-family:var(--display);font-weight:700;letter-spacing:-
 .exp:hover{background:var(--sky)}
 .exp{display:none}
 .side[data-open="true"]{box-shadow:0 20px 60px rgba(0,0,0,.4)}
+/* Acceso */
+#login{border:0;border-radius:24px;padding:24px 26px;width:min(380px,calc(100% - 32px));background:var(--card);color:var(--ink);box-shadow:0 40px 90px rgba(0,0,0,.55)}
+#login::backdrop{background:rgba(4,8,13,.65);backdrop-filter:blur(4px)}
+#login h3{margin:0 0 4px;font-size:24px}
+#login p{margin:0 0 6px;color:var(--muted);font-size:14px}
+#login label{display:block;font-weight:700;font-size:13px;margin:12px 0 5px}
+#login input{width:100%;font:inherit;padding:10px 12px;border-radius:12px;border:1.5px solid #cbd8e5;background:#fff;color:#0d1824}
+.lmsg{min-height:20px;margin-top:10px;font-weight:600;font-size:13.5px;color:#c2410c}
+.lmsg.ok{color:#12663f}
+.lbar{display:flex;gap:10px;margin-top:8px}
+.pchips{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 4px}
+.pchips button{border:1.5px solid var(--ink);background:transparent;color:var(--ink);border-radius:999px;padding:6px 14px;font-weight:700;font-size:13px;cursor:pointer}
+.pchips button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.pgrid+h4,.pcat{margin:22px 0 8px}
 /* Proyectos dinamicos */
 .linkb{border:0;background:transparent;color:inherit;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:3px}
 .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-top:8px}
@@ -119,6 +133,11 @@ h1,h2,h3,h4{margin:0;font-family:var(--display);font-weight:700;letter-spacing:-
 @media (max-width:560px){.logo{display:none}}
 /* Escritorio: barra flotante abajo, no tapa contenido */
 @media (min-width:981px){
+  .stage{padding:0;place-items:stretch}
+  .device{width:100%;height:100svh;min-height:600px;border-radius:0;padding:0;background:none;box-shadow:none}
+  .device::before{display:none}
+  .screen{border-radius:0;padding:clamp(14px,1.6vw,26px);gap:clamp(12px,1.2vw,20px)}
+  .screen .windows{border-radius:0}
   .screen{grid-template-columns:minmax(0,1fr)}
   .side,.side[data-open="true"]{position:absolute;left:0;right:0;bottom:24px;margin-inline:auto;width:max-content;max-width:calc(100% - 40px);flex-direction:row;align-items:center;gap:4px;padding:8px;border-radius:999px;box-shadow:0 18px 50px rgba(0,0,0,.45);align-self:auto;justify-self:auto}
   .logo b,.spacer,.exp{display:none}
@@ -349,9 +368,10 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
 
 /* Pantallas pequeñas: la barra lateral pasa abajo */
 @media (max-width:980px){
-  .stage{display:block;padding-block:max(10px,env(safe-area-inset-top,0px)) 0}
-  .device{height:auto;min-height:0;border-radius:30px;padding:8px;margin-bottom:96px}
-  .screen{display:block;height:auto;padding:12px;border-radius:24px;overflow:visible}
+  .stage{display:block;padding:0}
+  .device{height:auto;min-height:0;border-radius:0;padding:0;background:none;box-shadow:none;margin-bottom:96px}
+  .device::before{display:none}
+  .screen{display:block;height:auto;padding:12px;border-radius:0;overflow:visible;min-height:100svh}
   .side{position:fixed;z-index:200;left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));bottom:max(10px,env(safe-area-inset-bottom,0px));width:auto!important;flex-direction:row;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:999px;box-shadow:0 14px 40px rgba(0,0,0,.4)}
   .side .logo b,.nav-btn span,.exp,.spacer{display:none}
   .logo{margin:0;height:46px}
@@ -375,6 +395,8 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
   .has-win .main{filter:none}
 }
 @media (max-width:560px){
+  .side{padding:6px 8px!important}
+  .nav-btn{width:40px!important;height:40px}
   .plist{grid-template-columns:1fr 1fr;grid-template-rows:none}
   .proj.empty:last-child{display:none}
   .greet b{font-size:18px}
@@ -399,6 +421,7 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
   <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2c.6 5.4 4.6 9.4 10 10-5.4.6-9.4 4.6-10 10-.6-5.4-4.6-9.4-10-10 5.4-.6 9.4-4.6 10-10z" fill="currentColor"/></symbol>
   <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 9.5V20h14V9.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="3"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></g></symbol>
   <symbol id="i-cube" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></g></symbol>
   <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
   <symbol id="i-fs" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -425,6 +448,16 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
   <div class="meter"><div class="count" id="count">00</div><div class="bar"><i id="barfill"></i></div></div>
 </div>
 
+<dialog id="login" aria-labelledby="loginT">
+  <form method="dialog" id="loginForm" autocomplete="on">
+    <h3 id="loginT">Acceso</h3>
+    <p>Entra con tu usuario y contraseña para administrar el portafolio.</p>
+    <label for="lu">Usuario</label><input id="lu" type="text" autocomplete="username" required>
+    <label for="lp">Contraseña</label><input id="lp" type="password" autocomplete="current-password" required>
+    <div class="lmsg" id="lmsg" role="status"></div>
+    <div class="lbar"><button type="submit" class="btn" id="lgo">Entrar</button><button type="button" class="btn line" id="lx">Cancelar</button></div>
+  </form>
+</dialog>
 <main class="stage">
 <div class="device" id="device">
 <div class="screen" id="screen">
@@ -439,6 +472,7 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
     <button class="nav-btn" type="button" data-win="contact" id="nb-contact" aria-label="Contacto"><svg width="20" height="20"><use href="#i-mail"/></svg><span>Contacto</span></button>
     <div class="spacer"></div>
     <button class="nav-btn" type="button" id="theme" aria-label="Cambiar entre tema claro y oscuro"><svg width="20" height="20"><use href="#i-moon"/></svg><span>Tema</span></button>
+    <button class="nav-btn" type="button" id="nb-login" aria-label="Acceso del dueño"><svg width="20" height="20"><use href="#i-lock"/></svg><span>Acceso</span></button>
     <button class="exp" type="button" id="exp" aria-expanded="false" aria-label="Desplegar menú"><svg width="16" height="16"><use href="#i-chev"/></svg></button>
   </aside>
 
@@ -593,7 +627,7 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
 <template id="tpl-projects">
   <h2>Proyectos</h2>
   <p class="lead">Mis trabajos más recientes. Toca uno para verlo con detalle.</p>
-  <div class="pgrid" data-grid></div>
+  <div data-grid></div>
 </template>
 
 <template id="tpl-tools">
@@ -1031,7 +1065,7 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
     if(p.cover){var im=document.createElement('img');im.src=safeSrc(p.cover);im.alt='';im.loading='lazy';b.appendChild(im)}
     else{b.classList.add('cube');var big=el2('span','big');big.innerHTML='<svg width="54" height="54"><use href="#i-cube"/></svg>';b.appendChild(big)}
     b.appendChild(el2('span','n',(n<10?'0':'')+n));
-    var nm=el2('span','nm');nm.appendChild(el2('small','',[p.brand,p.model?'3D':p.kind].filter(Boolean).join(' · ')));nm.appendChild(document.createTextNode(p.title));b.appendChild(nm);
+    var nm=el2('span','nm');nm.appendChild(el2('small','',[p.brand,p.category||(p.model?'3D':p.kind)].filter(Boolean).join(' · ')));nm.appendChild(document.createTextNode(p.title));b.appendChild(nm);
     return b;
   }
   function renderPlist(){
@@ -1040,19 +1074,36 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
     for(var i=PROJECTS.length;i<3;i++){var e=el2('div','proj empty');e.innerHTML='<span class="nm">0'+(i+1)+'<br>Próximamente</span>';pl.appendChild(e)}
     $('#pcount').textContent=PROJECTS.length>3?'Ver los '+PROJECTS.length:'Ver todos';
   }
+  var pfilter='';
+  function catOf(p){return p.category||'Otros'}
   function fillProjects(el){
-    var g=$('[data-grid]',el);g.textContent='';
-    if(!PROJECTS.length){g.appendChild(el2('p','pnone','Pronto habrá proyectos aquí.'));return}
-    PROJECTS.forEach(function(p,i){g.appendChild(projCard(p,i+1))});
+    var host=$('[data-grid]',el);host.textContent='';
+    if(!PROJECTS.length){host.appendChild(el2('p','pnone','Pronto habrá proyectos aquí.'));return}
+    var cats=[];PROJECTS.forEach(function(p){if(cats.indexOf(catOf(p))<0)cats.push(catOf(p))});
+    if(cats.indexOf(pfilter)<0)pfilter='';
+    var chips=el2('div','pchips');
+    [''].concat(cats).forEach(function(c){
+      var b=el2('button','',c||'Todos');b.type='button';b.setAttribute('aria-pressed',c===pfilter?'true':'false');
+      b.addEventListener('click',function(){pfilter=c;fillProjects(el)});chips.appendChild(b);
+    });
+    host.appendChild(chips);
+    cats.forEach(function(c){
+      if(pfilter&&pfilter!==c)return;
+      host.appendChild(el2('h4','grp',c));
+      var g=el2('div','pgrid');
+      PROJECTS.forEach(function(p,i){if(catOf(p)===c)g.appendChild(projCard(p,i+1))});
+      host.appendChild(g);
+    });
   }
   function buildProject(body,p){
     var info=el2('div'),vid=null;
     function fact(dl,k,v){if(!v)return;var d=el2('div');d.appendChild(el2('dt','mono',k));d.appendChild(el2('dd','',v));dl.appendChild(d)}
-    var meta=[p.brand,p.kind].filter(Boolean).join(' · ');
+    var meta=[p.brand,p.category,p.kind].filter(Boolean).join(' · ');
     if(meta){var m=el2('span','mono',meta);m.style.color='var(--muted)';info.appendChild(m)}
     var h=el2('h2','',p.title);h.style.marginTop='6px';info.appendChild(h);
     if(p.summary)info.appendChild(el2('p','lead',p.summary));
     if(p.model){var b3=el2('button','btn p3d','Ver en 3D interactivo');b3.type='button';b3.dataset.win='models';b3.addEventListener('click',function(){showModel(p.id)});info.appendChild(b3)}
+    if(p.pdf){var a=el2('a','btn p3d','Ver el catálogo (PDF)');a.href=safeSrc(p.pdf);a.target='_blank';a.rel='noopener';info.appendChild(a)}
     var bl=el2('div','blocks');
     [['Objetivo',p.objective],['Mi trabajo',p.role],['Resultado',p.result]].forEach(function(x){if(!x[1])return;var d=el2('div');d.appendChild(el2('h4','',x[0]));d.appendChild(el2('p','',x[1]));bl.appendChild(d)});
     if(bl.children.length)info.appendChild(bl);
@@ -1091,7 +1142,7 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
     });
     renderPlist();
     for(var i=IDX.length-1;i>=0;i--)if(IDX[i].proj)IDX.splice(i,1);
-    PROJECTS.forEach(function(p){IDX.splice(1,0,{t:p.title,d:[p.brand,p.kind].filter(Boolean).join(' · ')||'Proyecto',w:'p:'+p.id,proj:1,k:[p.brand,p.kind,p.tools,p.summary,p.objective,p.role,p.result].join(' ')})});
+    PROJECTS.forEach(function(p){IDX.splice(1,0,{t:p.title,d:[p.brand,p.kind].filter(Boolean).join(' · ')||'Proyecto',w:'p:'+p.id,proj:1,k:[p.brand,p.category,p.kind,p.tools,p.summary,p.objective,p.role,p.result].join(' ')})});
   }
   fetch('data/projects.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(j){applyProjects(j&&j.projects)}).catch(function(){applyProjects([])});
 
@@ -1147,6 +1198,33 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
     }
   })();
 
+  /* Acceso del dueño */
+  (function(){
+    var dlg=$('#login'),f=$('#loginForm'),lm=$('#lmsg'),go=$('#lgo');
+    if(!dlg||!dlg.showModal){var nb=$('#nb-login');if(nb)nb.hidden=true;return}
+    function say3(t,ok){lm.textContent=t||'';lm.className='lmsg'+(ok?' ok':'')}
+    $('#nb-login').addEventListener('click',function(){
+      var has=false;try{has=!!sessionStorage.getItem('pf_token')}catch(e){}
+      if(has){location.href='admin.html';return}
+      say3('');f.reset();dlg.showModal();setTimeout(function(){$('#lu').focus()},50);
+    });
+    $('#lx').addEventListener('click',function(){dlg.close()});
+    f.addEventListener('submit',function(e){
+      e.preventDefault();
+      if(!window.PFAuth||!PFAuth.available){say3('Este navegador no permite el acceso seguro. Usa Chrome, Edge o Safari actualizado.');return}
+      go.disabled=true;say3('Verificando…',true);
+      PFAuth.load().then(function(a){
+        if(!a)throw new Error('none');
+        return PFAuth.unlock($('#lu').value,$('#lp').value,a);
+      }).then(function(r){
+        try{sessionStorage.setItem('pf_token',r.token);sessionStorage.setItem('pf_owner',r.owner);sessionStorage.setItem('pf_repo',r.repo);sessionStorage.setItem('pf_branch',r.branch)}catch(x){}
+        location.href='admin.html';
+      }).catch(function(err){
+        say3(err.message==='none'?'Todavía no hay usuario creado. Entra a admin.html con tu token y crea el acceso.':'Usuario o contraseña incorrectos.');
+      }).then(function(){go.disabled=false});
+    });
+  })();
+
   /* Búsqueda */
   var IDX=[
     {t:'Sobre mí',d:'Formación, estilo y habilidades',w:'about',k:'sobre mi formacion sena ecci estilo habilidades marcas clientes bachiller pasatiempos'},
@@ -1177,5 +1255,6 @@ html.booted .card,html.booted .side,html.booted .topbar{animation:rise .9s calc(
   document.addEventListener('pointerdown',function(e){if(!e.target.closest('#search'))closeResults()});
 })();
 </script>
+<script src="auth.js"></script>
 </body>
 </html>
