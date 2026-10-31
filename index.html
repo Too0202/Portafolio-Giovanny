@@ -99,7 +99,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--display);font-weight:700;letter-spacing:-
 .proj.cube .big{position:absolute;inset:0;display:grid;place-items:center;color:var(--sky);transition:transform .6s}
 .proj.cube:hover .big{transform:rotate(12deg) scale(1.1)}
 .mv{display:grid;gap:12px}
-.mv-stage{position:relative;height:clamp(300px,54vh,540px);border-radius:20px;overflow:hidden;background:radial-gradient(80% 80% at 50% 30%,#2d5a7a 0%,#10202e 72%);touch-action:none;isolation:isolate}
+.mv-stage{position:relative;height:clamp(240px,calc(100svh - 520px),540px);border-radius:20px;overflow:hidden;background:radial-gradient(80% 80% at 50% 30%,#2d5a7a 0%,#10202e 72%);touch-action:none;isolation:isolate}
 .mv-cv{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab;touch-action:none}
 .mv-cv:active{cursor:grabbing}
 .mv-msg{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:9px 16px;border-radius:999px;background:rgba(255,255,255,.14);color:#fff;font-size:15.5px;font-weight:600;backdrop-filter:blur(8px);text-align:center;max-width:80%}
@@ -458,6 +458,26 @@ body{font-size:17.5px}
   .card{padding:22px 22px}
   body{font-size:16.5px}
 }
+
+/* Carrusel de proyectos */
+.car{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:20px;background:var(--card-2)}
+.car-track{display:flex;height:100%;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.car-track.nt{transition:none}
+.car-track .proj{flex:0 0 100%;width:100%;height:100%;border-radius:0}
+.car .proj .n{display:inline-block!important}
+.car .proj.cube .big{display:grid!important;place-items:center;padding:0}
+.car .proj.cube .big svg{width:64px;height:64px}
+.car .proj .nm{padding:18px 20px 34px;font-size:19px}
+.car .proj .nm small{font-size:12px}
+.car-btn{position:absolute;top:50%;z-index:5;width:42px;height:42px;margin-top:-21px;border:0;border-radius:50%;background:rgba(255,255,255,.88);color:var(--ink);display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.25);transition:transform .2s,background .2s}
+.car-btn:hover{background:#fff;transform:scale(1.08)}
+.car-btn.prev{left:10px}.car-btn.prev svg{transform:rotate(180deg)}
+.car-btn.next{right:10px}
+.car-dots{position:absolute;left:0;right:0;bottom:12px;z-index:5;display:flex;justify-content:center;gap:7px;pointer-events:none}
+.car-dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.5);transition:width .3s,background .3s}
+.car-dots i.on{width:22px;border-radius:7px;background:#fff}
+.car.one .car-btn,.car.one .car-dots{display:none}
+@media (max-width:980px){.car{flex:none;height:300px}}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}.pulse{animation:none}}
 </style>
 
@@ -555,7 +575,12 @@ body{font-size:17.5px}
 
       <section class="card projects" style="--i:3" aria-label="Proyectos">
         <div class="card-head"><h3>Proyectos</h3><button class="mono linkb" type="button" data-win="projects" id="pcount">Ver todos</button></div>
-        <div class="plist" id="plist"></div>
+        <div class="car" id="car" role="region" aria-roledescription="carrusel" aria-label="Proyectos">
+          <div class="car-track" id="plist"></div>
+          <button class="car-btn prev" type="button" id="carPrev" aria-label="Proyecto anterior"><svg width="18" height="18"><use href="#i-chev"/></svg></button>
+          <button class="car-btn next" type="button" id="carNext" aria-label="Proyecto siguiente"><svg width="18" height="18"><use href="#i-chev"/></svg></button>
+          <div class="car-dots" id="carDots"></div>
+        </div>
       </section>
 
       <section class="card skills" style="--i:4" aria-label="Habilidades">
@@ -842,8 +867,9 @@ body{font-size:17.5px}
     var w=Math.min(cfg.w,cw-28);el.style.width=w+'px';
     var h=el.offsetHeight,off=(idx%4)*26;
     el.style.left=Math.max(14,(cw-w)/2+off-30)+'px';
-    el.style.top=Math.max(14,(ch-h)/2+off-20)+'px';
+    el.style.top=Math.max(14,Math.min((ch-h)/2+off-20,ch-h-14))+'px';
   }
+  function keepIn(el){if(narrow())return;var ch=wrap.clientHeight,h=el.offsetHeight,t=el.offsetTop;if(t+h>ch-14)el.style.top=Math.max(14,ch-h-14)+'px'}
   function cfgOf(id){
     if(WIN[id])return WIN[id];
     if(id.indexOf('p:')===0){
@@ -877,6 +903,7 @@ body{font-size:17.5px}
       try{navigator.clipboard.writeText(t.textContent).then(mark,sel)}catch(e){sel()}
     })});
     drag(el);
+    try{new ResizeObserver(function(){keepIn(el)}).observe(el)}catch(x){}
     fillSlots(el);
     if(id==='tools')runBars(el);
     if(id==='models')startViewer(el);
@@ -1113,12 +1140,55 @@ body{font-size:17.5px}
     var nm=el2('span','nm');nm.appendChild(el2('small','',[p.brand,p.category||(p.model?'3D':p.kind)].filter(Boolean).join(' · ')));nm.appendChild(document.createTextNode(p.title));b.appendChild(nm);
     return b;
   }
-  function renderPlist(){
-    var pl=$('#plist');pl.textContent='';
-    PROJECTS.slice(0,3).forEach(function(p,i){pl.appendChild(projCard(p,i+1))});
-    for(var i=PROJECTS.length;i<3;i++){var e=el2('div','proj empty');e.innerHTML='<span class="nm">0'+(i+1)+'<br>Próximamente</span>';pl.appendChild(e)}
-    $('#pcount').textContent=PROJECTS.length>3?'Ver los '+PROJECTS.length:'Ver todos';
+  var car={i:0,n:0,busy:false,paused:false,last:Date.now(),tm:null};
+  function carGo(to,manual){
+    var tr=$('#plist');if(!tr||car.n<2||car.busy)return;
+    if(manual)car.last=Date.now()+2500;
+    car.busy=true;
+    if(to>car.n-1&&to!==car.n){to=0}
+    if(to<0){tr.classList.add('nt');tr.style.transform='translateX(-'+car.n*100+'%)';void tr.offsetWidth;tr.classList.remove('nt');to=car.n-1}
+    tr.style.transform='translateX(-'+to*100+'%)';
+    car.i=to%car.n;
+    setTimeout(function(){
+      if(to===car.n){tr.classList.add('nt');tr.style.transform='translateX(0)';void tr.offsetWidth;tr.classList.remove('nt');car.i=0}
+      car.busy=false;carDots();
+    },calm?20:830);
+    carDots();
   }
+  function carDots(){$$('#carDots i').forEach(function(d,k){d.classList.toggle('on',k===car.i)})}
+  function renderPlist(){
+    var pl=$('#plist'),cw=$('#car');pl.textContent='';pl.style.transform='';$('#carDots').textContent='';
+    car.i=0;car.busy=false;car.n=PROJECTS.length;
+    PROJECTS.forEach(function(p,i){pl.appendChild(projCard(p,i+1))});
+    if(PROJECTS.length>1){
+      var c=projCard(PROJECTS[0],1);c.tabIndex=-1;c.setAttribute('aria-hidden','true');pl.appendChild(c);
+      PROJECTS.forEach(function(p,k){$('#carDots').appendChild(document.createElement('i'))});
+      carDots();
+    }
+    if(!PROJECTS.length){var e=el2('div','proj empty');e.innerHTML='<span class="nm">Próximamente</span>';pl.appendChild(e)}
+    cw.classList.toggle('one',PROJECTS.length<2);
+    $('#pcount').textContent=PROJECTS.length>1?'Ver los '+PROJECTS.length:'Ver todos';
+  }
+  (function(){
+    var cw=$('#car');
+    $('#carPrev').addEventListener('click',function(){carGo(car.i-1,true)});
+    $('#carNext').addEventListener('click',function(){carGo(car.i+1,true)});
+    function hold(){car.paused=true}
+    function free(){car.paused=false;car.last=Date.now()}
+    cw.addEventListener('mouseenter',hold);cw.addEventListener('mouseleave',free);
+    cw.addEventListener('focusin',hold);cw.addEventListener('focusout',free);
+    var sx=null;
+    cw.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;hold()},{passive:true});
+    cw.addEventListener('touchend',function(e){
+      var dx=e.changedTouches[0].clientX-sx;sx=null;
+      if(Math.abs(dx)>40)carGo(car.i+(dx<0?1:-1),true);
+      setTimeout(free,1500);
+    },{passive:true});
+    if(!calm)setInterval(function(){
+      if(car.paused||document.hidden||car.n<2)return;
+      if(Date.now()-car.last>=3800){car.last=Date.now();carGo(car.i+1)}
+    },400);
+  })();
 
   /* Habilidades: cada una abre una ventana solo con los trabajos de esa área */
   var SKILLS=[

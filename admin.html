@@ -137,7 +137,7 @@ details summary{cursor:pointer;font-weight:700}
         <h2 style="margin:0">3. Proyectos</h2>
         <button id="btnNew" type="button">+ Nuevo proyecto</button>
       </div>
-      <p style="margin:0 0 12px;color:var(--muted)">Los tres primeros salen en la tarjeta de la pantalla principal. Usa las flechas para cambiar el orden.</p>
+      <p style="margin:0 0 12px;color:var(--muted)">Todos salen en el carrusel de la pantalla principal. Usa las flechas para cambiar el orden.</p>
       <div class="list" id="list"></div>
     </section>
 
@@ -146,8 +146,12 @@ details summary{cursor:pointer;font-weight:700}
       <h2 id="formTitle">Nuevo proyecto</h2>
       <form id="form" novalidate>
         <label for="f-title">Título *</label><input id="f-title" type="text" required placeholder="Ej: Bolso 3D">
-        <label for="f-category">Categoría * <small>(en qué sección de «Proyectos» aparece)</small></label>
-        <input id="f-category" type="text" list="cats" required placeholder="Elige una o escribe una nueva" autocomplete="off">
+        <label for="f-files">Archivos del trabajo <small>(fotos, video, PDF o modelo .glb: elígelos todos juntos y yo los acomodo)</small></label>
+        <input id="f-files" type="file" multiple accept="image/*,video/mp4,video/webm,application/pdf,.pdf,.glb">
+        <div class="files" id="files-hint" style="margin-top:6px;color:var(--muted)"></div>
+        <details id="moreBox" style="margin-top:18px"><summary>Más detalles (opcional)</summary>
+        <label for="f-category">Categoría <small>(si la dejas vacía la elijo según tus archivos)</small></label>
+        <input id="f-category" type="text" list="cats" placeholder="Elige una o escribe una nueva" autocomplete="off">
         <datalist id="cats"><option value="Modelado 3D"><option value="Animaciones y GIF"><option value="Catálogos"><option value="Video"><option value="Diseño gráfico y branding"><option value="Fotografía"><option value="Redes sociales"></datalist>
         <div class="row">
           <div><label for="f-brand">Marca o cliente</label><input id="f-brand" type="text" placeholder="Ej: Le Collezioni"></div>
@@ -179,6 +183,7 @@ details summary{cursor:pointer;font-weight:700}
         <label for="f-images">Imágenes <small>(puedes elegir varias)</small></label><input id="f-images" type="file" accept="image/*" multiple><div class="files" id="images-list"></div>
         <label for="f-pdf">Catálogo o documento <small>(PDF, hasta 50 MB)</small></label><input id="f-pdf" type="file" accept="application/pdf,.pdf"><div class="files" id="pdf-list"></div>
         <label for="f-model">Modelo 3D <small>(archivo .glb, hasta 50 MB)</small></label><input id="f-model" type="file" accept=".glb"><div class="files" id="model-list"></div>
+        </details>
 
         <div class="bar" style="margin-top:20px">
           <button type="submit" id="btnSave">Guardar proyecto</button>
@@ -396,7 +401,7 @@ details summary{cursor:pointer;font-weight:700}
     var p=i>=0?JSON.parse(JSON.stringify(state.projects[i])):{id:'',title:'',category:'',brand:'',kind:'',summary:'',objective:'',role:'',result:'',duration:'',tools:'',format:'',cover:'',video:'',portrait:false,images:[],model:'',pdf:''};
     editing={idx:i,p:p,newFiles:{},removed:[]};
     FIELDS.forEach(function(k){form[k].value=p[k]||''});
-    $('#f-portrait').checked=!!p.portrait;drawSkills(p);
+    $('#f-portrait').checked=!!p.portrait;drawSkills(p);$('#f-files').value='';$('#files-hint').textContent='';$('#moreBox').open=i>=0;
     ['cover','video','images','model','pdf'].forEach(function(k){$('#f-'+k).value=''});
     $('#formTitle').textContent=i>=0?'Editar proyecto':'Nuevo proyecto';
     msg($('#formMsg'),'');renderFiles();
@@ -418,6 +423,29 @@ details summary{cursor:pointer;font-weight:700}
     fill('pdf-list',p.pdf?[p.pdf]:[],false,function(){drop(p.pdf);p.pdf='';renderFiles()});
     fill('images-list',p.images||[],true,function(x){drop(x);p.images=p.images.filter(function(y){return y!==x});renderFiles()});
   }
+  function videoInfo(file){
+    return new Promise(function(ok){
+      var v=document.createElement('video'),u=URL.createObjectURL(file),done=false;
+      v.muted=true;v.playsInline=true;v.preload='auto';
+      function fin(r){if(done)return;done=true;URL.revokeObjectURL(u);ok(r||{})}
+      setTimeout(function(){fin()},7000);
+      v.onerror=function(){fin()};
+      v.onloadeddata=function(){try{v.currentTime=Math.min(.5,(v.duration||1)/2)}catch(e){fin()}};
+      v.onseeked=function(){try{
+        var w=v.videoWidth,h=v.videoHeight,k=Math.min(1,1280/Math.max(w,h)),c=document.createElement('canvas');
+        c.width=Math.round(w*k);c.height=Math.round(h*k);c.getContext('2d').drawImage(v,0,0,c.width,c.height);
+        c.toBlob(function(b){fin({blob:b,portrait:h>w})},'image/jpeg',.85);
+      }catch(e){fin()}};
+      v.src=u;
+    });
+  }
+  $('#f-files').addEventListener('change',function(){
+    var c={img:0,vid:0,pdf:0,glb:0};
+    Array.prototype.slice.call(this.files).forEach(function(f){var n=f.name.toLowerCase();
+      if(/\.glb$/.test(n))c.glb++;else if(/\.pdf$/.test(n))c.pdf++;else if(/^video\//.test(f.type)||/\.(mp4|webm)$/.test(n))c.vid++;else if(/^image\//.test(f.type))c.img++});
+    var t=[];if(c.img)t.push(c.img+(c.img===1?' imagen':' imágenes'));if(c.vid)t.push(c.vid+' video');if(c.pdf)t.push(c.pdf+' PDF');if(c.glb)t.push(c.glb+' modelo 3D');
+    $('#files-hint').textContent=t.length?'Listo: '+t.join(' · ')+'. La primera imagen será la portada.':'';
+  });
   function drop(path){if(path)editing.removed.push(path)}
   function pid(){
     var p=editing.p;if(p.id)return p.id;
@@ -453,16 +481,36 @@ details summary{cursor:pointer;font-weight:700}
     var title=form.title.value.trim();
     if(!title){msg($('#formMsg'),'El título es obligatorio.','err');form.title.focus();return}
     var cover=$('#f-cover').files[0],video=$('#f-video').files[0],imgs=Array.prototype.slice.call($('#f-images').files),model=$('#f-model').files[0],pdf=$('#f-pdf').files[0];
+    var badNames=[];
+    Array.prototype.slice.call($('#f-files').files).forEach(function(f){
+      var n=f.name.toLowerCase();
+      if(/\.glb$/.test(n)){if(!model)model=f}
+      else if(/\.pdf$/.test(n)||f.type==='application/pdf'){if(!pdf)pdf=f}
+      else if(/^video\//.test(f.type)||/\.(mp4|webm)$/.test(n)){if(!video)video=f}
+      else if(/^image\//.test(f.type)){imgs.push(f)}
+      else badNames.push(f.name);
+    });
+    if(badNames.length){msg($('#formMsg'),'No reconozco este archivo: '+badNames[0]+'. Usa fotos, mp4/webm, PDF o .glb.','err');return}
+    var autoCover=null;
+    if(!cover&&!editing.p.cover&&imgs.length){autoCover=imgs.shift()}
     if(video&&video.size>MAX_MB*1048576){msg($('#formMsg'),'El video pesa más de '+MAX_MB+' MB. Comprímelo antes de subirlo.','err');return}
     if(model&&model.size>MAX_MB*1048576){msg($('#formMsg'),'El modelo pesa más de '+MAX_MB+' MB. Reduce las texturas antes de exportarlo.','err');return}
     if(pdf&&pdf.size>MAX_MB*1048576){msg($('#formMsg'),'El PDF pesa más de '+MAX_MB+' MB. Comprímelo antes de subirlo.','err');return}
-    if(pdf&&!/\.pdf$/i.test(pdf.name)){msg($('#formMsg'),'El documento debe ser un PDF.','err');return}
-    if(!form.category.value.trim()){msg($('#formMsg'),'Elige o escribe una categoría.','err');form.category.focus();return}
-    if(model&&!/\.glb$/i.test(model.name)){msg($('#formMsg'),'El modelo debe ser un archivo .glb.','err');return}
     $('#btnSave').disabled=true;msg($('#formMsg'),'Procesando archivos…','info');
     var p=editing.p,id=pid();p.id=id;
     FIELDS.forEach(function(k){p[k]=form[k].value.trim()});p.portrait=$('#f-portrait').checked;p.skills=readSkills();
+    var hasM=!!(model||p.model),hasV=!!(video||p.video),hasP=!!(pdf||p.pdf);
+    if(!p.category)p.category=hasM?'Modelado 3D':hasP?'Catálogos':hasV?'Video':(cover||autoCover||imgs.length||p.cover)?'Diseño gráfico y branding':'Otros';
+    if(!p.skills.length){
+      if(hasM)p.skills.push('3D en Blender');if(hasV)p.skills.push('Video');if(hasP)p.skills.push('Catálogos');
+      if(BASE_SKILLS.indexOf(p.category)>-1&&p.skills.indexOf(p.category)<0)p.skills.push(p.category);
+    }
     var jobs=[];
+    if(autoCover)jobs.push(processImage(autoCover).then(function(r){return stage(id,'cover',null,r)}).then(function(path){drop(p.cover);p.cover=path}));
+    if(video)jobs.push(videoInfo(video).then(function(r){
+      if(r.portrait&&!$('#f-portrait').checked)p.portrait=true;
+      if(r.blob&&!cover&&!autoCover&&!p.cover)return stage(id,'cover',null,{blob:r.blob,name:'portada.jpg'}).then(function(path){p.cover=path});
+    }));
     if(cover)jobs.push(processImage(cover).then(function(r){return stage(id,'cover',null,r)}).then(function(path){drop(p.cover);p.cover=path}));
     if(video)jobs.push(stage(id,'video',video).then(function(path){drop(p.video);p.video=path}));
     if(pdf)jobs.push(stage(id,'doc',pdf).then(function(path){drop(p.pdf);p.pdf=path}));
