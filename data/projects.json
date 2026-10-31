@@ -1,6 +1,31 @@
 {
   "projects": [
     {
+      "title": "Tintes Maxybelt",
+      "category": "Modelado 3D",
+      "brand": "",
+      "kind": "",
+      "summary": "",
+      "objective": "",
+      "role": "",
+      "result": "",
+      "duration": "",
+      "tools": "",
+      "format": "",
+      "id": "tintes-maxybelt",
+      "cover": "media/p/tintes-maxybelt/cover-mvwyn3vy-pantallazo.jpg",
+      "video": "",
+      "portrait": false,
+      "images": [
+        "media/p/tintes-maxybelt/img-mvwyn3wi-pendon-v4.jpg"
+      ],
+      "skills": [
+        "3D en Blender"
+      ],
+      "model": "media/p/tintes-maxybelt/model-mvwyn3t9-pendon-copia-3.glb",
+      "pdf": ""
+    },
+    {
       "title": "Historia Labiales Mate",
       "category": "Animaciones y GIF",
       "brand": "Ligne D'Or",
