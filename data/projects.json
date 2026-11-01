@@ -127,6 +127,31 @@
       ],
       "model": "",
       "pdf": ""
+    },
+    {
+      "title": "Video Comercial esmaltes",
+      "category": "Video",
+      "brand": "Maxybelt",
+      "kind": "Videos Reels",
+      "summary": "",
+      "objective": "",
+      "role": "",
+      "result": "",
+      "duration": "",
+      "tools": "After Effects y Premiere Pro",
+      "format": "Vertical 9:16",
+      "id": "video-comercial-esmaltes",
+      "cover": "media/p/video-comercial-esmaltes/cover-mvy486l3-portada.jpg",
+      "thumb": "",
+      "video": "media/p/video-comercial-esmaltes/video-mvy486h8-video-paso-a-paso-semipermanente-2.mp4",
+      "portrait": true,
+      "images": [],
+      "skills": [
+        "Video",
+        "Redes sociales"
+      ],
+      "model": "",
+      "pdf": ""
     }
   ]
 }
