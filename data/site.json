@@ -2,5 +2,8 @@
   "theme": {
     "texStrength": 0.8,
     "radius": 27
+  },
+  "texts": {
+    "Tarjeta Experiencia|executive-sas-actualidad": "EXECUTIVE SAS · Septiembre ·  actualidad"
   }
 }
