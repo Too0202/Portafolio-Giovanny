@@ -162,6 +162,7 @@ details summary{cursor:pointer;font-weight:700}
         <button id="btnNew" type="button">+ Nuevo proyecto</button>
       </div>
       <p style="margin:0 0 12px;color:var(--muted)">Todos salen en el carrusel de la pantalla principal. Usa las flechas para cambiar el orden.</p>
+      <div id="thumbBar" class="msg info" hidden style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap"><span>Hay modelos 3D sin miniatura. Se la pongo en un toque.</span><button type="button" id="btnThumbs" class="sm">Crear miniaturas 3D</button></div>
       <div class="list" id="list"></div>
     </section>
 
@@ -252,6 +253,7 @@ details summary{cursor:pointer;font-weight:700}
 </div>
 
 <script src="site.js"></script>
+<script src="thumb3d.js"></script>
 <script src="auth.js"></script>
 <script>
 (function(){
@@ -398,7 +400,7 @@ details summary{cursor:pointer;font-weight:700}
     state.projects.forEach(function(p,i){
       var it=document.createElement('div');it.className='item';
       var th=document.createElement('div');th.className='th';
-      if(p.cover){var im=document.createElement('img');im.alt='';im.src=srcFor(p.cover);th.appendChild(im)}else th.textContent=p.model?'3D':'—';
+      if(p.cover||p.thumb){var im=document.createElement('img');im.alt='';im.src=srcFor(p.cover||p.thumb);th.appendChild(im)}else th.textContent=p.model?'3D':'—';
       var mid=document.createElement('div');var b=document.createElement('b');b.textContent=p.title;var m=document.createElement('span');m.className='m';
       m.textContent='#'+(i+1)+' · '+[p.category,p.brand,p.model?'Modelo 3D':'',p.video?'Video':'',(p.images&&p.images.length)?p.images.length+' img':''].filter(Boolean).join(' · ');
       mid.appendChild(b);mid.appendChild(m);
@@ -410,7 +412,27 @@ details summary{cursor:pointer;font-weight:700}
     });
   }
   function move(i,d){var j=i+d;if(j<0||j>=state.projects.length)return;var t=state.projects[i];state.projects[i]=state.projects[j];state.projects[j]=t;setDirty();render()}
-  function ownedPaths(p){return [p.cover,p.video,p.model,p.pdf].concat(p.images||[]).filter(Boolean)}
+  function updateThumbBar(){
+    var need=state.projects.some(function(p){return p.model&&!p.cover&&!p.thumb});
+    $('#thumbBar').hidden=!need;$('#thumbBar').style.display=need?'flex':'none';
+  }
+  var _render=render;render=function(){_render();updateThumbBar()};
+  $('#btnThumbs').addEventListener('click',function(){
+    var btn=$('#btnThumbs');btn.disabled=true;btn.textContent='Creando…';
+    var chain=Promise.resolve(),fails=0;
+    state.projects.forEach(function(p){
+      if(!(p.model&&!p.cover&&!p.thumb))return;
+      chain=chain.then(function(){
+        var id=p.id||slug(p.title);
+        return PFThumb.render(p.model).then(function(blob){return stage(id,'thumb',null,{blob:blob,name:'miniatura-3d.jpg'})}).then(function(path){p.thumb=path;setDirty()}).catch(function(){fails++});
+      });
+    });
+    chain.then(function(){
+      btn.disabled=false;btn.textContent='Crear miniaturas 3D';render();
+      msg($('#pubMsg'),fails?'No pude crear '+fails+' miniatura(s). Revisa tu internet e inténtalo de nuevo.':'Miniaturas listas. Toca «Publicar en la página».',fails?'err':'info');
+    });
+  });
+  function ownedPaths(p){return [p.cover,p.thumb,p.video,p.model,p.pdf].concat(p.images||[]).filter(Boolean)}
   function referenced(path,exceptIdx){return state.projects.some(function(q,k){return k!==exceptIdx&&ownedPaths(q).indexOf(path)>-1})}
   function del(i){
     var p=state.projects[i];
@@ -562,6 +584,10 @@ details summary{cursor:pointer;font-weight:700}
       if(r.portrait&&!$('#f-portrait').checked)p.portrait=true;
       if(r.blob&&!cover&&!autoCover&&!p.cover)return stage(id,'cover',null,{blob:r.blob,name:'portada.jpg'}).then(function(path){p.cover=path});
     }));
+    if((model||p.model)&&!video&&!p.video&&!cover&&!autoCover&&!p.cover&&(model||!p.thumb)){
+      msg($('#formMsg'),'Creando la miniatura del modelo 3D…','info');
+      jobs.push(PFThumb.render(model||p.model).then(function(blob){return stage(id,'thumb',null,{blob:blob,name:'miniatura-3d.jpg'})}).then(function(path){drop(p.thumb);p.thumb=path}).catch(function(){}));
+    }
     if(cover)jobs.push(processImage(cover).then(function(r){return stage(id,'cover',null,r)}).then(function(path){drop(p.cover);p.cover=path}));
     if(video)jobs.push(stage(id,'video',video).then(function(path){drop(p.video);p.video=path}));
     if(pdf)jobs.push(stage(id,'doc',pdf).then(function(path){drop(p.pdf);p.pdf=path}));
@@ -821,7 +847,7 @@ details summary{cursor:pointer;font-weight:700}
     });
   }
   function clean(p){
-    var o={};FIELDS.concat(['id','cover','video','portrait','images','skills','model','pdf']).forEach(function(k){o[k]=p[k]===undefined?((k==='images'||k==='skills')?[]:(k==='portrait'?false:'')):p[k]});
+    var o={};FIELDS.concat(['id','cover','thumb','video','portrait','images','skills','model','pdf']).forEach(function(k){o[k]=p[k]===undefined?((k==='images'||k==='skills')?[]:(k==='portrait'?false:'')):p[k]});
     if(p.legacy)o.legacy=p.legacy;
     return o;
   }
