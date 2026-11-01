@@ -100,13 +100,17 @@
   function dots(c,o){return "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30'%3E%3Ccircle cx='2' cy='2' r='1.4' fill='"+hex(c)+"' fill-opacity='"+o+"'/%3E%3C/svg%3E\")"}
   function clamp(x,a,b){return Math.max(a,Math.min(b,x))}
   function tex(t,dark){
-    var k=clamp(+t.texStrength||0,0,2.5),top=dark?t.bgDarkTop:t.bgLightTop,bot=dark?t.bgDarkBottom:t.bgLightBottom;
+    var top=dark?t.bgDarkTop:t.bgLightTop,bot=dark?t.bgDarkBottom:t.bgLightBottom;
     var base='linear-gradient(165deg,'+top+','+bot+')';
     if(t.texOn===false||t.texOn==='false')return base;
-    var c=dark?t.texDark:t.texLight,so=clamp((dark?.16:.32)*k,0,1).toFixed(2),fo=clamp((dark?.16:.35)*k,0,1).toFixed(2);
-    var line=dark?'rgba(142,205,245,'+clamp(.05*k,0,1).toFixed(2)+')':'rgba(255,255,255,'+clamp(.28*k,0,1).toFixed(2)+')';
     var glow=dark?'rgba(58,155,224,.22)':'rgba(255,255,255,.55)';
-    return circ(c,so)+' right -140px top -170px/720px no-repeat,'+circ(c,so)+' left -230px bottom -260px/940px no-repeat,'+dots(c,fo)+' 0 0/30px 30px,repeating-linear-gradient(118deg,'+line+' 0 1px,transparent 1px 54px),radial-gradient(1000px 640px at 15% 0%,'+glow+',transparent 70%),'+base;
+    return 'radial-gradient(1000px 640px at 15% 0%,'+glow+',transparent 70%),'+base;
+  }
+  function fx(t,dark){
+    if(t.texOn===false||t.texOn==='false')return '--circ:none;--dots:none;--lines:none;';
+    var k=clamp(+t.texStrength||0,0,2.5),c=dark?t.texDark:t.texLight,so=clamp((dark?.16:.32)*k,0,1).toFixed(2),fo=clamp((dark?.16:.35)*k,0,1).toFixed(2);
+    var line=dark?'rgba(142,205,245,'+clamp(.05*k,0,1).toFixed(2)+')':'rgba(255,255,255,'+clamp(.28*k,0,1).toFixed(2)+')';
+    return '--circ:'+circ(c,so)+';--dots:'+dots(c,fo)+';--lines:repeating-linear-gradient(118deg,'+line+' 0 1px,transparent 1px 54px);';
   }
   function fam(n){return '"'+n+'","Helvetica Neue",Arial,sans-serif'}
   function fontLink(t){
@@ -118,10 +122,10 @@
   }
   function themeCss(){
     var t=eff('theme'),r=clamp(+t.radius||0,0,48);
-    return ':root{--sky:'+t.accent+';--sky-deep:'+t.accent2+';--ink:'+t.ink+';--card:'+t.card+';--card-2:'+t.card2+';--hero:'+t.hero+';--dock:'+t.dock+';--loaderbg:'+t.loaderbg+';--rad:'+r+'px;--display:'+fam(t.fDisplay)+';--sans:'+fam(t.fSans)+';--mono:'+fam(t.fMono)+';--tex:'+tex(t,false)+'}\n'
-      +'@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--tex:'+tex(t,true)+'}}\n'
-      +':root[data-theme="dark"]{--tex:'+tex(t,true)+'}\n'
-      +':root[data-theme="light"]{--tex:'+tex(t,false)+'}\n';
+    return ':root{--sky:'+t.accent+';--sky-deep:'+t.accent2+';--ink:'+t.ink+';--card:'+t.card+';--card-2:'+t.card2+';--hero:'+t.hero+';--dock:'+t.dock+';--loaderbg:'+t.loaderbg+';--rad:'+r+'px;--display:'+fam(t.fDisplay)+';--sans:'+fam(t.fSans)+';--mono:'+fam(t.fMono)+';--tex:'+tex(t,false)+';'+fx(t,false)+'}\n'
+      +'@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--tex:'+tex(t,true)+';'+fx(t,true)+'}}\n'
+      +':root[data-theme="dark"]{--tex:'+tex(t,true)+';'+fx(t,true)+'}\n'
+      +':root[data-theme="light"]{--tex:'+tex(t,false)+';'+fx(t,false)+'}\n';
   }
   function applyTheme(){
     var st=document.getElementById('pfTheme');

@@ -336,6 +336,7 @@ details summary{cursor:pointer;font-weight:700}
       $('#app').hidden=false;$('#connect').hidden=true;$('#btnOut').hidden=false;
       $('#siteLink').href='./';
       render();updatePub();initSite();
+      ensureThumbs().then(function(f){if(state.projects.some(function(p){return p.thumb&&state.files[p.thumb]}))msg($('#pubMsg'),'Creé las miniaturas de tus modelos 3D. Toca «Publicar en la página» para que se vean.','info')});
     });
   }
   function readJson(path,fallback){
@@ -412,23 +413,32 @@ details summary{cursor:pointer;font-weight:700}
     });
   }
   function move(i,d){var j=i+d;if(j<0||j>=state.projects.length)return;var t=state.projects[i];state.projects[i]=state.projects[j];state.projects[j]=t;setDirty();render()}
+  function needThumb(p){return !!(p.model&&!p.cover&&!p.thumb)}
   function updateThumbBar(){
-    var need=state.projects.some(function(p){return p.model&&!p.cover&&!p.thumb});
+    var need=state.projects.some(needThumb);
     $('#thumbBar').hidden=!need;$('#thumbBar').style.display=need?'flex':'none';
   }
   var _render=render;render=function(){_render();updateThumbBar()};
-  $('#btnThumbs').addEventListener('click',function(){
-    var btn=$('#btnThumbs');btn.disabled=true;btn.textContent='Creando…';
-    var chain=Promise.resolve(),fails=0;
+  var thumbBusy=null;
+  /* crea la miniatura de los modelos 3D que no la tienen; devuelve cuántas falló */
+  function ensureThumbs(){
+    if(thumbBusy)return thumbBusy;
+    var fails=0,chain=Promise.resolve(),any=false;
     state.projects.forEach(function(p){
-      if(!(p.model&&!p.cover&&!p.thumb))return;
+      if(!needThumb(p))return;any=true;
       chain=chain.then(function(){
         var id=p.id||slug(p.title);
         return PFThumb.render(p.model).then(function(blob){return stage(id,'thumb',null,{blob:blob,name:'miniatura-3d.jpg'})}).then(function(path){p.thumb=path;setDirty()}).catch(function(){fails++});
       });
     });
-    chain.then(function(){
-      btn.disabled=false;btn.textContent='Crear miniaturas 3D';render();
+    if(!any)return Promise.resolve(0);
+    thumbBusy=chain.then(function(){thumbBusy=null;render();return fails});
+    return thumbBusy;
+  }
+  $('#btnThumbs').addEventListener('click',function(){
+    var btn=$('#btnThumbs');btn.disabled=true;btn.textContent='Creando…';
+    ensureThumbs().then(function(fails){
+      btn.disabled=false;btn.textContent='Crear miniaturas 3D';
       msg($('#pubMsg'),fails?'No pude crear '+fails+' miniatura(s). Revisa tu internet e inténtalo de nuevo.':'Miniaturas listas. Toca «Publicar en la página».',fails?'err':'info');
     });
   });
@@ -826,6 +836,10 @@ details summary{cursor:pointer;font-weight:700}
   $('#btnPublish').addEventListener('click',publish);
   function progress(f){var p=$('#prog');p.hidden=false;$('i',p).style.width=Math.round(f*100)+'%'}
   function publish(){
+    var b0=$('#btnPublish');b0.disabled=true;msg($('#pubMsg'),'Preparando…','info');
+    ensureThumbs().then(doPublish);
+  }
+  function doPublish(){
     var btn=$('#btnPublish');btn.disabled=true;msg($('#pubMsg'),'Publicando…','info');
     var paths=Object.keys(state.files).filter(function(p){return state.projects.some(function(q){return ownedPaths(q).indexOf(p)>-1})});
     var files=paths.map(function(p){return {path:p,blob:state.files[p].blob}});
