@@ -14,6 +14,7 @@
       "format": "",
       "id": "tintes-maxybelt",
       "cover": "media/p/tintes-maxybelt/cover-mvwyn3vy-pantallazo.jpg",
+      "thumb": "",
       "video": "",
       "portrait": false,
       "images": [
@@ -39,6 +40,7 @@
       "format": "Vertical 9:16",
       "id": "historia-labiales-mate",
       "cover": "media/historia-labiales.jpg",
+      "thumb": "",
       "video": "media/historia-labiales.mp4",
       "portrait": true,
       "images": [],
@@ -64,6 +66,7 @@
       "format": "",
       "id": "bolso-3d",
       "cover": "",
+      "thumb": "media/p/bolso-3d/thumb-mvy40koa-miniatura-3d.jpg",
       "video": "",
       "portrait": false,
       "images": [],
@@ -87,6 +90,7 @@
       "format": "",
       "id": "set-de-lapices",
       "cover": "",
+      "thumb": "media/p/set-de-lapices/thumb-mvy40lfa-miniatura-3d.jpg",
       "video": "",
       "portrait": false,
       "images": [
@@ -112,6 +116,7 @@
       "format": "Vertical 9:16",
       "id": "fotografia-de-modelo",
       "cover": "",
+      "thumb": "",
       "video": "",
       "portrait": false,
       "images": [
