@@ -66,6 +66,30 @@ details summary{cursor:pointer;font-weight:700}
 .prog{height:8px;background:var(--card2);border-radius:99px;overflow:hidden;margin-top:10px}
 .prog i{display:block;height:100%;width:0;background:var(--ink);transition:width .3s}
 @media (max-width:620px){.item{grid-template-columns:64px 1fr}.item .acts{grid-column:1/-1;justify-content:flex-start}.th{width:64px;height:50px}}
+
+/* editor del sitio */
+#siteCard .sitegrid{display:grid;gap:18px}
+@media (min-width:1180px){
+  #siteCard{width:min(1380px,calc(100vw - 32px));position:relative;left:50%;transform:translateX(-50%)}
+  #siteCard .sitegrid{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)}
+}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tabs button{background:var(--card2);color:var(--ink)}
+.tabs button[aria-selected="true"]{background:var(--ink);color:#fff}
+.tp{display:none}.tp.on{display:block}
+.trow{background:#fff;border-radius:14px;padding:8px 10px;margin:6px 0;display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center}
+.trow label{margin:0 0 3px;font-size:12px;color:var(--muted);font-weight:600}
+.trow textarea{min-height:56px}
+.tgroup{background:var(--card2);border-radius:16px;padding:8px 12px;margin:8px 0}
+.crow{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;background:#fff;border-radius:14px;padding:8px 10px;margin:6px 0}
+.crow input[type=color]{width:44px;height:36px;padding:0;border:1.5px solid var(--line);border-radius:10px;background:#fff;cursor:pointer}
+.crow input[type=range]{grid-column:2;width:100%}
+.lrow{background:#fff;border-radius:14px;padding:8px 10px;margin:6px 0;display:grid;gap:6px}
+.lrow .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.lrow .acts{display:flex;justify-content:flex-end}
+.sitepv{position:sticky;top:12px;align-self:start}
+.pvbox{position:relative;width:100%;height:min(78vh,720px);border-radius:16px;overflow:hidden;background:#0d1824;border:1.5px solid var(--line)}
+.pvbox iframe{position:absolute;left:0;top:0;border:0;transform-origin:0 0;background:#fff}
 </style>
 </head>
 <body>
@@ -125,9 +149,9 @@ details summary{cursor:pointer;font-weight:700}
     <section class="card">
       <h2>2. Estado de disponibilidad</h2>
       <div class="status" id="statusBox" role="radiogroup" aria-label="Estado de disponibilidad">
-        <label><input type="radio" name="st" value="busco"><i class="dot" style="background:#46d38a"></i>Busco trabajo</label>
-        <label><input type="radio" name="st" value="freelance"><i class="dot" style="background:#5db7f5"></i>Disponible freelance</label>
-        <label><input type="radio" name="st" value="ocupado"><i class="dot" style="background:#f0a64a"></i>Ocupado por ahora</label>
+        <label><input type="radio" name="st" value="busco"><i class="dot" style="background:#46d38a"></i><span>Contratación inmediata</span></label>
+        <label><input type="radio" name="st" value="freelance"><i class="dot" style="background:#5db7f5"></i><span>Disponible freelance</span></label>
+        <label><input type="radio" name="st" value="ocupado"><i class="dot" style="background:#f0a64a"></i><span>Ocupado por ahora</span></label>
       </div>
     </section>
 
@@ -193,6 +217,31 @@ details summary{cursor:pointer;font-weight:700}
       </form>
     </section>
 
+
+    <!-- Textos, colores y letras -->
+    <section class="card" id="siteCard">
+      <h2>4. Textos, colores y letras de la página</h2>
+      <p style="margin:0 0 12px;color:var(--muted)">Cambia lo que quieras y mira el resultado a la derecha al instante. Cuando termines, toca <b>Publicar en la página</b>.</p>
+      <div class="sitegrid">
+        <div class="sitectl">
+          <div class="tabs" role="tablist">
+            <button type="button" role="tab" data-tab="texts" aria-selected="true">Textos</button>
+            <button type="button" role="tab" data-tab="colors" aria-selected="false">Colores y fondo</button>
+            <button type="button" role="tab" data-tab="fonts" aria-selected="false">Letras</button>
+            <button type="button" role="tab" data-tab="lists" aria-selected="false">Listas</button>
+            <button type="button" role="tab" data-tab="data" aria-selected="false">Datos</button>
+          </div>
+          <div class="tp on" id="tp-texts"><input id="tsearch" type="text" placeholder="Buscar un texto…" autocomplete="off"><div id="tlist"></div></div>
+          <div class="tp" id="tp-colors"></div>
+          <div class="tp" id="tp-fonts"></div>
+          <div class="tp" id="tp-lists"></div>
+          <div class="tp" id="tp-data"></div>
+          <div class="bar" style="margin-top:16px"><button type="button" class="line sm" id="siteReset">Restablecer todo a como venía</button></div>
+        </div>
+        <div class="sitepv"><div class="pvbox" id="pvbox"><iframe id="pv" title="Vista previa de la página"></iframe></div></div>
+      </div>
+    </section>
+
     <div class="pub" id="pubBar">
       <span id="pubInfo">Sin cambios pendientes</span>
       <button id="btnPublish" type="button" disabled>Publicar en la página</button>
@@ -202,6 +251,7 @@ details summary{cursor:pointer;font-weight:700}
   </div>
 </div>
 
+<script src="site.js"></script>
 <script src="auth.js"></script>
 <script>
 (function(){
@@ -210,8 +260,8 @@ details summary{cursor:pointer;font-weight:700}
   var API='https://api.github.com';
   var MAX_MB=50;
   var cfg={owner:'',repo:'',branch:'main',token:''};
-  var remote={projects:[],status:'busco',sha:null,headSha:null};
-  var state={projects:[],status:'busco',files:{},deletes:{},dirty:false,statusDirty:false};
+  var remote={projects:[],status:'busco',site:{},sha:null,headSha:null};
+  var state={projects:[],status:'busco',site:{},siteDirty:false,files:{},deletes:{},dirty:false,statusDirty:false};
   var editing=null; // objeto de trabajo del formulario
   var form={};
 
@@ -247,7 +297,7 @@ details summary{cursor:pointer;font-weight:700}
     updatePub();
   }
   function changed(){
-    return state.dirty||state.statusDirty;
+    return state.dirty||state.statusDirty||state.siteDirty;
   }
   function updatePub(){
     var c=changed();
@@ -273,16 +323,17 @@ details summary{cursor:pointer;font-weight:700}
       return gh(repoPath()+'/git/ref/heads/'+encodeURIComponent(cfg.branch));
     }).then(function(ref){
       remote.headSha=ref.object.sha;
-      return Promise.all([readJson('data/projects.json',{projects:[]}),readJson('status.json',{status:'busco'})]);
+      return Promise.all([readJson('data/projects.json',{projects:[]}),readJson('status.json',{status:'busco'}),readJson('data/site.json',{})]);
     }).then(function(r){
       save('pf_owner',cfg.owner);save('pf_repo',cfg.repo);save('pf_branch',cfg.branch);
       sset({pf_token:cfg.token,pf_owner:cfg.owner,pf_repo:cfg.repo,pf_branch:cfg.branch});
       remote.projects=(r[0].projects||[]);remote.status=(r[1].status||'busco');
       state.projects=JSON.parse(JSON.stringify(remote.projects));state.status=remote.status;
+      remote.site=(r[2]&&typeof r[2]==='object')?r[2]:{};state.site=JSON.parse(JSON.stringify(remote.site));state.siteDirty=false;
       state.files={};state.deletes={};state.dirty=false;state.statusDirty=false;
       $('#app').hidden=false;$('#connect').hidden=true;$('#btnOut').hidden=false;
       $('#siteLink').href='./';
-      render();updatePub();
+      render();updatePub();initSite();
     });
   }
   function readJson(path,fallback){
@@ -381,7 +432,7 @@ details summary{cursor:pointer;font-weight:700}
   function skillSet(p){return Array.isArray(p.skills)?p.skills:[]}
   function drawSkills(p){
     var box=$('#skillbox');box.textContent='';
-    var all=BASE_SKILLS.slice();
+    SITE.setUser(state.site);var all=SITE.eff('skills').map(function(x){return x.n}).filter(Boolean);
     state.projects.forEach(function(q){skillSet(q).forEach(function(n){if(all.indexOf(n)<0)all.push(n)})});
     var mine=skillSet(p),extra=[];
     mine.forEach(function(n){if(all.indexOf(n)<0)extra.push(n)});
@@ -503,7 +554,7 @@ details summary{cursor:pointer;font-weight:700}
     if(!p.category)p.category=hasM?'Modelado 3D':hasP?'Catálogos':hasV?'Video':(cover||autoCover||imgs.length||p.cover)?'Diseño gráfico y branding':'Otros';
     if(!p.skills.length){
       if(hasM)p.skills.push('3D en Blender');if(hasV)p.skills.push('Video');if(hasP)p.skills.push('Catálogos');
-      if(BASE_SKILLS.indexOf(p.category)>-1&&p.skills.indexOf(p.category)<0)p.skills.push(p.category);
+      SITE.setUser(state.site);if(SITE.eff('skills').some(function(x){return x.n===p.category})&&p.skills.indexOf(p.category)<0)p.skills.push(p.category);
     }
     var jobs=[];
     if(autoCover)jobs.push(processImage(autoCover).then(function(r){return stage(id,'cover',null,r)}).then(function(path){drop(p.cover);p.cover=path}));
@@ -527,6 +578,199 @@ details summary{cursor:pointer;font-weight:700}
       msg($('#pubMsg'),'Proyecto guardado en el panel. Toca «Publicar en la página» para que se vea.','info');
     }).catch(function(err){msg($('#formMsg'),err.message||'No pude procesar los archivos.','err')}).then(function(){$('#btnSave').disabled=false});
   });
+
+
+  /* ---------- editor de textos, colores y letras ---------- */
+  var SITE=window.PFSite,siteInit=false,pvReady=false,textEntries=null;
+  function siteTouch(){state.siteDirty=true;updatePub();postPv()}
+  function postPv(){var f=$('#pv');if(f&&f.contentWindow&&pvReady)f.contentWindow.postMessage({pfSite:state.site},location.origin)}
+  window.addEventListener('message',function(e){if(e.origin===location.origin&&e.data&&e.data.pfReady){pvReady=true;postPv()}});
+  function fitPv(){
+    var box=$('#pvbox'),f=$('#pv');if(!box||!f)return;
+    var W=1440,k=box.clientWidth/W;if(!k)return;
+    f.style.width=W+'px';f.style.height=(box.clientHeight/k)+'px';f.style.transform='scale('+k+')';
+  }
+  window.addEventListener('resize',fitPv);
+  function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
+  function setT(k,v,def){state.site.theme=state.site.theme||{};if(v===def||v===''||v==null)delete state.site.theme[k];else state.site.theme[k]=v;siteTouch()}
+  function refreshStatusLabels(){
+    SITE.setUser(state.site);var st=SITE.eff('states');
+    Array.prototype.forEach.call(document.querySelectorAll('input[name=st]'),function(r){var sp=r.parentNode.querySelector('span');if(sp&&st[r.value])sp.textContent=st[r.value].label});
+  }
+  function initSite(){
+    refreshStatusLabels();
+    if(!siteInit){
+      siteInit=true;
+      Array.prototype.forEach.call(document.querySelectorAll('#siteCard .tabs button'),function(b){b.addEventListener('click',function(){
+        Array.prototype.forEach.call(document.querySelectorAll('#siteCard .tabs button'),function(x){x.setAttribute('aria-selected',x===b?'true':'false')});
+        Array.prototype.forEach.call(document.querySelectorAll('#siteCard .tp'),function(t){t.classList.toggle('on',t.id==='tp-'+b.dataset.tab)});
+        setTimeout(fitPv,30);
+      })});
+      $('#tsearch').addEventListener('input',filterTexts);
+      $('#siteReset').addEventListener('click',function(){
+        if(!confirm('¿Volver todos los textos, colores, letras y listas a como venían originalmente?'))return;
+        state.site={};siteTouch();buildSitePanels();refreshStatusLabels();
+      });
+    }
+    var f=$('#pv');if(!f.getAttribute('src'))f.setAttribute('src','index.html?preview=1');
+    buildSitePanels();fitPv();setTimeout(fitPv,300);
+  }
+  function buildSitePanels(){buildTexts();buildColors();buildFonts();buildLists();buildData()}
+
+  /* textos */
+  function buildTexts(){
+    var host=$('#tlist');host.textContent='Cargando los textos de la página…';
+    fetch('index.html?v='+Date.now(),{cache:'no-store'}).then(function(r){if(!r.ok)throw new Error('http');return r.text()}).then(function(html){
+      var doc=new DOMParser().parseFromString(html,'text/html');
+      textEntries=SITE.collectAll(doc);
+      host.textContent='';
+      var groups={},order=[];
+      textEntries.forEach(function(e){if(!groups[e.group]){groups[e.group]=[];order.push(e.group)}groups[e.group].push(e)});
+      order.forEach(function(g){
+        var d=document.createElement('details');d.className='tgroup';
+        var sm=document.createElement('summary');sm.textContent=g+' ('+groups[g].length+')';d.appendChild(sm);
+        groups[g].forEach(function(e){
+          var row=el('div','trow'),box=el('div');
+          var lb=el('label','',e.text.length>34?e.text.slice(0,34)+'…':e.text);
+          var long=e.text.length>70,inp=document.createElement(long?'textarea':'input');if(!long)inp.type='text';
+          inp.value=(state.site.texts&&state.site.texts[e.key])||e.text;
+          inp.addEventListener('input',function(){
+            state.site.texts=state.site.texts||{};
+            var v=inp.value;
+            if(v.trim()===''||v.trim()===e.text)delete state.site.texts[e.key];else state.site.texts[e.key]=v;
+            siteTouch();
+          });
+          var rb=el('button','sm line','↺');rb.type='button';rb.title='Volver al original';
+          rb.addEventListener('click',function(){inp.value=e.text;if(state.site.texts)delete state.site.texts[e.key];siteTouch()});
+          box.appendChild(lb);box.appendChild(inp);row.appendChild(box);row.appendChild(rb);row.dataset.q=(e.text+' '+g).toLowerCase();d.appendChild(row);
+        });
+        host.appendChild(d);
+      });
+    }).catch(function(){host.textContent='No pude leer los textos de la página. Recarga el panel.'});
+  }
+  function filterTexts(){
+    var q=$('#tsearch').value.trim().toLowerCase();
+    Array.prototype.forEach.call(document.querySelectorAll('#tlist .tgroup'),function(g){
+      var any=false;
+      Array.prototype.forEach.call(g.querySelectorAll('.trow'),function(r){var ok=!q||r.dataset.q.indexOf(q)>-1;r.hidden=!ok;if(ok)any=true});
+      g.hidden=!any;if(q&&any)g.open=true;
+    });
+  }
+
+  /* colores y fondo */
+  function buildColors(){
+    var host=$('#tp-colors');host.textContent='';var def=SITE.DEF.theme,cur=SITE.eff('theme');SITE.setUser(state.site);cur=SITE.eff('theme');
+    var cols=[['accent','Color de acento (celeste)'],['accent2','Acento oscuro (botones y detalles)'],['ink','Textos y botones oscuros'],['card','Fondo de las tarjetas'],['card2','Fondo secundario de tarjetas'],['hero','Tarjeta grande de la portada'],['dock','Barra de abajo'],['loaderbg','Pantalla de carga'],['bgLightTop','Fondo claro: color de arriba'],['bgLightBottom','Fondo claro: color de abajo'],['bgDarkTop','Fondo oscuro: color de arriba'],['bgDarkBottom','Fondo oscuro: color de abajo'],['texLight','Círculos y líneas (fondo claro)'],['texDark','Círculos y líneas (fondo oscuro)']];
+    cols.forEach(function(c){
+      var row=el('div','crow'),i=document.createElement('input');i.type='color';i.value=cur[c[0]];
+      var lb=el('span','',c[1]);lb.style.fontWeight='600';
+      var rb=el('button','sm line','↺');rb.type='button';rb.title='Volver al original';
+      i.addEventListener('input',function(){setT(c[0],i.value,def[c[0]])});
+      rb.addEventListener('click',function(){i.value=def[c[0]];setT(c[0],def[c[0]],def[c[0]])});
+      row.appendChild(i);row.appendChild(lb);row.appendChild(rb);host.appendChild(row);
+    });
+    var on=el('div','crow');var ck=document.createElement('input');ck.type='checkbox';ck.checked=!(cur.texOn===false||cur.texOn==='false');ck.style.width='20px';ck.style.height='20px';ck.style.margin='0 12px';
+    ck.addEventListener('change',function(){state.site.theme=state.site.theme||{};if(ck.checked)delete state.site.theme.texOn;else state.site.theme.texOn=false;siteTouch()});
+    on.appendChild(ck);on.appendChild(el('span','','Mostrar círculos, líneas y puntos en el fondo'));on.lastChild.style.fontWeight='600';on.appendChild(el('span'));host.appendChild(on);
+    function rng(k,label,min,max,step){
+      var row=el('div','crow');row.style.gridTemplateColumns='1fr auto';
+      var lb=el('span','',label+': '+cur[k]);lb.style.fontWeight='600';
+      var r=document.createElement('input');r.type='range';r.min=min;r.max=max;r.step=step;r.value=cur[k];r.style.gridColumn='1';
+      var rb=el('button','sm line','↺');rb.type='button';
+      r.addEventListener('input',function(){lb.textContent=label+': '+r.value;setT(k,+r.value,def[k])});
+      rb.addEventListener('click',function(){r.value=def[k];lb.textContent=label+': '+def[k];setT(k,def[k],def[k])});
+      row.appendChild(lb);row.appendChild(rb);row.appendChild(r);host.appendChild(row);
+    }
+    rng('texStrength','Intensidad del fondo con textura',0,2.5,0.1);
+    rng('radius','Redondeo de las tarjetas (px)',0,48,1);
+  }
+
+  /* letras */
+  function buildFonts(){
+    var host=$('#tp-fonts');host.textContent='';SITE.setUser(state.site);var cur=SITE.eff('theme'),def=SITE.DEF.theme;
+    [['fDisplay','display','Letra de los títulos'],['fSans','sans','Letra de los textos'],['fMono','mono','Letra de las etiquetas pequeñas']].forEach(function(f){
+      var lb=el('label','',f[2]),sel=document.createElement('select');
+      SITE.FONTS[f[1]].forEach(function(o){var op=document.createElement('option');op.value=o[0];op.textContent=o[0];if(o[0]===cur[f[0]])op.selected=true;sel.appendChild(op)});
+      sel.addEventListener('change',function(){setT(f[0],sel.value,def[f[0]])});
+      host.appendChild(lb);host.appendChild(sel);
+    });
+    host.appendChild(el('p','',"Las letras se cargan desde Google Fonts. Si alguna no se ve, vuelve a elegir la original."));host.lastChild.style.color='var(--muted)';
+  }
+
+  /* listas */
+  function listEditor(host,title,hint,getList,setList,fields,blank){
+    host.appendChild(el('h3','',title)).style.cssText='font-size:17px;margin:18px 0 4px';
+    if(hint){var h=el('p','',hint);h.style.cssText='margin:0 0 6px;color:var(--muted);font-size:13.5px';host.appendChild(h)}
+    var box=el('div');host.appendChild(box);
+    function draw(){
+      box.textContent='';
+      var list=getList();
+      list.forEach(function(it,i){
+        var r=el('div','lrow'),two=el('div','two');
+        fields.forEach(function(f,j){
+          var w=el('div'),lb=el('label','',f.l);lb.style.cssText='margin:0 0 2px;font-size:12px';
+          var inp=document.createElement(f.area?'textarea':'input');if(!f.area)inp.type=f.num?'number':'text';if(f.num){inp.min=0;inp.max=100}
+          inp.value=it[f.k]==null?'':it[f.k];if(f.area)inp.style.minHeight='56px';
+          inp.addEventListener('input',function(){var l2=getList();l2[i][f.k]=f.num?(+inp.value||0):inp.value;setList(l2)});
+          w.appendChild(lb);w.appendChild(inp);
+          (f.wide?r:two).appendChild(w);
+        });
+        if(two.children.length)r.insertBefore(two,r.firstChild);
+        var a=el('div','acts'),rm=el('button','sm danger','Quitar');rm.type='button';
+        rm.addEventListener('click',function(){var l2=getList();l2.splice(i,1);setList(l2);draw()});
+        a.appendChild(rm);r.appendChild(a);box.appendChild(r);
+      });
+      var add=el('button','sm sec','+ Agregar');add.type='button';add.style.marginTop='6px';
+      add.addEventListener('click',function(){var l2=getList();l2.push(JSON.parse(JSON.stringify(blank)));setList(l2);draw()});
+      box.appendChild(add);
+    }
+    draw();
+  }
+  function buildLists(){
+    var host=$('#tp-lists');host.textContent='';SITE.setUser(state.site);
+    listEditor(host,'Habilidades','Si cambias un nombre, vuelve a marcar esa habilidad en tus proyectos (se vinculan por nombre).',
+      function(){SITE.setUser(state.site);return SITE.eff('skills')},function(l){state.site.skills=l;siteTouch()},
+      [{k:'n',l:'Nombre'},{k:'d',l:'Descripción',area:true,wide:true}],{n:'Nueva habilidad',d:''});
+    listEditor(host,'Programas principales','El porcentaje es el nivel que muestra la barra.',
+      function(){SITE.setUser(state.site);return SITE.eff('tools').main},function(l){var t=SITE.eff('tools');t.main=l;state.site.tools=t;siteTouch()},
+      [{k:'n',l:'Programa'},{k:'v',l:'Nivel (0–100)',num:true}],{n:'Programa',v:50});
+    listEditor(host,'Programas secundarios','',
+      function(){SITE.setUser(state.site);return SITE.eff('tools').second},function(l){var t=SITE.eff('tools');t.second=l;state.site.tools=t;siteTouch()},
+      [{k:'n',l:'Programa'},{k:'v',l:'Nivel (0–100)',num:true}],{n:'Programa',v:50});
+    listEditor(host,'Redes sociales','Salen en la ventana de Contacto.',
+      function(){SITE.setUser(state.site);return SITE.eff('socials')},function(l){state.site.socials=l;siteTouch()},
+      [{k:'n',l:'Red (Instagram…)'},{k:'h',l:'Usuario'},{k:'u',l:'Enlace completo (https://…)',wide:true}],{n:'',h:'',u:''});
+    listEditor(host,'Recomendaciones','Aparecen en «Sobre mí».',
+      function(){SITE.setUser(state.site);return SITE.eff('testimonials')},function(l){state.site.testimonials=l;siteTouch()},
+      [{k:'q',l:'Lo que dijeron',area:true,wide:true},{k:'a',l:'Quién (nombre, cargo y empresa)',wide:true}],{q:'',a:''});
+    /* estados */
+    host.appendChild(el('h3','','Textos de disponibilidad')).style.cssText='font-size:17px;margin:18px 0 4px';
+    SITE.setUser(state.site);var st=SITE.eff('states');
+    [['busco','Estado 1'],['freelance','Estado 2'],['ocupado','Estado 3']].forEach(function(s2){
+      var r=el('div','lrow'),two=el('div','two');
+      [['label','Texto del botón'],['card','Texto de la tarjeta azul']].forEach(function(f){
+        var w=el('div'),lb=el('label','',s2[1]+' · '+f[1]);lb.style.cssText='margin:0 0 2px;font-size:12px';
+        var inp=document.createElement('input');inp.type='text';inp.value=st[s2[0]][f[0]];
+        inp.addEventListener('input',function(){
+          state.site.states=state.site.states||{};state.site.states[s2[0]]=state.site.states[s2[0]]||{};
+          state.site.states[s2[0]][f[0]]=inp.value;siteTouch();refreshStatusLabels();
+        });
+        w.appendChild(lb);w.appendChild(inp);two.appendChild(w);
+      });
+      r.appendChild(two);host.appendChild(r);
+    });
+  }
+
+  /* datos generales */
+  function buildData(){
+    var host=$('#tp-data');host.textContent='';SITE.setUser(state.site);
+    [['title','Título de la pestaña del navegador'],['name','Nombre en la pantalla de carga'],['whatsapp','WhatsApp (solo números, con indicativo: 573142372305)']].forEach(function(f){
+      var lb=el('label','',f[1]),i=document.createElement('input');i.type='text';i.value=SITE.eff(f[0]);
+      i.addEventListener('input',function(){var v=i.value.trim();if(v===''||v===SITE.DEF[f[0]])delete state.site[f[0]];else state.site[f[0]]=v;siteTouch()});
+      host.appendChild(lb);host.appendChild(i);
+    });
+    var n=el('p','','El correo y el celular que se ven en la página se cambian en la pestaña Textos, grupo «Ventana Contacto».');n.style.color='var(--muted)';host.appendChild(n);
+  }
 
   /* ---------- publicar (un solo commit) ---------- */
   // files: [{path, blob?|text?}], deletes: [path]
@@ -561,10 +805,11 @@ details summary{cursor:pointer;font-weight:700}
     var files=paths.map(function(p){return {path:p,blob:state.files[p].blob}});
     files.push({path:'data/projects.json',text:JSON.stringify({projects:state.projects.map(clean)},null,2)+'\n'});
     if(state.statusDirty)files.push({path:'status.json',text:JSON.stringify({status:state.status})+'\n'});
+    if(state.siteDirty)files.push({path:'data/site.json',text:JSON.stringify(state.site,null,2)+'\n'});
     var total=files.length+3,done=0;
     commitFiles(files,Object.keys(state.deletes),'Actualizar portafolio desde el panel',function(){done++;progress(done/total)}).then(function(){
       progress(1);
-      remote.projects=JSON.parse(JSON.stringify(state.projects.map(clean)));remote.status=state.status;
+      remote.projects=JSON.parse(JSON.stringify(state.projects.map(clean)));remote.status=state.status;remote.site=JSON.parse(JSON.stringify(state.site));state.siteDirty=false;
       state.projects=JSON.parse(JSON.stringify(remote.projects));
       Object.keys(state.files).forEach(function(p){URL.revokeObjectURL(state.files[p].url)});
       state.files={};state.deletes={};state.dirty=false;state.statusDirty=false;
