@@ -89,12 +89,13 @@
       "tools": "Blender",
       "format": "",
       "id": "set-de-lapices",
-      "cover": "",
+      "cover": "media/p/set-de-lapices/cover-mvykxjsf-3.jpg",
       "thumb": "media/p/set-de-lapices/thumb-mvy40lfa-miniatura-3d.jpg",
       "video": "",
       "portrait": false,
       "images": [
-        "media/p/set-de-lapices/img-mvwnufp5-3.jpg"
+        "media/p/set-de-lapices/img-mvykxjuq-1.jpg",
+        "media/p/set-de-lapices/img-mvykxjux-2.jpg"
       ],
       "skills": [
         "3D en Blender"
