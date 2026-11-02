@@ -5,5 +5,8 @@
   },
   "texts": {
     "Tarjeta Experiencia|executive-sas-actualidad": "EXECUTIVE SAS · Septiembre 2026 ·  actualidad"
+  },
+  "features": {
+    "greet": false
   }
 }
