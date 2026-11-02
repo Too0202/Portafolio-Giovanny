@@ -23,6 +23,8 @@
       {n:'Instagram',h:'giovanny.buitrago.718',u:'https://www.instagram.com/giovanny.buitrago.718/'}
     ],
     testimonials:[],
+    features:{greet:true,cursor:true,hero3d:true,typing:true,bgreact:true,winmem:true},
+    typing:[{n:'diseño gráfico'},{n:'edición de video'},{n:'modelado 3D'},{n:'fotografía de producto'},{n:'animación y GIF'},{n:'contenido para redes'}],
     states:{
       busco:{label:'Contratación inmediata',card:'Contratación inmediata'},
       freelance:{label:'Disponible freelance',card:'Disponible para freelance'},
@@ -45,6 +47,7 @@
   function clone(o){return JSON.parse(JSON.stringify(o))}
   function eff(k){
     if(k==='theme'){var t=clone(DEF.theme),u=user.theme||{};Object.keys(u).forEach(function(x){if(u[x]!==''&&u[x]!=null)t[x]=u[x]});return t}
+    if(k==='features'){var ft=clone(DEF.features),uf=user.features||{};Object.keys(uf).forEach(function(x){if(typeof uf[x]==='boolean')ft[x]=uf[x]});return ft}
     if(k==='states'){var s=clone(DEF.states),us=user.states||{};Object.keys(us).forEach(function(x){if(s[x]){['label','card'].forEach(function(f){if(us[x]&&us[x][f])s[x][f]=us[x][f]})}});return s}
     if(user[k]!==undefined&&user[k]!==null&&user[k]!=='')return user[k];
     return clone(DEF[k]);

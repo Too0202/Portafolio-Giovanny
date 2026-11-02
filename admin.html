@@ -11,6 +11,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Manrope:wght@400;500;700&display=swap">
 <style>
+#f-files{width:100%;box-sizing:border-box;border:2px dashed #9fb4c8;background:#f6fafd;padding:26px 14px;border-radius:16px;cursor:pointer}
+#f-files.over{border-color:var(--ink);background:#e4f1fb}
+#dropOv{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:rgba(13,24,36,.78);backdrop-filter:blur(4px);color:#fff;text-align:center;pointer-events:none}
+#dropOv[hidden]{display:none}
+#dropOv div{border:3px dashed #8ecdf5;border-radius:28px;padding:48px 56px;max-width:min(560px,86vw)}
+#dropOv b{display:block;font-size:26px;margin-bottom:8px}
+#dropOv span{color:#c9dbeb}
+
 :root{--bg:#bcd9ee;--card:#f3f7fb;--card2:#e4edf6;--ink:#0d1824;--muted:#5a6e80;--sky:#8fcdf3;--line:#cfdbe7;--ok:#1f9d63;--bad:#c2410c;
   --display:"Bricolage Grotesque","Manrope",system-ui,sans-serif;--body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace}
 *{box-sizing:border-box}
@@ -171,7 +179,7 @@ details summary{cursor:pointer;font-weight:700}
       <h2 id="formTitle">Nuevo proyecto</h2>
       <form id="form" novalidate>
         <label for="f-title">Título *</label><input id="f-title" type="text" required placeholder="Ej: Bolso 3D">
-        <label for="f-files">Archivos del trabajo <small>(fotos, video, PDF o modelo .glb: elígelos todos juntos y yo los acomodo)</small></label>
+        <label for="f-files">Archivos del trabajo <small>(arrástralos aquí, o suéltalos en cualquier parte de esta página; también puedes tocar el recuadro para elegirlos)</small></label>
         <input id="f-files" type="file" multiple accept="image/*,video/mp4,video/webm,application/pdf,.pdf,.glb">
         <div class="files" id="files-hint" style="margin-top:6px;color:var(--muted)"></div>
         <details id="moreBox" style="margin-top:18px"><summary>Más detalles (opcional)</summary>
@@ -230,12 +238,14 @@ details summary{cursor:pointer;font-weight:700}
             <button type="button" role="tab" data-tab="colors" aria-selected="false">Colores y fondo</button>
             <button type="button" role="tab" data-tab="fonts" aria-selected="false">Letras</button>
             <button type="button" role="tab" data-tab="lists" aria-selected="false">Listas</button>
+            <button type="button" role="tab" data-tab="feat" aria-selected="false">Funciones</button>
             <button type="button" role="tab" data-tab="data" aria-selected="false">Datos</button>
           </div>
           <div class="tp on" id="tp-texts"><input id="tsearch" type="text" placeholder="Buscar un texto…" autocomplete="off"><div id="tlist"></div></div>
           <div class="tp" id="tp-colors"></div>
           <div class="tp" id="tp-fonts"></div>
           <div class="tp" id="tp-lists"></div>
+          <div class="tp" id="tp-feat"></div>
           <div class="tp" id="tp-data"></div>
           <div class="bar" style="margin-top:16px"><button type="button" class="line sm" id="siteReset">Restablecer todo a como venía</button></div>
         </div>
@@ -252,6 +262,7 @@ details summary{cursor:pointer;font-weight:700}
   </div>
 </div>
 
+<div id="dropOv" hidden><div><b>Suelta aquí tus archivos</b><span>Fotos, video, PDF o modelo .glb. Creo el proyecto y los acomodo por ti.</span></div></div>
 <script src="site.js"></script>
 <script src="thumb3d.js"></script>
 <script src="auth.js"></script>
@@ -529,6 +540,35 @@ details summary{cursor:pointer;font-weight:700}
     var t=[];if(c.img)t.push(c.img+(c.img===1?' imagen':' imágenes'));if(c.vid)t.push(c.vid+' video');if(c.pdf)t.push(c.pdf+' PDF');if(c.glb)t.push(c.glb+' modelo 3D');
     $('#files-hint').textContent=t.length?'Listo: '+t.join(' · ')+'. La primera imagen será la portada.':'';
   });
+
+  /* arrastrar y soltar archivos en cualquier parte */
+  (function(){
+    var ov=$('#dropOv'),depth=0,fi=$('#f-files');
+    function hasFiles(e){var t=e.dataTransfer&&e.dataTransfer.types;return !!t&&Array.prototype.indexOf.call(t,'Files')>-1}
+    function loggedIn(){var b=$('#btnNew');return !!b&&b.offsetParent!==null}
+    function nice(n){return n.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ').replace(/\s+/g,' ').trim().replace(/^./,function(c){return c.toUpperCase()})}
+    function addFiles(list){
+      list=Array.prototype.slice.call(list||[]);if(!list.length)return;
+      var fresh=$('#formCard').hidden;
+      if(fresh)openForm(-1);
+      var dt=new DataTransfer();
+      Array.prototype.forEach.call(fi.files,function(f){dt.items.add(f)});
+      list.forEach(function(f){dt.items.add(f)});
+      fi.files=dt.files;fi.dispatchEvent(new Event('change'));
+      if(form.title&&!form.title.value.trim()){var first=list.filter(function(f){return !/^image\//.test(f.type)||true})[0];if(first)form.title.value=nice(first.name)}
+      $('#formCard').scrollIntoView({behavior:'smooth',block:'start'});
+    }
+    window.addEventListener('dragenter',function(e){if(!hasFiles(e))return;e.preventDefault();depth++;if(loggedIn())ov.hidden=false});
+    window.addEventListener('dragover',function(e){if(!hasFiles(e))return;e.preventDefault();e.dataTransfer.dropEffect='copy'});
+    window.addEventListener('dragleave',function(e){if(!hasFiles(e))return;depth=Math.max(0,depth-1);if(!depth)ov.hidden=true});
+    window.addEventListener('drop',function(e){
+      if(!hasFiles(e))return;e.preventDefault();depth=0;ov.hidden=true;fi.classList.remove('over');
+      if(!loggedIn())return;
+      addFiles(e.dataTransfer.files);
+    });
+    fi.addEventListener('dragenter',function(){fi.classList.add('over')});
+    fi.addEventListener('dragleave',function(){fi.classList.remove('over')});
+  })();
   function drop(path){if(path)editing.removed.push(path)}
   function pid(){
     var p=editing.p;if(p.id)return p.id;
@@ -651,7 +691,7 @@ details summary{cursor:pointer;font-weight:700}
     var f=$('#pv');if(!f.getAttribute('src'))f.setAttribute('src','index.html?preview=1');
     buildSitePanels();fitPv();setTimeout(fitPv,300);
   }
-  function buildSitePanels(){buildTexts();buildColors();buildFonts();buildLists();buildData()}
+  function buildSitePanels(){buildTexts();buildColors();buildFonts();buildLists();buildFeat();buildData()}
 
   /* textos */
   function buildTexts(){
@@ -795,6 +835,34 @@ details summary{cursor:pointer;font-weight:700}
       });
       r.appendChild(two);host.appendChild(r);
     });
+  }
+
+
+  /* funciones activables */
+  function buildFeat(){
+    var host=$('#tp-feat');host.textContent='';SITE.setUser(state.site);var cur=SITE.eff('features');
+    var p0=el('p','','Enciende o apaga detalles de la página. Los cambios se ven al instante a la derecha; para que queden en la página real, toca «Publicar».');p0.style.cssText='margin:0 0 8px;color:var(--muted)';host.appendChild(p0);
+    [['greet','Saludo con nombre','El visitante escribe su nombre, la página lo saluda y el mensaje de WhatsApp sale con su nombre.'],
+     ['hero3d','Visor 3D en la portada','Muestra uno de tus modelos 3D girando; el visitante lo puede arrastrar. Necesita al menos un modelo publicado.'],
+     ['typing','Frases que se escriben','Línea animada «Hago …» debajo del título. Las frases se editan abajo.'],
+     ['cursor','Cursor propio','Círculo que sigue al mouse y cambia al pasar sobre botones, proyectos e imágenes (solo con mouse, no en celular).'],
+     ['bgreact','Fondo que reacciona al mouse','Los círculos y las líneas se mueven con el mouse y aparece una luz suave.'],
+     ['winmem','Recordar ventanas','Las ventanas recuerdan dónde y de qué tamaño las dejó cada visitante.']].forEach(function(f){
+      var row=el('label','crow');row.style.cssText='display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:center;cursor:pointer;margin:6px 0';
+      var ck=document.createElement('input');ck.type='checkbox';ck.checked=cur[f[0]]!==false;ck.style.cssText='width:22px;height:22px;margin:0 0 0 4px';
+      ck.addEventListener('change',function(){
+        state.site.features=state.site.features||{};
+        if(ck.checked)delete state.site.features[f[0]];else state.site.features[f[0]]=false;
+        if(!Object.keys(state.site.features).length)delete state.site.features;
+        siteTouch();
+      });
+      var t=el('span','',f[1]);t.style.fontWeight='700';
+      var d=el('span','',f[2]);d.style.cssText='grid-column:2;color:var(--muted);font-size:13px;font-weight:400';
+      row.appendChild(ck);row.appendChild(t);row.appendChild(d);host.appendChild(row);
+    });
+    listEditor(host,'Frases que se escriben','Aparecen después de «Hago». Una por línea de la lista.',
+      function(){SITE.setUser(state.site);return SITE.eff('typing')},function(l){state.site.typing=l;siteTouch()},
+      [{k:'n',l:'Frase (ej. modelado 3D)',wide:true}],{n:''});
   }
 
   /* datos generales */
