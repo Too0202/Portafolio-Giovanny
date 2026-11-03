@@ -262,11 +262,40 @@
       "tools": "",
       "format": "Cuadrado 1:1 · Carrusel de Instagram",
       "id": "retrato-de-belleza-labial-rojo",
-      "cover": "",
+      "cover": "media/p/retrato-de-belleza-labial-rojo/cover-mw04jb7q-carrusel-2.jpg",
       "thumb": "",
       "video": "",
       "portrait": false,
       "images": [],
+      "skills": [
+        "Fotografía"
+      ],
+      "model": "",
+      "pdf": ""
+    },
+    {
+      "title": "Campañas Ligne D'Or: fotografía de producto y modelo",
+      "category": "Fotografía",
+      "brand": "Ligne D'Or",
+      "kind": "Fotografía de producto y de modelo · Historias y carruseles de Instagram",
+      "summary": "Selección de piezas fotográficas para las campañas de Ligne D'Or en Instagram: polvo suelto, retrato con gloss y labial rojo.",
+      "objective": "Dar a la marca imágenes de producto y de modelo con un estilo propio, pensadas para historias y carruseles de Instagram.",
+      "role": "Realicé la fotografía de todas las piezas. En el polvo suelto también me encargué de la composición y de la edición final en Photoshop; en el labial rojo, de la composición; y en el retrato con gloss, únicamente de la fotografía.",
+      "result": "Tres imágenes listas para publicarse en Instagram, en formatos vertical 9:16 y cuadrado 1:1, con el logo y la dirección web de la marca.",
+      "duration": "",
+      "tools": "Photoshop",
+      "format": "Historias 9:16 y carrusel 1:1 · Instagram",
+      "id": "campanas-ligne-d-or-fotografia-de-producto-y-model",
+      "cover": "media/p/campanas-ligne-d-or-fotografia-de-producto-y-model/cover-mw04kxjt-historia-lab-brillo.jpg",
+      "thumb": "",
+      "video": "",
+      "portrait": false,
+      "images": [
+        "media/p/campanas-ligne-d-or-fotografia-de-producto-y-model/img-mw04kxk4-historia-2.jpg",
+        "media/p/campanas-ligne-d-or-fotografia-de-producto-y-model/img-mw04kxkg-carrusel-2.jpg",
+        "media/p/campanas-ligne-d-or-fotografia-de-producto-y-model/img-mw04kxkp-pvo-economicos.jpg",
+        "media/p/campanas-ligne-d-or-fotografia-de-producto-y-model/img-mw04kxl6-foto-historia.jpg"
+      ],
       "skills": [
         "Fotografía"
       ],
