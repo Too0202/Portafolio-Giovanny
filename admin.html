@@ -167,7 +167,7 @@ details summary{cursor:pointer;font-weight:700}
     <section class="card">
       <div class="bar" style="justify-content:space-between;margin-bottom:12px">
         <h2 style="margin:0">3. Proyectos</h2>
-        <button id="btnNew" type="button">+ Nuevo proyecto</button>
+        <div class="bar" style="gap:8px"><button id="btnImport" type="button" class="line">Importar desde un documento</button><button id="btnNew" type="button">+ Nuevo proyecto</button></div><input id="impIn" type="file" multiple hidden accept=".json,application/json,image/*,video/mp4,video/webm,application/pdf,.pdf,.glb">
       </div>
       <p style="margin:0 0 12px;color:var(--muted)">Todos salen en el carrusel de la pantalla principal. Usa las flechas para cambiar el orden.</p>
       <div id="thumbBar" class="msg info" hidden style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap"><span>Hay modelos 3D sin miniatura. Se la pongo en un toque.</span><button type="button" id="btnThumbs" class="sm">Crear miniaturas 3D</button></div>
@@ -262,7 +262,7 @@ details summary{cursor:pointer;font-weight:700}
   </div>
 </div>
 
-<div id="dropOv" hidden><div><b>Suelta aquí tus archivos</b><span>Fotos, video, PDF o modelo .glb. Creo el proyecto y los acomodo por ti.</span></div></div>
+<div id="dropOv" hidden><div><b>Suelta aquí tus archivos</b><span>Fotos, video, PDF o modelo .glb. Si incluyes el documento .json, creo todos los proyectos por ti.</span></div></div>
 <script src="site.js"></script>
 <script src="thumb3d.js"></script>
 <script src="auth.js"></script>
@@ -564,11 +564,87 @@ details summary{cursor:pointer;font-weight:700}
     window.addEventListener('drop',function(e){
       if(!hasFiles(e))return;e.preventDefault();depth=0;ov.hidden=true;fi.classList.remove('over');
       if(!loggedIn())return;
-      addFiles(e.dataTransfer.files);
+      var fl=e.dataTransfer.files;
+      if(Array.prototype.some.call(fl,function(f){return /\.json$/i.test(f.name)}))importBatch(fl);else addFiles(fl);
     });
     fi.addEventListener('dragenter',function(){fi.classList.add('over')});
     fi.addEventListener('dragleave',function(){fi.classList.remove('over')});
   })();
+
+  /* importar varios proyectos desde un documento (.json) + sus archivos */
+  var importing=false;
+  function nName(n){return String(n||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9.]+/g,'-').replace(/^-+|-+$/g,'')}
+  function noExt(n){return n.replace(/\.[a-z0-9]+$/,'')}
+  function pick(o,ks){for(var i=0;i<ks.length;i++){if(o[ks[i]]!==undefined&&o[ks[i]]!==null)return o[ks[i]]}return ''}
+  function arr(v){return Array.isArray(v)?v:(v?String(v).split(','):[])}
+  function setFiles(sel,list){var dt=new DataTransfer();list.forEach(function(f){dt.items.add(f)});var i=$(sel);i.files=dt.files;if(sel==='#f-files')i.dispatchEvent(new Event('change'))}
+  function waitSave(){
+    return new Promise(function(res){
+      var t0=Date.now();
+      (function chk(){
+        if($('#formCard').hidden)return res('');
+        var m=$('#formMsg');if(m.classList.contains('err'))return res(m.textContent||'No se pudo guardar');
+        if(Date.now()-t0>180000)return res('Tardó demasiado');
+        setTimeout(chk,200);
+      })();
+    });
+  }
+  function importOne(it,pool,rep,i,n){
+    var title=String(pick(it,['titulo','título','title'])).trim();
+    if(!title){rep.fail.push('(proyecto sin título #'+i+')');return Promise.resolve()}
+    if(state.projects.some(function(q){return slug(q.title)===slug(title)})){rep.skip.push(title);return Promise.resolve()}
+    msg($('#pubMsg'),'Importando '+i+' de '+n+': '+title+'…','info');
+    openForm(-1);
+    var map={title:title,category:pick(it,['categoria','categoría','category']),brand:pick(it,['marca','brand']),kind:pick(it,['tipo','kind']),summary:pick(it,['resumen','summary']),objective:pick(it,['objetivo','objective']),role:pick(it,['mi_trabajo','rol','role']),result:pick(it,['resultado','result']),duration:pick(it,['duracion','duración','duration']),tools:pick(it,['programas','tools']),format:pick(it,['formato','format'])};
+    FIELDS.forEach(function(k){form[k].value=String(map[k]||'')});
+    var v=pick(it,['vertical','portrait']);$('#f-portrait').checked=(v===true||/^(si|sí|true|1)$/i.test(String(v)));
+    var sk=arr(pick(it,['habilidades','skills'])).map(function(x){return String(x).trim()}).filter(Boolean),known=[];
+    Array.prototype.forEach.call(document.querySelectorAll('#skillbox input'),function(c){known.push(c.value);c.checked=sk.indexOf(c.value)>-1});
+    $('#f-skillx').value=sk.filter(function(x){return known.indexOf(x)<0}).join(', ');
+    function find(name){
+      var a=nName(name),b=noExt(a),hit=null;
+      pool.forEach(function(f){var x=nName(f.name);if(!hit&&x===a)hit=f});
+      if(!hit)pool.forEach(function(f){var x=noExt(nName(f.name));if(!hit&&x===b)hit=f});
+      return hit;
+    }
+    var found=[];
+    arr(pick(it,['archivos','files'])).forEach(function(nm){nm=String(nm).trim();if(!nm)return;var f=find(nm);if(f)found.push(f);else rep.missing.push(title+': '+nm)});
+    var pt=String(pick(it,['portada','cover'])).trim();
+    if(pt){var cf=find(pt);if(cf)setFiles('#f-cover',[cf]);else rep.missing.push(title+': '+pt)}
+    setFiles('#f-files',found);
+    $('#form').requestSubmit();
+    return waitSave().then(function(err){
+      if(err){rep.fail.push(title+' ('+err+')');closeForm()}else rep.ok.push(title);
+    });
+  }
+  function importBatch(files){
+    if(importing)return;
+    files=Array.prototype.slice.call(files||[]);
+    var doc=files.filter(function(f){return /\.json$/i.test(f.name)})[0];
+    if(!doc){msg($('#pubMsg'),'Falta el documento. Elige el archivo .json junto con tus fotos, videos o modelos.','err');return}
+    if($('#formCard').hidden===false&&editing&&(form.title.value.trim()||$('#f-files').files.length)&&!confirm('Tienes un proyecto a medio llenar. Si importas ahora, ese formulario se cierra. ¿Continuar?'))return;
+    importing=true;$('#btnImport').disabled=true;
+    var pool=files.filter(function(f){return f!==doc});
+    msg($('#pubMsg'),'Leyendo el documento…','info');
+    doc.text().then(function(t){
+      var j;try{j=JSON.parse(t)}catch(e){throw new Error('No pude leer el documento. Súbelo tal como te lo pasé, sin abrirlo ni cambiarlo.')}
+      var list=Array.isArray(j)?j:(j.proyectos||j.projects);
+      if(!Array.isArray(list)||!list.length)throw new Error('No encontré proyectos dentro del documento.');
+      var rep={ok:[],skip:[],missing:[],fail:[]},i=0;
+      function next(){if(i>=list.length)return Promise.resolve(rep);var it=list[i++]||{};return importOne(it,pool,rep,i,list.length).then(next)}
+      return next();
+    }).then(function(rep){
+      var parts=[];
+      if(rep.ok.length)parts.push('Importé '+rep.ok.length+(rep.ok.length===1?' proyecto: ':' proyectos: ')+rep.ok.join(', ')+'.');
+      if(rep.skip.length)parts.push('Ya existían y no los toqué: '+rep.skip.join(', ')+'.');
+      if(rep.missing.length)parts.push('No encontré estos archivos entre los que subiste: '+rep.missing.join(' · ')+'.');
+      if(rep.fail.length)parts.push('No pude importar: '+rep.fail.join(', ')+'.');
+      if(rep.ok.length)parts.push('Toca «Publicar en la página» para que se vean.');
+      msg($('#pubMsg'),parts.join(' ')||'No había nada nuevo para importar.',rep.fail.length||rep.missing.length?'err':'info');
+    }).catch(function(err){msg($('#pubMsg'),err.message||'No pude importar.','err')}).then(function(){importing=false;$('#btnImport').disabled=false});
+  }
+  $('#btnImport').addEventListener('click',function(){$('#impIn').click()});
+  $('#impIn').addEventListener('change',function(){var f=this.files;importBatch(f);this.value=''});
   function drop(path){if(path)editing.removed.push(path)}
   function pid(){
     var p=editing.p;if(p.id)return p.id;
