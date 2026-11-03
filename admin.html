@@ -48,6 +48,10 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .msg{padding:10px 14px;border-radius:14px;margin:12px 0 0;font-weight:600}
 .msg.ok{background:#dff5ea;color:#12663f}.msg.err{background:#fde8df;color:var(--bad)}.msg.info{background:#e1eefa;color:#134a73}
 .list{display:grid;gap:10px}
+.lbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 10px}
+.lbar input{flex:1 1 200px;min-width:0}
+.lbar select{flex:0 1 220px}
+#list{max-height:min(62vh,560px);overflow:auto;padding:2px 6px 2px 0;overscroll-behavior:contain;scrollbar-gutter:stable}
 .item{display:grid;grid-template-columns:84px 1fr auto;gap:14px;align-items:center;background:#fff;border-radius:18px;padding:10px 12px}
 .th{width:84px;height:62px;border-radius:12px;background:radial-gradient(#2c5675,#0d1824) center/cover;display:grid;place-items:center;color:var(--sky);font:700 12px var(--mono);overflow:hidden}
 .th img{width:100%;height:100%;object-fit:cover;display:block}
@@ -171,6 +175,7 @@ details summary{cursor:pointer;font-weight:700}
       </div>
       <p style="margin:0 0 12px;color:var(--muted)">Todos salen en el carrusel de la pantalla principal. Usa las flechas para cambiar el orden.</p>
       <div id="thumbBar" class="msg info" hidden style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap"><span>Hay modelos 3D sin miniatura. Se la pongo en un toque.</span><button type="button" id="btnThumbs" class="sm">Crear miniaturas 3D</button></div>
+      <div class="lbar" id="lbar" hidden><input id="lq" type="search" placeholder="Buscar un proyecto…" aria-label="Buscar un proyecto" autocomplete="off"><select id="lcat" aria-label="Filtrar por categoría"><option value="">Todas las categorías</option></select><span id="lcount" class="m"></span></div>
       <div class="list" id="list"></div>
     </section>
 
@@ -408,8 +413,15 @@ details summary{cursor:pointer;font-weight:700}
   function render(){
     Array.prototype.forEach.call(document.querySelectorAll('input[name=st]'),function(r){r.checked=r.value===state.status});
     var list=$('#list');list.textContent='';
+    var q=($('#lq').value||'').trim().toLowerCase(),cat=$('#lcat').value,filt=!!(q||cat);
+    $('#lbar').hidden=state.projects.length<6;
+    (function(){var sel=$('#lcat'),cur=sel.value,cs=[];state.projects.forEach(function(p){if(p.category&&cs.indexOf(p.category)<0)cs.push(p.category)});cs.sort();var key=cs.join('|');if(sel.dataset.k!==key){sel.dataset.k=key;sel.textContent='';var o=document.createElement('option');o.value='';o.textContent='Todas las categorías';sel.appendChild(o);cs.forEach(function(c){var x=document.createElement('option');x.value=c;x.textContent=c;sel.appendChild(x)});sel.value=cs.indexOf(cur)>-1?cur:''}})();
+    var shown=0;
     if(!state.projects.length){var p=document.createElement('p');p.style.color='var(--muted)';p.textContent='Aún no hay proyectos. Toca «Nuevo proyecto».';list.appendChild(p)}
     state.projects.forEach(function(p,i){
+      if(q&&[p.title,p.brand,p.category,p.kind,p.tools].join(' ').toLowerCase().indexOf(q)<0)return;
+      if(cat&&p.category!==cat)return;
+      shown++;
       var it=document.createElement('div');it.className='item';
       var th=document.createElement('div');th.className='th';
       if(p.cover||p.thumb){var im=document.createElement('img');im.alt='';im.src=srcFor(p.cover||p.thumb);th.appendChild(im)}else th.textContent=p.model?'3D':'—';
@@ -418,11 +430,14 @@ details summary{cursor:pointer;font-weight:700}
       mid.appendChild(b);mid.appendChild(m);
       var acts=document.createElement('div');acts.className='acts';
       function btn(t,cls,fn,dis,label){var x=document.createElement('button');x.type='button';x.className='sm '+cls;x.textContent=t;x.disabled=!!dis;if(label)x.setAttribute('aria-label',label);x.addEventListener('click',fn);acts.appendChild(x)}
-      btn('↑','sec',function(){move(i,-1)},i===0,'Subir');btn('↓','sec',function(){move(i,1)},i===state.projects.length-1,'Bajar');
+      btn('↑','sec',function(){move(i,-1)},i===0||filt,filt?'Quita el filtro para reordenar':'Subir');btn('↓','sec',function(){move(i,1)},i===state.projects.length-1||filt,filt?'Quita el filtro para reordenar':'Bajar');
       btn('Editar','sec',function(){openForm(i)});btn('Eliminar','danger',function(){del(i)});
       it.appendChild(th);it.appendChild(mid);it.appendChild(acts);list.appendChild(it);
     });
+    $('#lcount').textContent=state.projects.length?(filt?shown+' de '+state.projects.length:state.projects.length+' proyectos'):'';
+    if(filt&&!shown){var np=document.createElement('p');np.style.color='var(--muted)';np.textContent='Ningún proyecto coincide con tu búsqueda.';list.appendChild(np)}
   }
+  $('#lq').addEventListener('input',function(){render()});$('#lcat').addEventListener('change',function(){render()});
   function move(i,d){var j=i+d;if(j<0||j>=state.projects.length)return;var t=state.projects[i];state.projects[i]=state.projects[j];state.projects[j]=t;setDirty();render()}
   function needThumb(p){return !!(p.model&&!p.cover&&!p.thumb)}
   function updateThumbBar(){

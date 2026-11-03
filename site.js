@@ -59,7 +59,7 @@
   /* ---- textos: cada trozo de texto de la página tiene una clave estable ---- */
   var IGNORE='[data-nt],#results,#liveMenu,#chips,#plist,#carDots,.progs,#loaderName,#count,#stH,#liveTx,#pcount,[data-msg],.copy,kbd,.toast,[data-slot],.pct,[data-title],[data-desc],[data-count],[data-hint]';
   var GROUPS=[['.loader','Pantalla de carga'],['#login','Ventana de acceso'],['.side','Barra de abajo'],['.topbar','Encabezado'],['.hero','Portada'],['.projects','Tarjeta Proyectos'],['.skills','Tarjeta Habilidades'],['.edu','Tarjeta Experiencia'],['.status','Tarjeta Estado']];
-  var TPL={'tpl-about':'Ventana Sobre mí','tpl-models':'Ventana 3D','tpl-projects':'Ventana Proyectos','tpl-tools':'Ventana Programas','tpl-contact':'Ventana Contacto'};
+  var TPL={'tpl-about':'Ventana Sobre mí','tpl-models':'Ventana 3D','tpl-projects':'Ventana Proyectos','tpl-tools':'Ventana Programas','tpl-contact':'Ventana Contacto','tpl-legal':'Ventana Legal'};
   function slug(t){return t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40)}
   function groupOf(el,tplId){
     if(tplId)return TPL[tplId]||tplId;

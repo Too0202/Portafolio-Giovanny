@@ -498,9 +498,11 @@ body{font-size:17.5px}
 .pcase{display:grid;gap:20px}
 .pmedia{min-width:0}
 .pcase.tall{grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:30px;align-items:start}
+.pcase.tall.sq{grid-template-columns:minmax(0,460px) minmax(0,1fr)}
+.pcover{max-height:72vh;object-fit:contain;background:var(--card-2)}
 .pcase.tall .pcover{margin-bottom:0}
 .pcase.tall .pgal{grid-template-columns:repeat(3,minmax(0,1fr));margin:10px 0 0}
-@media (max-width:760px){.pcase.tall{grid-template-columns:1fr}}
+@media (max-width:760px){.pcase.tall,.pcase.tall.sq{grid-template-columns:1fr}}
 img[data-zoom]{cursor:zoom-in}
 .lb{position:fixed;inset:0;z-index:500;background:rgba(4,8,13,.93);display:flex;flex-direction:column;animation:fade .25s both}
 .lb-st{flex:1;min-height:0;display:flex;overflow:auto;padding:60px 14px 54px}
@@ -588,7 +590,11 @@ video:-webkit-full-screen{object-fit:contain!important;width:100%!important;heig
 .greeted{margin:0;font-weight:800;font-size:clamp(16px,1.4vw,20px);color:#fff}
 .greeted b{color:var(--sky)}
 .greeted button{margin-left:10px;border:0;background:none;color:#a9c3da;font:inherit;font-size:12.5px;font-weight:600;text-decoration:underline;cursor:pointer}
-.hero.nogreet .greet,.hero.nogreet .greeted{display:none!important}
+.hero.nogreet .greet,.hero.nogreet .greeted,.hero.nogreet .greet-n{display:none!important}
+.greet-n{margin:-4px 0 0;font-size:12px;color:#a9c3da}
+.greet-n button{border:0;background:none;padding:0;color:#c9dbeb;font:inherit;text-decoration:underline;cursor:pointer}
+.legal-l{margin:16px 0 0}
+.legal-l .linkb{border:0;background:none;padding:0;font:inherit;color:var(--muted);text-decoration:underline;cursor:pointer}
 .hero.no3d .h3d{display:none!important}
 @media (min-width:981px){
   .hero.hs{padding-right:clamp(270px,33%,400px)}
@@ -774,6 +780,7 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
             <div class="greet-row"><input id="greetIn" type="text" maxlength="24" placeholder="¿Cómo te llamas?" aria-label="Tu nombre"><button type="submit" aria-label="Saludar"><svg width="16" height="16"><use href="#i-up"/></svg></button></div>
           </form>
           <p class="greeted" id="greeted" data-nt hidden></p>
+          <p class="greet-n">Tu nombre solo se guarda en tu navegador. <button type="button" data-win="legal">Privacidad</button></p>
         </div>
       </section>
 
@@ -941,6 +948,31 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
     <a class="btn wide" href="https://wa.me/573142372305" target="_blank" rel="noopener">Escribir por WhatsApp</a>
     <a class="btn line wide" href="media/hoja-de-vida.pdf" target="_blank" rel="noopener" data-cv>Descargar hoja de vida<small>PDF</small></a>
   </div>
+  <p class="legal-l"><button class="linkb" type="button" data-win="legal">Aviso legal y privacidad</button></p>
+</template>
+
+<template id="tpl-legal">
+  <h2>Aviso legal y privacidad</h2>
+  <p class="lead">Aquí explico quién está detrás de este sitio, qué datos trato y cómo se usan los trabajos que ves.</p>
+  <p class="mono">Última actualización: 2 de noviembre de 2026</p>
+  <h3 class="grp">1. Quién soy</h3>
+  <p>Este sitio es el portafolio personal de Giovanny Buitrago, diseñador multimedia en Bogotá, Colombia. Su fin es mostrar mi trabajo y que posibles clientes o empleadores puedan contactarme. No vendo productos ni recibo pagos en este sitio.</p>
+  <h3 class="grp">2. Datos personales (Ley 1581 de 2012)</h3>
+  <p>Responsable del tratamiento: Giovanny Buitrago, Bogotá, Colombia. Correo de contacto: giovanny1391@gmail.com.</p>
+  <p>Qué datos trato: este sitio no tiene formularios ni cuentas, no usa cookies de seguimiento ni herramientas de analítica. Si escribes tu nombre en el saludo de la portada, se guarda solo en tu propio navegador y no se envía a ningún servidor. Los datos que tú me envíes al escribirme por WhatsApp o por correo (nombre, número, mensaje) los recibo directamente por esos canales.</p>
+  <p>Para qué los uso: únicamente para responderte y tratar el trabajo que me consultes. No los vendo ni los comparto con terceros, salvo que la ley me lo exija.</p>
+  <p>Tus derechos: puedes conocer, actualizar y rectificar tus datos, pedir que los suprima, revocar tu autorización y presentar una queja ante la Superintendencia de Industria y Comercio. Para ejercerlos, escríbeme al correo indicado. Respondo las consultas en máximo 10 días hábiles y los reclamos en máximo 15 días hábiles.</p>
+  <p>Autorización: al escribirme por WhatsApp o por correo me autorizas a usar los datos que envíes para responderte.</p>
+  <h3 class="grp">3. Servicios de terceros</h3>
+  <p>Para funcionar, el sitio carga recursos de otros servicios, que pueden recibir tu dirección IP y datos técnicos de tu navegador: Google Fonts (tipografías), jsDelivr (librería para mostrar modelos 3D) y GitHub Pages (alojamiento). Al tocar el botón de WhatsApp sales a WhatsApp, que tiene sus propias políticas.</p>
+  <p>El sitio también guarda en tu navegador (almacenamiento local) preferencias como el tema claro u oscuro, la posición de las ventanas y tu nombre si lo escribes. Puedes borrarlo cuando quieras desde los ajustes de tu navegador.</p>
+  <h3 class="grp">4. Trabajos, marcas e imágenes</h3>
+  <p>Los trabajos que ves son creaciones mías (fotografía, composición, edición, video y modelado 3D), hechas en muchos casos para clientes. Los derechos patrimoniales de cada trabajo pueden pertenecer a ese cliente; mi autoría se mantiene. Los nombres, logotipos y marcas que aparecen, por ejemplo Ligne D'Or, pertenecen a sus titulares y se muestran solo como referencia de mi trabajo. No copies, reproduzcas ni uses estos trabajos sin autorización de quien tenga los derechos.</p>
+  <p>Si eres titular de una marca, o apareces en una imagen, y quieres que la corrija o la retire, escríbeme y lo atiendo.</p>
+  <h3 class="grp">5. Responsabilidad y enlaces</h3>
+  <p>Procuro que la información sea veraz y esté al día, pero puede cambiar sin aviso. No respondo por el contenido de sitios externos a los que enlazo, como Behance, Instagram o WhatsApp.</p>
+  <h3 class="grp">6. Ley aplicable y cambios</h3>
+  <p>Este sitio se rige por las leyes de la República de Colombia. Puedo actualizar este aviso; la fecha de arriba indica la última versión.</p>
 </template>
 
 <script>
@@ -1021,7 +1053,8 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
     projects:{title:'Proyectos',icon:'i-grid',w:1100,tpl:'tpl-projects'},
     models:{title:'Modelado 3D',icon:'i-cube',w:1100,tpl:'tpl-models'},
     tools:{title:'Programas',icon:'i-bars',w:760,tpl:'tpl-tools'},
-    contact:{title:'Contacto',icon:'i-mail',w:720,tpl:'tpl-contact'}
+    contact:{title:'Contacto',icon:'i-mail',w:720,tpl:'tpl-contact'},
+    legal:{title:'Aviso legal y privacidad',icon:'i-lock',w:760,tpl:'tpl-legal'}
   };
   function runBars(el){
     $$('.prog',el).forEach(function(r,i){
@@ -1569,7 +1602,7 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
       var g2=gal();if(g2)media.appendChild(g2);
       if(media.children.length)wrap.appendChild(media);
       wrap.appendChild(info);body.appendChild(wrap);
-      if(cv){var chk=function(){if(cv.naturalHeight>cv.naturalWidth*1.1)wrap.classList.add('tall')};if(cv.complete&&cv.naturalWidth)chk();else cv.addEventListener('load',chk)}
+      if(cv){var chk=function(){var r=cv.naturalHeight/cv.naturalWidth;if(r>1.1)wrap.classList.add('tall');else if(r>=.85){wrap.classList.add('tall');wrap.classList.add('sq')}};if(cv.complete&&cv.naturalWidth)chk();else cv.addEventListener('load',chk)}
     }
   }
   /* Visor de imágenes ampliadas */
@@ -1784,20 +1817,24 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
       if(t.closest('a,button,[data-win],[role="button"],summary,label,.chip'))return 'hov';
       return '';
     }
-    function mv(e){
-      x=e.clientX;y=e.clientY;if(!seen){seen=true;cx=x;cy=y;raf=raf||requestAnimationFrame(loop)}
-      c.classList.add('on');
-      var k=kind(e.target);
+    var sc=0;
+    function paint(t){
+      var k=kind(t);
       c.classList.toggle('txt',k==='txt');
       c.classList.toggle('lab',k.indexOf('lab:')===0);
       c.classList.toggle('hov',k==='hov'||k.indexOf('lab:')===0);
       lab.textContent=k.indexOf('lab:')===0?k.slice(4):'';
     }
+    function mv(e){
+      x=e.clientX;y=e.clientY;if(!seen){seen=true;cx=x;cy=y;raf=raf||requestAnimationFrame(loop)}
+      c.classList.add('on');paint(e.target);
+    }
+    function onScroll(){if(!seen||sc)return;sc=setTimeout(function(){sc=0;paint(document.elementFromPoint(x,y))},60)}
     function dn(){c.classList.add('dn')} function upf(){c.classList.remove('dn')}
     function lv(){c.classList.remove('on')}
-    document.addEventListener('pointermove',mv,{passive:true});document.addEventListener('pointerdown',dn,true);document.addEventListener('pointerup',upf,true);document.documentElement.addEventListener('mouseleave',lv);
+    document.addEventListener('pointermove',mv,{passive:true});document.addEventListener('scroll',onScroll,true);document.addEventListener('wheel',onScroll,{passive:true,capture:true});document.addEventListener('pointerdown',dn,true);document.addEventListener('pointerup',upf,true);document.documentElement.addEventListener('mouseleave',lv);
     document.documentElement.classList.add('pfcur');
-    FX.cur={off:function(){document.removeEventListener('pointermove',mv);document.removeEventListener('pointerdown',dn,true);document.removeEventListener('pointerup',upf,true);document.documentElement.removeEventListener('mouseleave',lv);cancelAnimationFrame(raf);c.remove();document.documentElement.classList.remove('pfcur');FX.cur=null}};
+    FX.cur={off:function(){document.removeEventListener('scroll',onScroll,true);document.removeEventListener('wheel',onScroll,true);document.removeEventListener('pointermove',mv);document.removeEventListener('pointerdown',dn,true);document.removeEventListener('pointerup',upf,true);document.documentElement.removeEventListener('mouseleave',lv);cancelAnimationFrame(raf);c.remove();document.documentElement.classList.remove('pfcur');FX.cur=null}};
   }
   /* fondo que reacciona al mouse */
   function bgOn(){
@@ -1954,6 +1991,7 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
     {t:'Modelado 3D',d:'Visor interactivo de mis modelos',w:'models',k:'3d modelos visor blender malla'},
     {t:'Programas',d:'After Effects, Premiere, Blender y más',w:'tools',k:'programas software after effects premiere pro illustrator photoshop blender capcut canva ia inteligencia artificial'},
     {t:'Contacto',d:'Correo, celular y WhatsApp',w:'contact',k:'contacto correo celular telefono whatsapp escribir'},
+    {t:'Aviso legal y privacidad',d:'Datos personales, derechos y avisos',w:'legal',k:'legal privacidad datos personales habeas data derechos de autor aviso terminos'},
     {t:'Experiencia',d:'EXECUTIVE SAS, Soluciones Audiovisuales y Laboratorios Lissia',w:'about',k:'experiencia trabajo laboral executive practicante lissia soluciones audiovisuales asistente produccion disenador grafico'},
     {t:'Hoja de vida',d:'Descargar en PDF',cv:true,k:'hoja de vida cv curriculum descargar pdf'}
   ];
