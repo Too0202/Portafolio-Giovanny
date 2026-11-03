@@ -104,32 +104,6 @@
       "pdf": ""
     },
     {
-      "title": "Fotografía de modelo",
-      "category": "Fotografía",
-      "brand": "Ligne D'or",
-      "kind": "Fotografía",
-      "summary": "",
-      "objective": "",
-      "role": "",
-      "result": "",
-      "duration": "",
-      "tools": "Photoshop",
-      "format": "Vertical 9:16",
-      "id": "fotografia-de-modelo",
-      "cover": "",
-      "thumb": "",
-      "video": "",
-      "portrait": false,
-      "images": [
-        "media/p/fotografia-de-modelo/img-mvwnqnnj-historia-lab-brillo.jpg"
-      ],
-      "skills": [
-        "Fotografía"
-      ],
-      "model": "",
-      "pdf": ""
-    },
-    {
       "title": "Video Comercial esmaltes",
       "category": "Video",
       "brand": "Maxybelt",
@@ -196,6 +170,102 @@
       "thumb": "",
       "video": "",
       "portrait": true,
+      "images": [],
+      "skills": [
+        "Fotografía"
+      ],
+      "model": "",
+      "pdf": ""
+    },
+    {
+      "title": "Fotografía de producto: Polvo suelto",
+      "category": "Fotografía",
+      "brand": "Ligne D'Or",
+      "kind": "Fotografía de producto · Historia de Instagram",
+      "summary": "Fotografía de polvo suelto para una historia de Instagram, trabajada desde la composición hasta la edición final.",
+      "objective": "Mostrar el producto y su textura en una pieza vertical atractiva para historias, con una paleta cálida y cohesiva.",
+      "role": "Me encargué de todo el proceso: composición de la escena con la textura del polvo como fondo, fotografía y edición final en Photoshop.",
+      "result": "Una pieza editorial en formato 9:16, lista para publicarse en Instagram, con el logo y la dirección web de la marca.",
+      "duration": "",
+      "tools": "Photoshop",
+      "format": "Vertical 9:16 · Historia de Instagram",
+      "id": "fotografia-de-producto-polvo-suelto",
+      "cover": "media/p/fotografia-de-producto-polvo-suelto/cover-mw0444w6-foto-historia.jpg",
+      "thumb": "",
+      "video": "",
+      "portrait": true,
+      "images": [],
+      "skills": [
+        "Fotografía"
+      ],
+      "model": "",
+      "pdf": ""
+    },
+    {
+      "title": "Fotografía de modelo: Labial Glam Gloss",
+      "category": "Fotografía de modelo: Labial Glam Gloss",
+      "brand": "Ligne D'Or",
+      "kind": "Fotografía de modelo · Historia de Instagram",
+      "summary": "Retrato de belleza para una historia de Instagram, con el labial Glam Gloss como protagonista.",
+      "objective": "Mostrar el color y el brillo del labial sobre una modelo, en un primer plano vertical pensado para historias.",
+      "role": "Realicé la fotografía: encuadre cercano, manejo de la luz y posición del producto junto al rostro.",
+      "result": "Una imagen vertical 9:16 lista para publicarse en Instagram, con el logo y la dirección web de la marca.",
+      "duration": "",
+      "tools": "",
+      "format": "Vertical 9:16 · Historia de Instagram",
+      "id": "fotografia-de-modelo-labial-glam-gloss",
+      "cover": "media/p/fotografia-de-modelo-labial-glam-gloss/cover-mw048uwr-historia-lab-brillo.jpg",
+      "thumb": "",
+      "video": "",
+      "portrait": true,
+      "images": [],
+      "skills": [
+        "Fotografía"
+      ],
+      "model": "",
+      "pdf": ""
+    },
+    {
+      "title": "Fotografía de producto: Polvo compacto",
+      "category": "Fotografía",
+      "brand": "Ligne D'Or",
+      "kind": "Fotografía y edición de producto · Historia de Instagram",
+      "summary": "Composición de varios polvos compactos suspendidos sobre un fondo azul degradado, construida a partir de múltiples tomas y unida en Photoshop.",
+      "objective": "Mostrar la gama de tonos del polvo compacto en una pieza vertical dinámica, que destacara por encima del resto de historias.",
+      "role": "Realicé la fotografía y la edición completa. Se tomaron muchas fotos de cada elemento para lograr el resultado final, que armé en Photoshop cuidando la luz, las sombras y el equilibrio de la composición.",
+      "result": "Una pieza vertical 9:16 con sensación de movimiento, lista para publicarse en Instagram, con el logo y la dirección web de la marca.",
+      "duration": "",
+      "tools": "Photoshop",
+      "format": "Vertical 9:16 · Historia de Instagram",
+      "id": "fotografia-de-producto-polvo-compacto",
+      "cover": "media/p/fotografia-de-producto-polvo-compacto/cover-mw04bkoc-pvo-economicos.jpg",
+      "thumb": "",
+      "video": "",
+      "portrait": true,
+      "images": [],
+      "skills": [
+        "Fotografía"
+      ],
+      "model": "",
+      "pdf": ""
+    },
+    {
+      "title": "Retrato de belleza: Labial rojo",
+      "category": "Fotografía",
+      "brand": "Ligne D'Or",
+      "kind": "Fotografía de modelo · Carrusel de Instagram",
+      "summary": "Retrato de perfil con luz lateral y fuerte contraste, donde el rojo del labial es el único protagonista.",
+      "objective": "Crear una imagen de belleza con carácter editorial para un carrusel de Instagram, destacando el color del labial sobre un rostro en claroscuro.",
+      "role": "Realicé la composición y la fotografía: encuadre de perfil, manejo de la luz y de las sombras para que el color del labial fuera lo primero que se ve.",
+      "result": "Una imagen cuadrada 1:1 para carrusel de Instagram, con el logo y la dirección web de la marca.",
+      "duration": "",
+      "tools": "",
+      "format": "Cuadrado 1:1 · Carrusel de Instagram",
+      "id": "retrato-de-belleza-labial-rojo",
+      "cover": "",
+      "thumb": "",
+      "video": "",
+      "portrait": false,
       "images": [],
       "skills": [
         "Fotografía"
