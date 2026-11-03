@@ -65,7 +65,7 @@
       "tools": "Blender · Photoshop",
       "format": "",
       "id": "bolso-3d",
-      "cover": "",
+      "cover": "media/p/bolso-3d/cover-mw1585og-bolso-furla.jpg",
       "thumb": "media/p/bolso-3d/thumb-mvy40koa-miniatura-3d.jpg",
       "video": "",
       "portrait": false,
@@ -73,7 +73,7 @@
       "skills": [
         "3D en Blender"
       ],
-      "model": "media/models/bolso.glb",
+      "model": "media/p/bolso-3d/model-mw1585l1-bolso-3d-2-compressed.glb",
       "pdf": ""
     },
     {
