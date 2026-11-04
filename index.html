@@ -283,6 +283,22 @@ button.live.editable:hover{background:rgba(255,255,255,.35)}
 .status{grid-column:4;grid-row:3;display:flex;flex-direction:column;justify-content:space-between;gap:12px;background:var(--sky)}
 .status .mono{color:#14304a}
 .status h3{font-size:24.5px;line-height:1.08}
+.status{position:relative;overflow:hidden}
+.status::after{content:"";position:absolute;right:-60px;top:-60px;width:190px;height:190px;border-radius:50%;border:1.5px solid rgba(20,48,74,.14);box-shadow:0 0 0 26px rgba(255,255,255,.12),0 0 0 54px rgba(255,255,255,.08);pointer-events:none}
+.status>*{position:relative;z-index:1}
+.st-sub{margin:0;color:#14304a;font-size:16px;line-height:1.4;max-width:30ch}
+.st-clock{display:inline-flex;align-self:flex-start;align-items:center;gap:9px;padding:8px 13px;border-radius:999px;background:rgba(255,255,255,.55);color:#14304a;font-size:14.5px;font-weight:600}
+.st-clock i{width:9px;height:9px;border-radius:50%;background:#1f9d5c;box-shadow:0 0 0 0 rgba(31,157,92,.5);animation:stp 2s infinite}
+.st-clock b{font-family:var(--mono);font-weight:600;letter-spacing:.02em}
+@keyframes stp{70%{box-shadow:0 0 0 8px rgba(31,157,92,0)}100%{box-shadow:0 0 0 0 rgba(31,157,92,0)}}
+@media (prefers-reduced-motion:reduce){.st-clock i{animation:none}}
+/* barras de desplazamiento discretas */
+*{scrollbar-width:thin;scrollbar-color:rgba(120,150,175,.45) transparent}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(120,150,175,.45);border-radius:99px;border:2px solid transparent;background-clip:content-box}
+::-webkit-scrollbar-thumb:hover{background:rgba(120,150,175,.75);background-clip:content-box}
+::-webkit-scrollbar-button{display:none;width:0;height:0}
 .btn-row{display:flex;gap:8px;flex-wrap:wrap}
 .btn{display:inline-flex;flex-direction:column;align-items:flex-start;justify-content:center;text-decoration:none;border:0;background:var(--ink);color:#fff;border-radius:999px;padding:9px 18px;font-weight:700;font-size:15.5px;line-height:1.15;cursor:pointer;transition:transform .15s}
 .btn:hover{transform:translateY(-2px)}
@@ -834,6 +850,8 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
 
       <section class="card status" style="--i:6" aria-label="Disponibilidad">
         <div><span class="mono">Bogotá, Colombia</span><h3 id="stH">Disponible para trabajar</h3></div>
+        <p class="st-sub">Cuéntame tu idea por WhatsApp y la revisamos juntos.</p>
+        <div class="st-clock"><i aria-hidden="true"></i><span>Hora en Bogotá</span><b id="stClock">--:--</b></div>
         <div class="btn-row">
           <a class="btn" href="https://wa.me/573142372305" data-t="Hola Giovanny, vi tu portafolio y quiero hablar de un proyecto." target="_blank" rel="noopener">Contactar</a>
           <a class="btn line" href="media/hoja-de-vida.pdf" target="_blank" rel="noopener" data-cv>Hoja de vida<small>PDF</small></a>
@@ -1845,6 +1863,9 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
   }
 
   /* ---- Funciones activables desde el panel ---- */
+  (function(){var e=document.getElementById('stClock');if(!e)return;
+    function t(){try{e.textContent=new Date().toLocaleTimeString('es-CO',{hour:'numeric',minute:'2-digit',timeZone:'America/Bogota'})}catch(x){}}
+    t();setInterval(t,20000)})();
   function FEAT(k){var f=SITE.eff('features');return f[k]!==false}
   var FX={};
   function pointerFine(){return matchMedia('(pointer:fine)').matches}
