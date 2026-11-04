@@ -65,11 +65,13 @@
       "tools": "Blender · Photoshop",
       "format": "",
       "id": "bolso-3d",
-      "cover": "media/p/bolso-3d/cover-mw1585og-bolso-furla.jpg",
+      "cover": "media/p/bolso-3d/cover-mw1kc194-whatsapp-image-2026-10-29-at-5-00-38-pm.jpg",
       "thumb": "media/p/bolso-3d/thumb-mvy40koa-miniatura-3d.jpg",
       "video": "",
       "portrait": false,
-      "images": [],
+      "images": [
+        "media/p/bolso-3d/img-mw1kc19j-whatsapp-image-2026-10-29-at-5-00-38-pm.jpg"
+      ],
       "skills": [
         "3D en Blender"
       ],
@@ -274,30 +276,77 @@
       "pdf": ""
     },
     {
-      "title": "Campañas Ligne D'Or: fotografía de producto y modelo",
-      "category": "Fotografía",
+      "title": "GIF HISTORIA",
+      "category": "Modelado 3D",
       "brand": "Ligne D'Or",
-      "kind": "Fotografía de producto y de modelo · Historias y carruseles de Instagram",
-      "summary": "Selección de piezas fotográficas para las campañas de Ligne D'Or en Instagram: polvo suelto, retrato con gloss y labial rojo.",
-      "objective": "Dar a la marca imágenes de producto y de modelo con un estilo propio, pensadas para historias y carruseles de Instagram.",
-      "role": "Realicé la fotografía de todas las piezas. En el polvo suelto también me encargué de la composición y de la edición final en Photoshop; en el labial rojo, de la composición; y en el retrato con gloss, únicamente de la fotografía.",
-      "result": "Tres imágenes listas para publicarse en Instagram, en formatos vertical 9:16 y cuadrado 1:1, con el logo y la dirección web de la marca.",
+      "kind": "Historia Instagram",
+      "summary": "",
+      "objective": "",
+      "role": "",
+      "result": "",
       "duration": "",
-      "tools": "Photoshop",
-      "format": "Historias 9:16 y carrusel 1:1 · Instagram",
-      "id": "campanas-ligne-d-or-fotografia-de-producto-y-model",
-      "cover": "media/p/campanas-ligne-d-or-fotografia-de-producto-y-model/cover-mw04kxjt-historia-lab-brillo.jpg",
+      "tools": "Blender y After Effects",
+      "format": "Vertical 9:16",
+      "id": "gif-historia",
+      "cover": "media/p/gif-historia/cover-mw1l5gbz-comp-5.jpg",
       "thumb": "",
       "video": "",
       "portrait": false,
-      "images": [
-        "media/p/campanas-ligne-d-or-fotografia-de-producto-y-model/img-mw04kxk4-historia-2.jpg",
-        "media/p/campanas-ligne-d-or-fotografia-de-producto-y-model/img-mw04kxkg-carrusel-2.jpg",
-        "media/p/campanas-ligne-d-or-fotografia-de-producto-y-model/img-mw04kxkp-pvo-economicos.jpg",
-        "media/p/campanas-ligne-d-or-fotografia-de-producto-y-model/img-mw04kxl6-foto-historia.jpg"
-      ],
+      "images": [],
       "skills": [
-        "Fotografía"
+        "3D en Blender",
+        "Animación y GIF",
+        "Redes sociales"
+      ],
+      "model": "media/p/gif-historia/model-mw1l5g6r-gif-historia.glb",
+      "pdf": ""
+    },
+    {
+      "title": "Gif Hidratantes",
+      "category": "Animaciones y GIF",
+      "brand": "Ligne D'or",
+      "kind": "Animación",
+      "summary": "",
+      "objective": "",
+      "role": "",
+      "result": "",
+      "duration": "",
+      "tools": "After Effects",
+      "format": "Vertical 9:16",
+      "id": "gif-hidratantes",
+      "cover": "media/p/gif-hidratantes/cover-mw1l71em-portada.jpg",
+      "thumb": "",
+      "video": "media/p/gif-hidratantes/video-mw1l71bf-hidratantes-final.mp4",
+      "portrait": true,
+      "images": [],
+      "skills": [
+        "Animación y GIF",
+        "Redes sociales"
+      ],
+      "model": "",
+      "pdf": ""
+    },
+    {
+      "title": "Video Gif Serum Vitamina C",
+      "category": "Animaciones y GIF",
+      "brand": "Ligne D'or",
+      "kind": "Animación 3D · Historia vertical",
+      "summary": "",
+      "objective": "",
+      "role": "",
+      "result": "",
+      "duration": "",
+      "tools": "Blender",
+      "format": "Cuadraro 1:1",
+      "id": "video-gif-serum-vitamina-c",
+      "cover": "media/p/video-gif-serum-vitamina-c/cover-mw1l93ci-portada.jpg",
+      "thumb": "",
+      "video": "media/p/video-gif-serum-vitamina-c/video-mw1l9318-anima-10001-0100.mov",
+      "portrait": true,
+      "images": [],
+      "skills": [
+        "3D en Blender",
+        "Redes sociales"
       ],
       "model": "",
       "pdf": ""
