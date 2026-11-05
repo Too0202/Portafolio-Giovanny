@@ -11,8 +11,20 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Manrope:wght@400;500;700&display=swap">
 <style>
-#f-files{width:100%;box-sizing:border-box;border:2px dashed #9fb4c8;background:#f6fafd;padding:26px 14px;border-radius:16px;cursor:pointer}
-#f-files.over{border-color:var(--ink);background:#e4f1fb}
+.dz{position:relative;box-sizing:border-box;border:2px dashed #9fb4c8;background:#f6fafd;border-radius:16px;padding:30px 16px;text-align:center;transition:background .2s,border-color .2s}
+.dz:hover,.dz.over{border-color:var(--ink);background:#e4f1fb}
+.dz input[type=file]{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0}
+.dz-in{pointer-events:none}
+.dz-in b{display:block;font-size:18px}
+.dz-in span{display:block;margin-top:4px;color:var(--muted);font-size:14.5px}
+.dz.small{padding:16px;margin-top:6px;text-align:left}
+.dz.small .dz-in b{font-size:15.5px}
+.picked{display:grid;gap:6px;margin-top:10px}
+.pk{display:flex;align-items:center;gap:10px;background:#fff;border-radius:12px;padding:6px 8px 6px 10px}
+.pk i{font-style:normal;font-size:12.5px;font-weight:700;background:#dcecf9;color:#14304a;border-radius:999px;padding:3px 10px;flex:none}
+.pk span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.have{margin-top:12px}.have[hidden]{display:none}
+.have h4{margin:0 0 4px;font-size:14px;color:var(--muted);font-weight:600}
 #dropOv{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:rgba(13,24,36,.78);backdrop-filter:blur(4px);color:#fff;text-align:center;pointer-events:none}
 #dropOv[hidden]{display:none}
 #dropOv div{border:3px dashed #8ecdf5;border-radius:28px;padding:48px 56px;max-width:min(560px,86vw)}
@@ -184,9 +196,18 @@ details summary{cursor:pointer;font-weight:700}
       <h2 id="formTitle">Nuevo proyecto</h2>
       <form id="form" novalidate>
         <label for="f-title">Título *</label><input id="f-title" type="text" required placeholder="Ej: Bolso 3D">
-        <label for="f-files">Archivos del trabajo <small>(arrástralos aquí, o suéltalos en cualquier parte de esta página; también puedes tocar el recuadro para elegirlos)</small></label>
-        <input id="f-files" type="file" multiple accept="image/*,video/mp4,video/webm,application/pdf,.pdf,.glb">
+        <label for="f-files">Archivos del trabajo</label>
+        <div class="dz" id="dz"><input id="f-files" type="file" multiple accept="image/*,video/mp4,video/webm,application/pdf,.pdf,.glb"><div class="dz-in"><b>Arrastra aquí tus archivos</b><span>o toca para elegirlos. Sirven fotos, video, PDF o modelo 3D (.glb), todo junto. Yo los acomodo solo.</span></div></div>
         <div class="files" id="files-hint" style="margin-top:6px;color:var(--muted)"></div>
+        <div class="picked" id="picked"></div>
+        <div class="have" id="have-video" hidden><h4>Video ya subido</h4><div class="files" id="video-list"></div></div>
+        <div class="have" id="have-model" hidden><h4>Modelo 3D ya subido</h4><div class="files" id="model-list"></div></div>
+        <div class="have" id="have-pdf" hidden><h4>Documento ya subido</h4><div class="files" id="pdf-list"></div></div>
+        <div class="have" id="have-images" hidden><h4>Imágenes ya subidas</h4><div class="files" id="images-list"></div></div>
+        <label for="f-cover" style="margin-top:16px">Portada <small>(opcional)</small></label>
+        <div class="dz small" id="dzc"><input id="f-cover" type="file" accept="image/*"><div class="dz-in"><b>Arrastra o toca para elegir una portada</b><span id="cover-pick">Si no pones una, uso la primera imagen, o creo una del video o del modelo 3D.</span></div></div>
+        <div class="files" id="cover-list"></div>
+        <div hidden><input id="f-video" type="file"><input id="f-images" type="file" multiple><input id="f-pdf" type="file"><input id="f-model" type="file"></div>
         <details id="moreBox" style="margin-top:18px"><summary>Más detalles (opcional)</summary>
         <label for="f-category">Categoría <small>(si la dejas vacía la elijo según tus archivos)</small></label>
         <input id="f-category" type="text" list="cats" placeholder="Elige una o escribe una nueva" autocomplete="off">
@@ -212,15 +233,7 @@ details summary{cursor:pointer;font-weight:700}
         <div id="skillbox" style="display:flex;flex-wrap:wrap;gap:8px 18px"></div>
         <div style="margin-top:10px"><label for="f-skillx">Otra habilidad <small>(opcional; separa con comas)</small></label><input id="f-skillx" type="text" placeholder="Ej: Ilustración"></div>
 
-        <h3 style="font-size:18px;margin-top:22px">Archivos</h3>
-        <div class="row">
-          <div><label for="f-cover">Portada <small>(imagen)</small></label><input id="f-cover" type="file" accept="image/*"><div class="files" id="cover-list"></div></div>
-          <div><label for="f-video">Video <small>(mp4 o webm, hasta 50 MB)</small></label><input id="f-video" type="file" accept="video/mp4,video/webm"><div class="files" id="video-list"></div>
-            <label style="display:flex;gap:8px;align-items:center;font-weight:500"><input id="f-portrait" type="checkbox"> El video es vertical (9:16)</label></div>
-        </div>
-        <label for="f-images">Imágenes <small>(puedes elegir varias)</small></label><input id="f-images" type="file" accept="image/*" multiple><div class="files" id="images-list"></div>
-        <label for="f-pdf">Catálogo o documento <small>(PDF, hasta 50 MB)</small></label><input id="f-pdf" type="file" accept="application/pdf,.pdf"><div class="files" id="pdf-list"></div>
-        <label for="f-model">Modelo 3D <small>(archivo .glb, hasta 50 MB)</small></label><input id="f-model" type="file" accept=".glb"><div class="files" id="model-list"></div>
+        <label style="display:flex;gap:8px;align-items:center;font-weight:500;margin-top:18px"><input id="f-portrait" type="checkbox"> Si hay video: es vertical (9:16) <small>(normalmente lo detecto solo)</small></label>
         </details>
 
         <div class="bar" style="margin-top:20px">
@@ -510,7 +523,7 @@ details summary{cursor:pointer;font-weight:700}
     var p=i>=0?JSON.parse(JSON.stringify(state.projects[i])):{id:'',title:'',category:'',brand:'',kind:'',summary:'',objective:'',role:'',result:'',duration:'',tools:'',format:'',cover:'',video:'',portrait:false,images:[],model:'',pdf:''};
     editing={idx:i,p:p,newFiles:{},removed:[]};
     FIELDS.forEach(function(k){form[k].value=p[k]||''});
-    $('#f-portrait').checked=!!p.portrait;drawSkills(p);$('#f-files').value='';$('#files-hint').textContent='';$('#moreBox').open=i>=0;
+    $('#f-portrait').checked=!!p.portrait;drawSkills(p);$('#f-files').value='';$('#files-hint').textContent='';$('#picked').textContent='';$('#cover-pick').textContent='Si no pones una, uso la primera imagen, o creo una del video o del modelo 3D.';$('#moreBox').open=false;
     ['cover','video','images','model','pdf'].forEach(function(k){$('#f-'+k).value=''});
     $('#formTitle').textContent=i>=0?'Editar proyecto':'Nuevo proyecto';
     msg($('#formMsg'),'');renderFiles();
@@ -531,6 +544,7 @@ details summary{cursor:pointer;font-weight:700}
     fill('model-list',p.model?[p.model]:[],false,function(){drop(p.model);p.model='';renderFiles()});
     fill('pdf-list',p.pdf?[p.pdf]:[],false,function(){drop(p.pdf);p.pdf='';renderFiles()});
     fill('images-list',p.images||[],true,function(x){drop(x);p.images=p.images.filter(function(y){return y!==x});renderFiles()});
+    [['video',p.video?1:0],['model',p.model?1:0],['pdf',p.pdf?1:0],['images',(p.images||[]).length]].forEach(function(a){$('#have-'+a[0]).hidden=!a[1]});
   }
   function videoInfo(file){
     return new Promise(function(ok){
@@ -553,8 +567,21 @@ details summary{cursor:pointer;font-weight:700}
     Array.prototype.slice.call(this.files).forEach(function(f){var n=f.name.toLowerCase();
       if(/\.glb$/.test(n))c.glb++;else if(/\.pdf$/.test(n))c.pdf++;else if(/^video\//.test(f.type)||/\.(mp4|webm)$/.test(n))c.vid++;else if(/^image\//.test(f.type))c.img++});
     var t=[];if(c.img)t.push(c.img+(c.img===1?' imagen':' imágenes'));if(c.vid)t.push(c.vid+' video');if(c.pdf)t.push(c.pdf+' PDF');if(c.glb)t.push(c.glb+' modelo 3D');
-    $('#files-hint').textContent=t.length?'Listo: '+t.join(' · ')+'. La primera imagen será la portada.':'';
+    $('#files-hint').textContent=t.length?'Listo: '+t.join(' · ')+(c.img?'. La primera imagen será la portada si no eliges otra.':'.'):'';
+    drawPicked();
   });
+  function drawPicked(){
+    var fi=$('#f-files'),box=$('#picked');box.textContent='';
+    Array.prototype.slice.call(fi.files).forEach(function(f,k){
+      var n=f.name.toLowerCase(),ty=/\.glb$/.test(n)?'Modelo 3D':/\.pdf$/.test(n)?'PDF':(/^video\//.test(f.type)||/\.(mp4|webm)$/.test(n))?'Video':/^image\//.test(f.type)?'Imagen':'¿?';
+      var d=document.createElement('div');d.className='pk';
+      var a=document.createElement('i');a.textContent=ty;var b=document.createElement('span');b.textContent=f.name;
+      var x=document.createElement('button');x.type='button';x.className='sm danger';x.textContent='Quitar';
+      x.addEventListener('click',function(){var dt=new DataTransfer();Array.prototype.forEach.call(fi.files,function(g,j){if(j!==k)dt.items.add(g)});fi.files=dt.files;fi.dispatchEvent(new Event('change'))});
+      d.appendChild(a);d.appendChild(b);d.appendChild(x);box.appendChild(d);
+    });
+  }
+  $('#f-cover').addEventListener('change',function(){$('#cover-pick').textContent=this.files[0]?'Portada elegida: '+this.files[0].name:'Si no pones una, uso la primera imagen, o creo una del video o del modelo 3D.'});
 
   /* arrastrar y soltar archivos en cualquier parte */
   (function(){
@@ -577,13 +604,15 @@ details summary{cursor:pointer;font-weight:700}
     window.addEventListener('dragover',function(e){if(!hasFiles(e))return;e.preventDefault();e.dataTransfer.dropEffect='copy'});
     window.addEventListener('dragleave',function(e){if(!hasFiles(e))return;depth=Math.max(0,depth-1);if(!depth)ov.hidden=true});
     window.addEventListener('drop',function(e){
-      if(!hasFiles(e))return;e.preventDefault();depth=0;ov.hidden=true;fi.classList.remove('over');
+      if(!hasFiles(e))return;depth=0;ov.hidden=true;$('#dz').classList.remove('over');
+      if(e.target.closest&&e.target.closest('#dzc'))return;
+      e.preventDefault();
       if(!loggedIn())return;
       var fl=e.dataTransfer.files;
       if(Array.prototype.some.call(fl,function(f){return /\.json$/i.test(f.name)}))importBatch(fl);else addFiles(fl);
     });
-    fi.addEventListener('dragenter',function(){fi.classList.add('over')});
-    fi.addEventListener('dragleave',function(){fi.classList.remove('over')});
+    fi.addEventListener('dragenter',function(){$('#dz').classList.add('over')});
+    fi.addEventListener('dragleave',function(){$('#dz').classList.remove('over')});
   })();
 
   /* importar varios proyectos desde un documento (.json) + sus archivos */
