@@ -94,8 +94,6 @@ details summary{cursor:pointer;font-weight:700}
 /* editor del sitio */
 #siteCard .sitegrid{display:grid;gap:18px}
 @media (min-width:1180px){
-  #siteCard{width:min(1380px,calc(100vw - 32px));position:relative;left:50%;transform:translateX(-50%)}
-  #siteCard .sitegrid{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)}
 }
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
 .tabs button{background:var(--card2);color:var(--ink)}
@@ -248,7 +246,7 @@ details summary{cursor:pointer;font-weight:700}
     <!-- Textos, colores y letras -->
     <section class="card" id="siteCard">
       <h2>4. Textos, colores y letras de la página</h2>
-      <p style="margin:0 0 12px;color:var(--muted)">Cambia lo que quieras y mira el resultado a la derecha al instante. Cuando termines, toca <b>Publicar en la página</b>.</p>
+      <p style="margin:0 0 12px;color:var(--muted)">Cambia lo que quieras y toca <b>Publicar en la página</b>. En 1 o 2 minutos se ve en tu sitio. <a href="index.html" target="_blank" rel="noopener" style="font-weight:700">Ver mi página ↗</a></p>
       <div class="sitegrid">
         <div class="sitectl">
           <div class="tabs" role="tablist">
@@ -267,7 +265,6 @@ details summary{cursor:pointer;font-weight:700}
           <div class="tp" id="tp-data"></div>
           <div class="bar" style="margin-top:16px"><button type="button" class="line sm" id="siteReset">Restablecer todo a como venía</button></div>
         </div>
-        <div class="sitepv"><div class="pvbox" id="pvbox"><iframe id="pv" title="Vista previa de la página"></iframe></div></div>
       </div>
     </section>
 
@@ -808,7 +805,6 @@ details summary{cursor:pointer;font-weight:700}
         state.site={};siteTouch();buildSitePanels();refreshStatusLabels();
       });
     }
-    var f=$('#pv');if(!f.getAttribute('src'))f.setAttribute('src','index.html?preview=1');
     buildSitePanels();fitPv();setTimeout(fitPv,300);
   }
   function buildSitePanels(){buildTexts();buildColors();buildFonts();buildLists();buildFeat();buildData()}
@@ -822,6 +818,9 @@ details summary{cursor:pointer;font-weight:700}
       host.textContent='';
       var groups={},order=[];
       textEntries.forEach(function(e){if(!groups[e.group]){groups[e.group]=[];order.push(e.group)}groups[e.group].push(e)});
+      var ESS=['Portada','Encabezado','Tarjeta Estado','Tarjeta Proyectos','Tarjeta Habilidades','Tarjeta Experiencia','Ventana Contacto'];
+      order.sort(function(x,y){var a=ESS.indexOf(x),b=ESS.indexOf(y);return (a<0?99:a)-(b<0?99:b)});
+      var adv=null;
       order.forEach(function(g){
         var d=document.createElement('details');d.className='tgroup';
         var sm=document.createElement('summary');sm.textContent=g+' ('+groups[g].length+')';d.appendChild(sm);
@@ -840,17 +839,21 @@ details summary{cursor:pointer;font-weight:700}
           rb.addEventListener('click',function(){inp.value=e.text;if(state.site.texts)delete state.site.texts[e.key];siteTouch()});
           box.appendChild(lb);box.appendChild(inp);row.appendChild(box);row.appendChild(rb);row.dataset.q=(e.text+' '+g).toLowerCase();d.appendChild(row);
         });
-        host.appendChild(d);
+        if(ESS.indexOf(g)<0){
+          if(!adv){adv=document.createElement('details');adv.className='tgroup tadv';var as=document.createElement('summary');as.textContent='Textos avanzados (otras ventanas y mensajes)';as.style.fontWeight='800';adv.appendChild(as);host.appendChild(adv)}
+          d.style.background='#fff';adv.appendChild(d);
+        }else host.appendChild(d);
       });
     }).catch(function(){host.textContent='No pude leer los textos de la página. Recarga el panel.'});
   }
   function filterTexts(){
     var q=$('#tsearch').value.trim().toLowerCase();
-    Array.prototype.forEach.call(document.querySelectorAll('#tlist .tgroup'),function(g){
+    Array.prototype.forEach.call(document.querySelectorAll('#tlist .tgroup:not(.tadv)'),function(g){
       var any=false;
       Array.prototype.forEach.call(g.querySelectorAll('.trow'),function(r){var ok=!q||r.dataset.q.indexOf(q)>-1;r.hidden=!ok;if(ok)any=true});
-      g.hidden=!any;if(q&&any)g.open=true;
+      g.hidden=!any;if(q&&any){g.open=true;var pa=g.closest('.tadv');if(pa)pa.open=true}
     });
+    var ad=document.querySelector('#tlist .tadv');if(ad)ad.hidden=!!q&&!ad.querySelector('.tgroup:not([hidden])');
   }
 
   /* colores y fondo */
