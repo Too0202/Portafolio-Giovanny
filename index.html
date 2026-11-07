@@ -752,6 +752,13 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
   .cf-n{width:40px;height:40px;margin-top:-20px}
 }
 @media (prefers-reduced-motion:reduce){.cf-c{transition-duration:.01ms}}
+
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:2px 0 14px}
+.stat{background:var(--card-2);border-radius:18px;padding:14px 16px;min-width:0}
+.stat b{display:block;font-family:var(--display,inherit);font-size:clamp(30px,3.4vw,46px);line-height:1;letter-spacing:-.03em;color:var(--ink)}
+.stat span{display:block;margin-top:6px;color:var(--muted);font-size:14.5px;line-height:1.25}
+.stat[hidden]{display:none}
+@media (max-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 
 <script src="site.js"></script>
@@ -878,10 +885,14 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
         </div>
       </section>
 
-      <section class="card skills" style="--i:4" aria-label="Habilidades">
-        <div class="card-head"><h3>Habilidades</h3><span class="mono">Toca una</span></div>
-        <div class="chips" id="chips"></div>
-        <p class="skill-d" id="skillD">Toca una habilidad y verás solo los trabajos de esa área.</p>
+      <section class="card skills" style="--i:4" aria-label="En números">
+        <div class="card-head"><h3>En números</h3><span class="mono">Hasta hoy</span></div>
+        <div class="stats" id="stats">
+          <div class="stat"><b class="num" data-n="3" data-plus="1">3+</b><span>años creando contenido</span></div>
+          <div class="stat"><b class="num" data-nt id="stP" data-n="0">0</b><span>proyectos publicados</span></div>
+          <div class="stat" id="stMbox"><b class="num" data-nt id="stM" data-n="0">0</b><span>modelos 3D para girar</span></div>
+          <div class="stat"><b class="num" data-nt id="stT" data-n="0">0</b><span>programas que domino</span></div>
+        </div>
         <button class="btn" type="button" data-win="tools">Ver mis programas</button>
       </section>
 
@@ -1645,6 +1656,17 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
     PROJECTS.forEach(function(p){skillsOf(p).forEach(function(n){if(!l.some(function(x){return x.n===n}))l.push({n:n,d:''})})});
     return l;
   }
+  /* En números: se calculan con tus proyectos y herramientas */
+  function applyStats(){
+    function set(id,v){var e=$('#'+id);if(!e)return;var from=parseInt(e.dataset.n,10)||0;e.dataset.n=v;
+      if(calm||from===v){e.textContent=v;return}
+      var t0=performance.now();(function f(t){var k=Math.min(1,(t-t0)/900),ee=1-Math.pow(1-k,3);e.textContent=Math.round(from+(v-from)*ee);if(k<1)requestAnimationFrame(f)})(t0);
+    }
+    var tools=0;try{var tl=SITE.eff('tools')||{};tools=((tl.main||[]).length)+((tl.second||[]).length)}catch(x){}
+    set('stP',PROJECTS.length);set('stM',MODELS.length);set('stT',tools);
+    var mb=$('#stMbox');if(mb)mb.hidden=!MODELS.length;
+    fitSoon();
+  }
   function renderChips(){
     var host=$('#chips');if(!host)return;host.textContent='';
     skillList().forEach(function(k){
@@ -1876,12 +1898,26 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
       var m={id:p.id,title:p.title,tag:p.brand||p.tools||'3D',desc:[p.brand&&('Para '+p.brand+'.'),p.summary].filter(Boolean).join(' ')||'Modelo 3D interactivo.',src:safeSrc(p.model),legacy:p.legacy||''};
       if(fin.length)m.finals=fin;MODELS.push(m);
     });
-    renderPlist();renderChips();if(typeof hero3dSync==='function')hero3dSync();
+    try{renderPlist()}catch(e){console.error('renderPlist',e)}
+    try{renderChips()}catch(e){console.error('renderChips',e)}
+    try{applyStats()}catch(e){console.error('applyStats',e)}
+    try{if(typeof hero3dSync==='function')hero3dSync()}catch(e){console.error('hero3dSync',e)}
     for(var i=IDX.length-1;i>=0;i--)if(IDX[i].proj)IDX.splice(i,1);
     PROJECTS.forEach(function(p){IDX.splice(1,0,{t:p.title,d:[p.brand,p.kind].filter(Boolean).join(' · ')||'Proyecto',w:'p:'+p.id,proj:1,k:[p.brand,p.category,p.kind,p.tools,skillsOf(p).join(' '),p.summary,p.objective,p.role,p.result].join(' ')})});
   }
   ldOn($('#car'));
-  fetch('data/projects.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(j){applyProjects(j&&j.projects)}).catch(function(){applyProjects([])});
+  function loadProjects(tries){
+    fetch('data/projects.json'+(tries?'?v='+Date.now():''),{cache:'no-store'})
+      .then(function(r){if(!r.ok)throw new Error('projects.json '+r.status);return r.json()})
+      .then(function(j){var l=Array.isArray(j)?j:(j&&j.projects);if(!Array.isArray(l))throw new Error('projects.json sin lista');applyProjects(l)})
+      .catch(function(e){
+        console.error('No pude cargar los proyectos:',e);
+        if(tries<2){setTimeout(function(){loadProjects(tries+1)},1500*(tries+1));return}
+        applyProjects([]);
+        var em=$('#plist .proj.empty .nm');if(em)em.textContent='No pude cargar los proyectos. Recarga con Ctrl+Shift+R';
+      });
+  }
+  loadProjects(0);
 
   /* Estado de disponibilidad: se lee de status.json y el dueño lo cambia desde el menú */
   var STATES={
