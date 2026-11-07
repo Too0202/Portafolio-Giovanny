@@ -300,31 +300,6 @@
       "pdf": ""
     },
     {
-      "title": "Gif Hidratantes",
-      "category": "Animaciones y GIF",
-      "brand": "Ligne D'or",
-      "kind": "Animación",
-      "summary": "",
-      "objective": "",
-      "role": "",
-      "result": "",
-      "duration": "",
-      "tools": "After Effects",
-      "format": "Vertical 9:16",
-      "id": "gif-hidratantes",
-      "cover": "media/p/gif-hidratantes/cover-mw1l71em-portada.jpg",
-      "thumb": "",
-      "video": "media/p/gif-hidratantes/video-mw1l71bf-hidratantes-final.mp4",
-      "portrait": true,
-      "images": [],
-      "skills": [
-        "Animación y GIF",
-        "Redes sociales"
-      ],
-      "model": "",
-      "pdf": ""
-    },
-    {
       "title": "Video Gif Serum Vitamina C",
       "category": "Animaciones y GIF",
       "brand": "Ligne D'or",
@@ -344,6 +319,31 @@
       "images": [],
       "skills": [
         "3D en Blender",
+        "Redes sociales"
+      ],
+      "model": "",
+      "pdf": ""
+    },
+    {
+      "title": "Gif Hidratantes",
+      "category": "Animaciones y GIF",
+      "brand": "Ligne D'or",
+      "kind": "Animación",
+      "summary": "",
+      "objective": "",
+      "role": "",
+      "result": "",
+      "duration": "",
+      "tools": "After Effects",
+      "format": "Vertical 9:16",
+      "id": "gif-hidratantes",
+      "cover": "media/p/gif-hidratantes/cover-mw1l71em-portada.jpg",
+      "thumb": "",
+      "video": "media/p/gif-hidratantes/video-mw1l71bf-hidratantes-final.mp4",
+      "portrait": true,
+      "images": [],
+      "skills": [
+        "Animación y GIF",
         "Redes sociales"
       ],
       "model": "",
