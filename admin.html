@@ -289,7 +289,7 @@ details summary{cursor:pointer;font-weight:700}
   var MAX_MB=50;
   var cfg={owner:'',repo:'',branch:'main',token:''};
   var remote={projects:[],status:'busco',site:{},sha:null,headSha:null};
-  var state={projects:[],status:'busco',site:{},siteDirty:false,files:{},deletes:{},dirty:false,statusDirty:false};
+  var state={projects:[],status:'busco',photo:null,site:{},siteDirty:false,files:{},deletes:{},dirty:false,statusDirty:false};
   var editing=null; // objeto de trabajo del formulario
   var form={};
 
@@ -988,6 +988,19 @@ details summary{cursor:pointer;font-weight:700}
       [{k:'n',l:'Frase (ej. modelado 3D)',wide:true}],{n:''});
   }
 
+  function shrinkPhoto(file){
+    return new Promise(function(ok,bad){
+      var im=new Image(),u=URL.createObjectURL(file);
+      im.onload=function(){
+        var r=Math.min(1,1400/Math.max(im.naturalWidth,im.naturalHeight)),c=document.createElement('canvas');
+        c.width=Math.max(1,Math.round(im.naturalWidth*r));c.height=Math.max(1,Math.round(im.naturalHeight*r));
+        var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);
+        URL.revokeObjectURL(u);c.toBlob(function(b){b?ok(b):bad(new Error('No pude procesar la imagen.'))},'image/jpeg',.88);
+      };
+      im.onerror=function(){URL.revokeObjectURL(u);bad(new Error('Ese archivo no es una imagen que pueda leer.'))};
+      im.src=u;
+    });
+  }
   /* datos generales */
   function buildData(){
     var host=$('#tp-data');host.textContent='';SITE.setUser(state.site);
@@ -996,6 +1009,35 @@ details summary{cursor:pointer;font-weight:700}
       i.addEventListener('input',function(){var v=i.value.trim();if(v===''||v===SITE.DEF[f[0]])delete state.site[f[0]];else state.site[f[0]]=v;siteTouch()});
       host.appendChild(lb);host.appendChild(i);
     });
+    /* foto de perfil */
+    var pl=el('label','','Tu foto (se ve junto a «Hola, soy Giovanny» y se amplía al tocar tu nombre)');
+    var box=el('div','');box.style.cssText='display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:6px 0 14px';
+    var pv=document.createElement('img');pv.alt='';pv.style.cssText='width:84px;height:84px;border-radius:50%;object-fit:cover;background:#dfe9f2;border:2px solid var(--line,#c9d8e6)';
+    var pick=document.createElement('input');pick.type='file';pick.accept='image/*';pick.style.maxWidth='260px';
+    var rm=el('button','','Quitar foto');rm.type='button';
+    var pm=el('span','','');pm.style.cssText='color:var(--muted);font-size:14px';
+    function showPhoto(){
+      var u=state.photo?state.photo.url:(state.site.photo||'');
+      pv.src=u||'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+      rm.hidden=!u;pm.textContent=u?'':'Aún no hay foto.';
+    }
+    pick.addEventListener('change',function(){
+      var f=pick.files&&pick.files[0];if(!f)return;
+      shrinkPhoto(f).then(function(bl){
+        if(state.photo){URL.revokeObjectURL(state.photo.url)}
+        else if(state.site.photo&&remote.site&&remote.site.photo===state.site.photo)state.deletes[state.site.photo]=true;
+        var path='media/foto-perfil-'+Date.now().toString(36)+'.jpg';
+        state.photo={path:path,blob:bl,url:URL.createObjectURL(bl)};state.site.photo=path;siteTouch();showPhoto();
+      }).catch(function(e){pm.textContent=e.message||'No pude usar esa imagen.'});
+      pick.value='';
+    });
+    rm.addEventListener('click',function(){
+      if(state.photo){URL.revokeObjectURL(state.photo.url);state.photo=null}
+      else if(state.site.photo&&remote.site&&remote.site.photo===state.site.photo)state.deletes[state.site.photo]=true;
+      delete state.site.photo;siteTouch();showPhoto();
+    });
+    box.appendChild(pv);box.appendChild(pick);box.appendChild(rm);box.appendChild(pm);
+    host.appendChild(pl);host.appendChild(box);showPhoto();
     var n=el('p','','El correo y el celular que se ven en la página se cambian en la pestaña Textos, grupo «Ventana Contacto».');n.style.color='var(--muted)';host.appendChild(n);
   }
 
@@ -1036,6 +1078,7 @@ details summary{cursor:pointer;font-weight:700}
     var files=paths.map(function(p){return {path:p,blob:state.files[p].blob}});
     files.push({path:'data/projects.json',text:JSON.stringify({projects:state.projects.map(clean)},null,2)+'\n'});
     if(state.statusDirty)files.push({path:'status.json',text:JSON.stringify({status:state.status})+'\n'});
+    if(state.photo)files.push({path:state.photo.path,blob:state.photo.blob});
     if(state.siteDirty)files.push({path:'data/site.json',text:JSON.stringify(state.site,null,2)+'\n'});
     var total=files.length+3,done=0;
     commitFiles(files,Object.keys(state.deletes),'Actualizar portafolio desde el panel',function(){done++;progress(done/total)}).then(function(){
@@ -1044,6 +1087,7 @@ details summary{cursor:pointer;font-weight:700}
       state.projects=JSON.parse(JSON.stringify(remote.projects));
       Object.keys(state.files).forEach(function(p){URL.revokeObjectURL(state.files[p].url)});
       state.files={};state.deletes={};state.dirty=false;state.statusDirty=false;
+      if(state.photo){state.site.photo=state.photo.path;state.photo=null}
       render();updatePub();
       msg($('#pubMsg'),'¡Publicado! La página se actualiza sola en 1 o 2 minutos. Si no ves el cambio, refresca con Ctrl + F5.','ok');
       setTimeout(function(){$('#prog').hidden=true},1500);

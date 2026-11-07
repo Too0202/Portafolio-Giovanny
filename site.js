@@ -6,6 +6,7 @@
     name:'Giovanny Buitrago',
     title:'Portafolio Giovanny Buitrago',
     whatsapp:'573142372305',
+    photo:'',
     skills:[
       {n:'Catálogos',d:'Diseño de catálogos de producto.'},
       {n:'Video',d:'Grabación y edición de video.'},
