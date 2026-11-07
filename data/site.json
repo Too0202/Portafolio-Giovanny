@@ -4,9 +4,11 @@
     "radius": 27
   },
   "texts": {
-    "Tarjeta Experiencia|executive-sas-actualidad": "EXECUTIVE SAS · Septiembre 2026 ·  actualidad"
+    "Tarjeta Experiencia|executive-sas-actualidad": "EXECUTIVE SAS · Septiembre 2026 ·  actualidad",
+    "Tarjeta Habilidades|en-numeros": "Resumen"
   },
   "features": {
     "greet": false
-  }
+  },
+  "photo": "media/foto-perfil-mw6yyjhg.jpg"
 }
