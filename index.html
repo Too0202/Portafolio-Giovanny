@@ -761,6 +761,69 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
   .cf-n{width:40px;height:40px;margin-top:-20px}
 }
 @media (prefers-reduced-motion:reduce){.cf-c{transition-duration:.01ms}}
+/* Proyectos: destacados + cuadrícula + pared de fotos */
+.pchips button em{font-style:normal;font-family:var(--mono);font-size:12px;opacity:.6;margin-left:6px}
+.pchips button[aria-pressed="true"] em{opacity:.8}
+.ph{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:22px 0 10px}
+.ph h4{font-family:var(--display);font-size:21px;letter-spacing:-.03em;margin:0}
+.ph span{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.pfeat{display:grid;gap:12px;height:clamp(300px,48vh,420px)}
+.pfeat.f1{grid-template-columns:1fr}.pfeat.f2{grid-template-columns:1fr 1fr}
+.pfeat.f3{grid-template-columns:1.55fr 1fr;grid-template-rows:1fr 1fr}
+.pfeat.f3 .proj:first-child{grid-row:span 2}
+.pfeat .proj{height:100%;border-radius:22px}
+.pfeat .proj:first-child .nm{font-size:clamp(20px,2.4vw,28px);padding:20px 22px}
+.pfeat .star{position:absolute;z-index:3;top:12px;right:12px;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.92);color:var(--ink);font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:5px 11px;font-weight:700}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr));gap:12px}
+.pgrid .proj{aspect-ratio:4/5;border-radius:18px}
+.proj .tb{position:absolute;z-index:3;top:10px;left:10px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(13,24,36,.62);color:#fff;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.pgrid .proj:hover,.pfeat .proj:hover{box-shadow:0 14px 34px rgba(6,14,24,.3)}
+.pgrid .proj,.pfeat .proj{transition:box-shadow .25s,transform .25s}
+.pgrid .proj:hover{transform:translateY(-3px)}
+.wall{position:relative;background:#0b0f14;border-radius:22px;padding:16px 0;display:flex;flex-direction:column;gap:12px;overflow:hidden}
+.wall::before,.wall::after{content:"";position:absolute;top:0;bottom:0;width:70px;z-index:3;pointer-events:none}
+.wall::before{left:0;background:linear-gradient(90deg,#0b0f14,transparent)}.wall::after{right:0;background:linear-gradient(270deg,#0b0f14,transparent)}
+.wrow{overflow:hidden}
+.wtrack{display:flex;gap:12px;width:max-content;animation:wmv var(--dur,70s) linear infinite}
+.wrow.rev .wtrack{animation-direction:reverse}
+.wall:hover .wtrack,.wall:focus-within .wtrack{animation-play-state:paused}
+@keyframes wmv{to{transform:translateX(-50%)}}
+.wt{flex:none;height:clamp(96px,15vh,140px);aspect-ratio:var(--r,.62);border:0;padding:0;border-radius:14px;overflow:hidden;background:#17293a;cursor:pointer;position:relative;transition:transform .25s,box-shadow .25s}
+.wt img{width:100%;height:100%;object-fit:cover;display:block}
+.wt:hover,.wt:focus-visible{transform:scale(1.07);z-index:4;box-shadow:0 10px 28px rgba(0,0,0,.6);outline:0}
+.wt:focus-visible{box-shadow:0 0 0 3px var(--sky)}
+.wall.static{padding:12px}.wall.static::before,.wall.static::after{display:none}
+.wgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.wgrid .wt{height:auto;aspect-ratio:4/5;width:100%}
+.wnote{margin:10px 2px 0;color:var(--muted);font-size:15px}
+.pv{position:fixed;inset:0;z-index:600;background:rgba(4,8,13,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:grid;place-items:center;padding:20px;animation:fade .25s both}
+.pv-in{display:grid;grid-template-columns:auto minmax(280px,1fr);background:#f3f7fb;color:var(--ink);border-radius:24px;overflow:hidden;width:min(980px,100%);max-height:min(92svh,700px);box-shadow:0 30px 80px rgba(0,0,0,.55)}
+.pv-im{position:relative;background:#0b0f14;display:grid;place-items:center;min-width:0}
+.pv-im img{display:block;max-height:min(92svh,700px);max-width:min(52vw,470px);width:auto;height:auto;object-fit:contain}
+.pv-n{position:absolute;top:50%;width:42px;height:42px;margin-top:-21px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:var(--ink);display:grid;place-items:center;cursor:pointer}
+.pv-n.p{left:10px}.pv-n.p svg{transform:rotate(180deg)}.pv-n.x{right:10px}
+.pv-c{position:absolute;left:12px;bottom:12px;font-family:var(--mono);font-size:12px;color:#fff;background:rgba(0,0,0,.55);border-radius:999px;padding:4px 10px}
+.pv-info{padding:26px 28px;display:flex;flex-direction:column;gap:12px;overflow:auto;position:relative}
+.pv-info .k{font-family:var(--mono);font-size:12.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding-right:90px}
+.pv-info h3{font-family:var(--display);font-size:clamp(24px,3vw,32px);letter-spacing:-.035em;line-height:1.05;margin:0}
+.pv-info p{margin:0;font-size:17px;line-height:1.45}
+.pv-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto}
+.pv-meta div{background:var(--card-2);border-radius:14px;padding:10px 12px}
+.pv-meta span{display:block;font-family:var(--mono);font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.pv-meta b{display:block;font-size:16px;margin-top:2px}
+.pv-x{position:absolute;top:16px;right:16px;border:0;background:#fff;border-radius:999px;padding:8px 14px;font-weight:700;cursor:pointer;color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.pv-go{align-self:flex-start;border:0;background:var(--ink);color:#fff;border-radius:999px;padding:11px 20px;font-weight:700;cursor:pointer}
+@media (max-width:760px){
+  .pfeat,.pfeat.f2,.pfeat.f3{grid-template-columns:1fr;grid-template-rows:none;height:auto}
+  .pfeat .proj,.pfeat .proj:first-child{height:auto;aspect-ratio:16/10;grid-row:auto}
+  .pgrid{grid-template-columns:repeat(2,1fr)}
+  .pv{padding:0;place-items:end center}
+  .pv-in{grid-template-columns:1fr;grid-template-rows:auto 1fr;border-radius:24px 24px 0 0;max-height:94svh;overflow:auto}
+  .pv-im img{max-width:100%;max-height:48svh}
+  .pv-info{padding:20px}
+}
+@media (prefers-reduced-motion:reduce){.wtrack{animation:none}.wrow{overflow-x:auto}}
+
 
 .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:2px 0 14px}
 .stat{background:var(--card-2);border-radius:18px;padding:14px 16px;min-width:0}
@@ -974,6 +1037,10 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
   <ul class="eduw">
     <li><span class="mono">Universidad ECCI · en curso</span><b>Tecnólogo en Mercadeo y Publicidad</b><span class="d">Desde julio 2023 · cursando quinto semestre.</span></li>
     <li><span class="mono">SENA · Graduado noviembre 2023</span><b>Técnico Profesional en Diseño Multimedia</b><span class="d">Formación culminada.</span></li>
+  </ul>
+
+  <h4 class="sec">Otros estudios o cursos realizados</h4>
+  <ul class="eduw">
     <li><span class="mono">SENA · Certificado mayo 2021</span><b>Excel y Access para desarrollo de apps</b><span class="d">Curso de 48 horas.</span></li>
   </ul>
 
@@ -1023,7 +1090,7 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
 
 <template id="tpl-projects">
   <h2>Proyectos</h2>
-  <p class="lead">Mis trabajos más recientes. Toca uno para verlo con detalle.</p>
+  <p class="lead">Mis trabajos, ordenados por tipo. Toca uno para verlo con detalle.</p>
   <div data-grid></div>
 </template>
 
@@ -1696,20 +1763,117 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
     body.appendChild(g);
   }
   var pfilter='';
-  function catOf(p){return p.category||'Otros'}
+  function catOf(p){var c=p.category||'Otros';return /^fotograf/i.test(c)?'Fotografía':c}
   var cfIdx={};
+  var CORD=['Modelado 3D','Animaciones y GIF','Video','Fotografía'];
+  function tbadge(p){
+    var s=null;if(p.video)s='i-play';else if(p.model)s='i-cube';
+    if(!s)return null;var t=el2('span','tb');t.setAttribute('aria-hidden','true');t.innerHTML='<svg width="14" height="14"><use href="#'+s+'"/></svg>';return t;
+  }
+  function gcard(p,star){
+    var c=projCard(p),b=tbadge(p);if(b)c.appendChild(b);
+    if(star){var s=el2('span','star');s.innerHTML='<svg width="12" height="12"><use href="#i-star"/></svg>Destacado';c.appendChild(s)}
+    return c;
+  }
+  function phead(t,n){var d=el2('div','ph');d.appendChild(el2('h4','',t));if(n!=null)d.appendChild(el2('span','',n));return d}
+  function photoList(){return PROJECTS.filter(function(p){return catOf(p)==='Fotografía'&&(p.cover||p.thumb)})}
   function fillProjects(el){
     var host=$('[data-grid]',el);host.textContent='';
     if(!PROJECTS.length){host.appendChild(el2('p','pnone','Pronto habrá proyectos aquí.'));return}
-    var cats=[];PROJECTS.forEach(function(p){if(cats.indexOf(catOf(p))<0)cats.push(catOf(p))});
+    var cats=[];PROJECTS.forEach(function(p){var c=catOf(p);if(cats.indexOf(c)<0)cats.push(c)});
+    cats.sort(function(a,b){var x=CORD.indexOf(a),y=CORD.indexOf(b);return (x<0?99:x)-(y<0?99:y)});
     if(cats.indexOf(pfilter)<0)pfilter='';
     var chips=el2('div','pchips');
     [''].concat(cats).forEach(function(c){
-      var b=el2('button','',c||'Todos');b.type='button';b.setAttribute('aria-pressed',c===pfilter?'true':'false');
+      var n=c?PROJECTS.filter(function(p){return catOf(p)===c}).length:PROJECTS.length;
+      var b=el2('button','');b.type='button';b.setAttribute('aria-pressed',c===pfilter?'true':'false');
+      b.appendChild(document.createTextNode(c||'Todos'));b.appendChild(el2('em','',String(n)));
       b.addEventListener('click',function(){pfilter=c;fillProjects(el)});chips.appendChild(b);
     });
     host.appendChild(chips);
-    host.appendChild(coverflow(PROJECTS.filter(function(p){return !pfilter||catOf(p)===pfilter}),pfilter));
+    if(!pfilter){
+      var feat=PROJECTS.filter(function(p){return p.featured}).slice(0,3);
+      if(!feat.length&&PROJECTS.length>3)feat=PROJECTS.slice(0,3);
+      if(feat.length){
+        host.appendChild(phead('Destacados'));
+        var fg=el2('div','pfeat f'+feat.length);feat.forEach(function(p){fg.appendChild(gcard(p,true))});host.appendChild(fg);
+      }
+      var rest=PROJECTS.filter(function(p){return feat.indexOf(p)<0});
+      if(rest.length){host.appendChild(phead(feat.length?'Más trabajos':'Trabajos',rest.length+(rest.length===1?' trabajo':' trabajos')));
+        var g=el2('div','pgrid');rest.forEach(function(p){g.appendChild(gcard(p))});host.appendChild(g)}
+    }else if(pfilter==='Fotografía'){
+      var pl=photoList();
+      host.appendChild(phead('Fotografía',pl.length+(pl.length===1?' foto':' fotos')));
+      if(pl.length)host.appendChild(photoWall(pl));
+      host.appendChild(el2('p','wnote','Toca una foto para verla en grande y ver cómo la trabajé.'));
+    }else{
+      var l=PROJECTS.filter(function(p){return catOf(p)===pfilter});
+      host.appendChild(phead(pfilter,l.length+(l.length===1?' trabajo':' trabajos')));
+      var g2=el2('div','pgrid');l.forEach(function(p){g2.appendChild(gcard(p))});host.appendChild(g2);
+    }
+  }
+  function photoWall(list){
+    var mob=matchMedia('(max-width:760px)').matches,w=el2('div','wall');
+    function tile(p,k,dup){
+      var t=el2('button','wt');t.type='button';t.setAttribute('aria-label','Ver foto: '+p.title);
+      var im=document.createElement('img');im.src=safeSrc(p.thumb||p.cover);im.alt=dup?'':p.title;im.loading='lazy';
+      im.addEventListener('load',function(){if(im.naturalWidth&&im.naturalHeight&&!mob)t.style.setProperty('--r',(im.naturalWidth/im.naturalHeight).toFixed(3))});
+      t.appendChild(im);
+      if(dup){t.tabIndex=-1;t.setAttribute('aria-hidden','true')}
+      t.addEventListener('click',function(){openPV(list,k,t)});return t;
+    }
+    if(mob||calm||list.length<6){
+      w.classList.add('static');var g=el2('div','wgrid');list.forEach(function(p,k){g.appendChild(tile(p,k))});w.appendChild(g);return w;
+    }
+    var rows=[[],[],[]];list.forEach(function(p,k){rows[k%3].push([p,k])});
+    rows.forEach(function(r,ri){
+      if(!r.length)return;
+      var row=el2('div','wrow'+(ri===1?' rev':'')),tr=el2('div','wtrack');
+      tr.style.setProperty('--dur',Math.max(40,r.length*9+ri*8)+'s');
+      var reps=Math.max(1,Math.ceil(14/r.length))*2;
+      for(var c=0;c<reps;c++)r.forEach(function(it){tr.appendChild(tile(it[0],it[1],c>0))});
+      row.appendChild(tr);w.appendChild(row);
+    });
+    return w;
+  }
+  var PV=null;
+  function closePV(){
+    if(!PV)return;window.removeEventListener('keydown',PV.key,true);PV.el.remove();
+    var f=PV.from;PV=null;try{if(f&&f.isConnected)f.focus()}catch(e){}
+  }
+  function openPV(list,i,from){
+    closePV();
+    var cur=i,el=el2('div','pv');el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');
+    el.innerHTML='<div class="pv-in"><div class="pv-im"><img alt=""><button type="button" class="pv-n p" aria-label="Foto anterior"><svg width="20" height="20"><use href="#i-chev"/></svg></button><button type="button" class="pv-n x" aria-label="Foto siguiente"><svg width="20" height="20"><use href="#i-chev"/></svg></button><span class="pv-c"></span></div><div class="pv-info"><button type="button" class="pv-x">Cerrar ✕</button><span class="k"></span><h3></h3><div class="pv-body"></div><div class="pv-meta"></div><button type="button" class="pv-go">Ver proyecto completo</button></div></div>';
+    var img=$('img',el),k=$('.k',el),h3=$('h3',el),body=$('.pv-body',el),meta=$('.pv-meta',el),cnt=$('.pv-c',el),go=$('.pv-go',el),np=list.length<2;
+    function show(n){
+      cur=((n%list.length)+list.length)%list.length;var p=list[cur];
+      img.src=safeSrc(p.cover||p.thumb);img.alt=p.title;
+      k.textContent=[p.brand,p.kind||p.category].filter(Boolean).join(' · ');h3.textContent=p.title;
+      body.textContent='';
+      var main=p.summary||p.objective;if(main)body.appendChild(el2('p','',main));
+      if(p.role){var r=el2('p');var bb=el2('b','','Mi trabajo: ');r.appendChild(bb);r.appendChild(document.createTextNode(p.role));r.style.marginTop='10px';body.appendChild(r)}
+      meta.textContent='';
+      [['Marca',p.brand],['Programas',p.tools],['Formato',p.format],['Duración',p.duration]].forEach(function(m){if(!m[1])return;var d=el2('div');d.appendChild(el2('span','',m[0]));d.appendChild(el2('b','',m[1]));meta.appendChild(d)});
+      cnt.textContent=(cur+1)+' / '+list.length;
+      go.onclick=function(){var id=p.id;closePV();openWin('p:'+id)};
+    }
+    $('.pv-n.p',el).onclick=function(){show(cur-1)};$('.pv-n.x',el).onclick=function(){show(cur+1)};
+    if(np){$('.pv-n.p',el).hidden=true;$('.pv-n.x',el).hidden=true;cnt.hidden=true}
+    $('.pv-x',el).onclick=closePV;
+    el.addEventListener('click',function(e){if(e.target===el)closePV()});
+    var key=function(e){
+      if(e.key==='Escape'){e.stopPropagation();e.preventDefault();closePV()}
+      else if(e.key==='ArrowLeft'){e.stopPropagation();e.preventDefault();show(cur-1)}
+      else if(e.key==='ArrowRight'){e.stopPropagation();e.preventDefault();show(cur+1)}
+      else if(e.key==='Tab'){var f=[].slice.call(el.querySelectorAll('button:not([hidden])'));if(!f.length)return;var a=f[0],z=f[f.length-1];
+        if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}
+    };
+    window.addEventListener('keydown',key,true);
+    var sx=null;
+    $('.pv-im',el).addEventListener('touchstart',function(e){sx=e.touches[0].clientX},{passive:true});
+    $('.pv-im',el).addEventListener('touchend',function(e){if(sx===null)return;var dx=e.changedTouches[0].clientX-sx;sx=null;if(Math.abs(dx)>45)show(cur+(dx<0?1:-1))},{passive:true});
+    document.body.appendChild(el);PV={el:el,key:key,from:from};show(cur);$('.pv-x',el).focus();
   }
   function coverflow(list,key){
     var n=list.length,cur=Math.min(cfIdx[key]||0,n-1),root=el2('div','cf'),st=el2('div','cf-stage'),cards=[],moved=false;
@@ -2251,7 +2415,7 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
 
   /* Búsqueda */
   var IDX=[
-    {t:'Sobre mí',d:'Formación, estilo y habilidades',w:'about',k:'sobre mi formacion sena ecci estilo habilidades marcas clientes curso excel access pasatiempos'},
+    {t:'Sobre mí',d:'Formación, estilo y habilidades',w:'about',k:'sobre mi formacion sena ecci estilo habilidades marcas clientes otros estudios cursos excel access pasatiempos'},
     {t:'Modelado 3D',d:'Visor interactivo de mis modelos',w:'models',k:'3d modelos visor blender malla'},
     {t:'Programas',d:'After Effects, Premiere, Blender y más',w:'tools',k:'programas software after effects premiere pro illustrator photoshop blender capcut canva ia inteligencia artificial'},
     {t:'Contacto',d:'Correo, celular y WhatsApp',w:'contact',k:'contacto correo celular telefono whatsapp escribir'},

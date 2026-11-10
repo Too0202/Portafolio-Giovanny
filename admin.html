@@ -206,6 +206,7 @@ details summary{cursor:pointer;font-weight:700}
         <div class="dz small" id="dzc"><input id="f-cover" type="file" accept="image/*"><div class="dz-in"><b>Arrastra o toca para elegir una portada</b><span id="cover-pick">Si no pones una, uso la primera imagen, o creo una del video o del modelo 3D.</span></div></div>
         <div class="files" id="cover-list"></div>
         <div hidden><input id="f-video" type="file"><input id="f-images" type="file" multiple><input id="f-pdf" type="file"><input id="f-model" type="file"></div>
+        <label style="display:flex;gap:10px;align-items:center;font-weight:600;margin-top:18px;background:var(--card,#f3f7fb);padding:12px 14px;border-radius:14px"><input id="f-featured" type="checkbox" style="width:20px;height:20px"> ★ Trabajo destacado <small style="font-weight:400">(sale grande arriba, en Proyectos → Todos; máximo 3)</small></label>
         <details id="moreBox" style="margin-top:18px"><summary>Más detalles (opcional)</summary>
         <label for="f-category">Categoría <small>(si la dejas vacía la elijo según tus archivos)</small></label>
         <input id="f-category" type="text" list="cats" placeholder="Elige una o escribe una nueva" autocomplete="off">
@@ -517,10 +518,10 @@ details summary{cursor:pointer;font-weight:700}
     return l;
   }
   function openForm(i){
-    var p=i>=0?JSON.parse(JSON.stringify(state.projects[i])):{id:'',title:'',category:'',brand:'',kind:'',summary:'',objective:'',role:'',result:'',duration:'',tools:'',format:'',cover:'',video:'',portrait:false,images:[],model:'',pdf:''};
+    var p=i>=0?JSON.parse(JSON.stringify(state.projects[i])):{id:'',title:'',category:'',brand:'',kind:'',summary:'',objective:'',role:'',result:'',duration:'',tools:'',format:'',cover:'',video:'',portrait:false,featured:false,images:[],model:'',pdf:''};
     editing={idx:i,p:p,newFiles:{},removed:[]};
     FIELDS.forEach(function(k){form[k].value=p[k]||''});
-    $('#f-portrait').checked=!!p.portrait;drawSkills(p);$('#f-files').value='';$('#files-hint').textContent='';$('#picked').textContent='';$('#cover-pick').textContent='Si no pones una, uso la primera imagen, o creo una del video o del modelo 3D.';$('#moreBox').open=false;
+    $('#f-portrait').checked=!!p.portrait;$('#f-featured').checked=!!p.featured;drawSkills(p);$('#f-files').value='';$('#files-hint').textContent='';$('#picked').textContent='';$('#cover-pick').textContent='Si no pones una, uso la primera imagen, o creo una del video o del modelo 3D.';$('#moreBox').open=false;
     ['cover','video','images','model','pdf'].forEach(function(k){$('#f-'+k).value=''});
     $('#formTitle').textContent=i>=0?'Editar proyecto':'Nuevo proyecto';
     msg($('#formMsg'),'');renderFiles();
@@ -738,7 +739,7 @@ details summary{cursor:pointer;font-weight:700}
     if(pdf&&pdf.size>MAX_MB*1048576){msg($('#formMsg'),'El PDF pesa más de '+MAX_MB+' MB. Comprímelo antes de subirlo.','err');return}
     $('#btnSave').disabled=true;msg($('#formMsg'),'Procesando archivos…','info');
     var p=editing.p,id=pid();p.id=id;
-    FIELDS.forEach(function(k){p[k]=form[k].value.trim()});p.portrait=$('#f-portrait').checked;p.skills=readSkills();
+    FIELDS.forEach(function(k){p[k]=form[k].value.trim()});p.portrait=$('#f-portrait').checked;p.featured=$('#f-featured').checked;p.skills=readSkills();
     var hasM=!!(model||p.model),hasV=!!(video||p.video),hasP=!!(pdf||p.pdf);
     if(!p.category)p.category=hasM?'Modelado 3D':hasP?'Catálogos':hasV?'Video':(cover||autoCover||imgs.length||p.cover)?'Diseño gráfico y branding':'Otros';
     if(!p.skills.length){
@@ -1097,6 +1098,7 @@ details summary{cursor:pointer;font-weight:700}
   }
   function clean(p){
     var o={};FIELDS.concat(['id','cover','thumb','video','portrait','images','skills','model','pdf']).forEach(function(k){o[k]=p[k]===undefined?((k==='images'||k==='skills')?[]:(k==='portrait'?false:'')):p[k]});
+    if(p.featured)o.featured=true;
     if(p.legacy)o.legacy=p.legacy;
     return o;
   }
