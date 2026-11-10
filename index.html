@@ -1924,8 +1924,8 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
     }
     /* contenido */
     if(!act){
-      var feat=PROJECTS.filter(function(p){return p.featured}).slice(0,3);
-      if(!feat.length&&PROJECTS.length>3)feat=PROJECTS.slice(0,3);
+      var feat=PROJECTS.filter(function(p){return p.featured}).slice(0,5);
+      if(!feat.length&&PROJECTS.length>5)feat=PROJECTS.slice(0,3);
       if(feat.length)host.appendChild(featSlider(feat));
       var rest=PROJECTS.filter(function(p){return feat.indexOf(p)<0});
       if(rest.length){host.appendChild(phead(feat.length?'Más trabajos':'Trabajos',rest.length+(rest.length===1?' trabajo':' trabajos')));
