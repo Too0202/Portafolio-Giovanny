@@ -33,7 +33,7 @@
         var fill=new THREE.DirectionalLight(0xffffff,.35);fill.position.set(-4,1,-3);scene.add(fill);
         new THREE.GLTFLoader().parse(buf,'',function(g){
           try{
-            var root=g.scene,box=new THREE.Box3().setFromObject(root),c=box.getCenter(new THREE.Vector3()),sp=box.getBoundingSphere(new THREE.Sphere());
+            window.PFFix(g);var root=g.scene,box=new THREE.Box3().setFromObject(root),c=box.getCenter(new THREE.Vector3()),sp=box.getBoundingSphere(new THREE.Sphere());
             root.position.sub(c);scene.add(root);
             var r0=sp.radius||1,dist=r0/Math.sin(THREE.MathUtils.degToRad(15))*1.02;
             camera.near=r0/100;camera.far=dist*20;camera.updateProjectionMatrix();
@@ -74,5 +74,24 @@
       });
     });
   }
+  /* Compensa lo que Three r128 no soporta: vidrio (transmission), UV 2 de etiquetas, reflejo de tapas */
+  window.PFFix=function(g){
+    try{
+      var js=(g.parser&&g.parser.json)||{},tr={},uv1={},cc={};
+      (js.materials||[]).forEach(function(m){var e=m.extensions||{},bt=m.pbrMetallicRoughness&&m.pbrMetallicRoughness.baseColorTexture;
+        if(e.KHR_materials_transmission)tr[m.name]=1;if(e.KHR_materials_clearcoat)cc[m.name]=1;if(bt&&bt.texCoord===1)uv1[m.name]=1});
+      g.scene.traverse(function(o){
+        if(!o.isMesh)return;
+        var ms=Array.isArray(o.material)?o.material:[o.material];
+        ms.forEach(function(m){
+          if(tr[m.name]){m.transparent=true;m.opacity=.2;m.roughness=.04;m.metalness=0;m.envMapIntensity=1.8;m.depthWrite=false;m.color.setRGB(1,1,1)}
+          if(uv1[m.name]&&o.geometry.attributes.uv2&&!o.geometry.userData.uvFix){o.geometry.userData.uvFix=1;o.geometry.setAttribute('uv',o.geometry.attributes.uv2)}
+          if(uv1[m.name]){m.transparent=true;m.depthWrite=false;m.needsUpdate=true}
+          if(cc[m.name]){m.envMapIntensity=1.6;if(m.metalness<.8)m.metalness=.85;m.roughness=Math.min(m.roughness,.28)}
+        });
+      });
+    }catch(e){}
+    return g;
+  };
   window.PFThumb={render:render};
 })();

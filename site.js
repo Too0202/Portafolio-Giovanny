@@ -20,8 +20,7 @@
       second:[{n:'CapCut',v:70},{n:'Canva',v:80}]
     },
     socials:[
-      {n:'Behance',h:'giovannbuitrag1',u:'https://www.behance.net/giovannbuitrag1'},
-      {n:'Instagram',h:'giovanny.buitrago.718',u:'https://www.instagram.com/giovanny.buitrago.718/'}
+      {n:'Instagram',h:'giobm15',u:'https://www.instagram.com/giobm15/'}
     ],
     testimonials:[],
     features:{greet:true,cursor:true,hero3d:true,typing:true,bgreact:true,winmem:true},

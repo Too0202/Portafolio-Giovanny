@@ -219,13 +219,22 @@ button.live.editable:hover{background:rgba(255,255,255,.35)}
 .search input::placeholder{color:#6b7f93;font-weight:500}
 .search label:focus-within{box-shadow:0 0 0 3px var(--sky-deep)}
 .search kbd{font-family:var(--mono);font-size:13px;background:var(--card-2);border-radius:8px;padding:3px 8px;color:var(--muted)}
-.results{position:absolute;left:0;right:0;top:calc(100% + 8px);z-index:60;background:#fff;color:var(--ink);border-radius:22px;padding:8px;box-shadow:0 20px 50px rgba(0,0,0,.35);display:none}
-.results.on{display:block}
-.results button{display:flex;flex-direction:column;align-items:flex-start;width:100%;border:0;background:transparent;padding:10px 14px;border-radius:14px;cursor:pointer;text-align:left}
-.results button:hover,.results button:focus-visible{background:#e8f3fc}
-.results b{font-size:17px}
-.results small{color:var(--muted);font-size:14.5px}
-.results .none{padding:12px 14px;color:var(--muted)}
+.results{position:absolute;left:0;right:0;top:calc(100% + 10px);z-index:60;background:rgba(255,255,255,.97);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);color:var(--ink);border-radius:22px;padding:8px;box-shadow:0 26px 60px rgba(4,12,24,.5),0 0 0 1px rgba(255,255,255,.55);display:none;max-height:min(60vh,430px);overflow:auto;overscroll-behavior:contain;transform-origin:top center}
+.results.on{display:block;animation:rin .2s cubic-bezier(.2,.8,.2,1)}
+@keyframes rin{from{opacity:0;transform:translateY(-8px) scale(.97)}to{opacity:1;transform:none}}
+.results .rh{font-family:var(--mono);font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);padding:8px 12px 5px}
+.results button{display:grid;grid-template-columns:38px 1fr auto;align-items:center;gap:12px;width:100%;border:0;background:transparent;padding:8px 10px;border-radius:14px;cursor:pointer;text-align:left;color:inherit;font:inherit}
+.results button:hover,.results button:focus-visible,.results button.act{background:linear-gradient(90deg,#e1f0fc,#eef6fd);outline:0}
+.results .ri{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--card-2);color:var(--sky-deep)}
+.results button:hover .ri,.results button.act .ri{background:var(--sky-deep);color:#fff}
+.results .rt{min-width:0}
+.results b{display:block;font-size:15.5px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.results small{display:block;color:var(--muted);font-size:13px;line-height:1.25;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.results .ra{opacity:0;transform:translateX(-4px);transition:.15s;color:var(--sky-deep)}
+.results button:hover .ra,.results button.act .ra{opacity:1;transform:none}
+.results .rm{padding:8px 12px 6px;color:var(--muted);font-size:13px}
+.results .none{padding:14px;color:var(--muted);text-align:center}
+.results::-webkit-scrollbar{width:8px}.results::-webkit-scrollbar-thumb{background:#c5d6e5;border-radius:9px}
 
 /* Bento */
 .bento{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:minmax(165px,1fr) minmax(165px,1fr) max-content;gap:14px;min-height:0;overflow:auto}
@@ -899,9 +908,9 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
       <section class="card edu" style="--i:5" data-win="about" tabindex="0" role="button" aria-label="Ver experiencia y más sobre mí">
         <div class="card-head"><h3>Experiencia</h3><span class="mono">Ver más</span></div>
         <ul>
-          <li class="on"><i></i><div><b>Practicante de diseño gráfico</b><span>EXECUTIVE SAS · actualidad</span></div></li>
-          <li><i></i><div><b>Diseñador gráfico</b><span>Soluciones Audiovisuales · mayo 2025 – mayo 2026</span></div></li>
-          <li><i></i><div><b>Asistente de producción audiovisual</b><span>Laboratorios Lissia · 2022 – 2024</span></div></li>
+          <li class="on"><i></i><div><b>Practicante de diseño gráfico</b><span>EXECUTIVE SAS · sep 2026 – actualidad</span></div></li>
+          <li><i></i><div><b>Auxiliar de diseño gráfico</b><span>Soluciones Audiovisuales · mayo 2025 – mayo 2026</span></div></li>
+          <li><i></i><div><b>Realizador audiovisual</b><span>Laboratorios Lissia · ene 2023 – ene 2025</span></div></li>
         </ul>
       </section>
 
@@ -931,42 +940,41 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
   <h4 class="sec">Experiencia</h4>
   <div class="xps">
     <article class="xp">
-      <div class="xp-h"><div><b>Practicante de diseño gráfico</b><span>EXECUTIVE SAS</span></div><span class="mono">Actualidad</span></div>
+      <div class="xp-h"><div><b>Practicante de diseño gráfico</b><span>EXECUTIVE SAS</span></div><span class="mono">Sep 2026 – actualidad</span></div>
       <p class="xp-i">Mi rol actual: apoyo al área de diseño en comunicación visual y producción de contenido.</p>
       <ul>
-        <li>Manejo de redes sociales.</li>
-        <li>Diseño de catálogos.</li>
-        <li>Modelado 3D.</li>
-        <li>Grabaciones y edición de video.</li>
-        <li>Animaciones tipo GIF.</li>
+        <li>Catálogos, piezas publicitarias, branding y maquetación editorial.</li>
+        <li>Redes sociales y parrillas de contenido.</li>
+        <li>Modelado 3D, animaciones tipo GIF, grabación y edición de video.</li>
       </ul>
     </article>
     <article class="xp">
-      <div class="xp-h"><div><b>Diseñador gráfico</b><span>Soluciones Audiovisuales</span></div><span class="mono">Mayo 2025 – mayo 2026 · 1 año</span></div>
-      <p class="xp-i">Mi mayor enfoque fue la creación de piezas 3D, además de la edición de video y la publicidad de la compañía.</p>
+      <div class="xp-h"><div><b>Auxiliar de diseño gráfico</b><span>Soluciones Audiovisuales</span></div><span class="mono">May 2025 – may 2026 · 1 año</span></div>
+      <p class="xp-i">Mi mayor enfoque fue el modelado 3D, además de la edición de video, la fotografía y la publicidad de la compañía.</p>
       <ul>
-        <li>Creación de trabajos 3D.</li>
-        <li>Edición de video.</li>
-        <li>Diseño de publicidad y comunicación de la empresa.</li>
+        <li>Videos publicitarios y fotografía; operación de equipos, iluminación, ambientación de espacios y montaje audiovisual.</li>
+        <li>Verificación de errores de producción, branding, atención al cliente, portafolios de servicios y cotizaciones.</li>
+        <li>Lectura e interpretación de planos y modelado 3D.</li>
+        <li><b>Logro:</b> promoví la divulgación de material previsualizado a clientes potenciales, consiguiendo nuevos clientes y su fidelización.</li>
       </ul>
     </article>
     <article class="xp">
-      <div class="xp-h"><div><b>Asistente de producción audiovisual</b><span>Laboratorios Lissia</span></div><span class="mono">2022 – 2024 · 2 años</span></div>
-      <p class="xp-i">Mi primer trabajo profesional en diseño y producción audiovisual, para las marcas Ligne D'Or, Maxybelt y Lissia.</p>
+      <div class="xp-h"><div><b>Realizador audiovisual</b><span>Laboratorios Lissia</span></div><span class="mono">Ene 2023 – ene 2025 · 2 años</span></div>
+      <p class="xp-i">Mi primer trabajo profesional en diseño y producción audiovisual.</p>
       <ul>
-        <li>Fotografía de producto.</li>
-        <li>Grabación y edición de video publicitario y corporativo.</li>
-        <li>Modelado, texturizado y animación 3D de producto, como la historia de lanzamiento de Ligne D'Or.</li>
-        <li>Trabajo con el equipo de mercadeo para cumplir los plazos con calidad.</li>
+        <li>Actualización y edición de parrillas de contenido para redes.</li>
+        <li>Visualización y mejora de material fotográfico.</li>
+        <li>Ambientación e iluminación de espacios; diseño y modelado 3D.</li>
+        <li>Indicadores de gestión e informes.</li>
       </ul>
     </article>
   </div>
 
   <h4 class="sec">Formación</h4>
   <ul class="eduw">
-    <li><span class="mono">SENA · Noviembre 2023</span><b>Técnico en Diseño Multimedia</b><span class="d">Formación culminada.</span></li>
-    <li><span class="mono">Universidad ECCI · Desde julio 2023</span><b>Tecnólogo en Mercadeo y Publicidad</b><span class="d">Cursando quinto semestre.</span></li>
-    <li><span class="mono">Orlando Higuita Rojas · 2021</span><b>Bachiller</b><span class="d">Educación media completa.</span></li>
+    <li><span class="mono">Universidad ECCI · en curso</span><b>Tecnólogo en Mercadeo y Publicidad</b><span class="d">Desde julio 2023 · cursando quinto semestre.</span></li>
+    <li><span class="mono">SENA · Graduado noviembre 2023</span><b>Técnico Profesional en Diseño Multimedia</b><span class="d">Formación culminada.</span></li>
+    <li><span class="mono">SENA · Certificado mayo 2021</span><b>Excel y Access para desarrollo de apps</b><span class="d">Curso de 48 horas.</span></li>
   </ul>
 
   <div class="trio">
@@ -976,7 +984,7 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
   </div>
 
   <h4 class="sec">Marcas y clientes</h4>
-  <div class="chips"><span class="chip" style="cursor:default">Laboratorios Lissia</span><span class="chip" style="cursor:default">Ligne D'Or</span><span class="chip" style="cursor:default">Maxybelt</span><span class="chip" style="cursor:default">Lissia</span><span class="chip" style="cursor:default">Soluciones Audiovisuales</span></div>
+  <div class="chips"><span class="chip" style="cursor:default">Le Collezioni</span><span class="chip" style="cursor:default">Ligne D'Or</span><span class="chip" style="cursor:default">Maxybelt</span><span class="chip" style="cursor:default">Lissia</span><span class="chip" style="cursor:default">Soluciones Audiovisuales</span></div>
 
   <div data-slot="quotes"></div>
 
@@ -1072,7 +1080,7 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
   <p>Los trabajos que ves son creaciones mías (fotografía, composición, edición, video y modelado 3D), hechas en muchos casos para clientes. Los derechos patrimoniales de cada trabajo pueden pertenecer a ese cliente; mi autoría se mantiene. Los nombres, logotipos y marcas que aparecen, por ejemplo Ligne D'Or, pertenecen a sus titulares y se muestran solo como referencia de mi trabajo. No copies, reproduzcas ni uses estos trabajos sin autorización de quien tenga los derechos.</p>
   <p>Si eres titular de una marca, o apareces en una imagen, y quieres que la corrija o la retire, escríbeme y lo atiendo.</p>
   <h3 class="grp">5. Responsabilidad y enlaces</h3>
-  <p>Procuro que la información sea veraz y esté al día, pero puede cambiar sin aviso. No respondo por el contenido de sitios externos a los que enlazo, como Behance, Instagram o WhatsApp.</p>
+  <p>Procuro que la información sea veraz y esté al día, pero puede cambiar sin aviso. No respondo por el contenido de sitios externos a los que enlazo, como Instagram o WhatsApp.</p>
   <h3 class="grp">6. Ley aplicable y cambios</h3>
   <p>Este sitio se rige por las leyes de la República de Colombia. Puedo actualizar este aviso; la fecha de arriba indica la última versión.</p>
 </template>
@@ -1474,7 +1482,7 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
       }
       function load(m){
         if(cache[m.id])return Promise.resolve(cache[m.id]);
-        function parse(buf){return new Promise(function(ok,no){new THREE.GLTFLoader().parse(buf,'',function(g){cache[m.id]=g.scene;ok(g.scene)},no)})}
+        function parse(buf){return new Promise(function(ok,no){new THREE.GLTFLoader().parse(buf,'',function(g){PFFix(g);cache[m.id]=g.scene;ok(g.scene)},no)})}
         function fromB64(){
           return new Promise(function(ok,no){
             var done=function(){
@@ -2165,7 +2173,7 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
       }
       if(cache[m.id])return put(cache[m.id]);
       ldOn(box);
-      new THREE.GLTFLoader().load(m.src,function(g){cache[m.id]=g.scene;put(g.scene)},undefined,function(){if(my===seq)ldOff(box)});
+      new THREE.GLTFLoader().load(m.src,function(g){PFFix(g);cache[m.id]=g.scene;put(g.scene)},undefined,function(){if(my===seq)ldOff(box)});
     }
     show(H3.k);
     $('#h3dP').onclick=function(){show(H3.k-1)};$('#h3dN').onclick=function(){show(H3.k+1)};
@@ -2243,31 +2251,48 @@ html.pfcur input,html.pfcur textarea,html.pfcur select{cursor:text!important}
 
   /* Búsqueda */
   var IDX=[
-    {t:'Sobre mí',d:'Formación, estilo y habilidades',w:'about',k:'sobre mi formacion sena ecci estilo habilidades marcas clientes bachiller pasatiempos'},
+    {t:'Sobre mí',d:'Formación, estilo y habilidades',w:'about',k:'sobre mi formacion sena ecci estilo habilidades marcas clientes curso excel access pasatiempos'},
     {t:'Modelado 3D',d:'Visor interactivo de mis modelos',w:'models',k:'3d modelos visor blender malla'},
     {t:'Programas',d:'After Effects, Premiere, Blender y más',w:'tools',k:'programas software after effects premiere pro illustrator photoshop blender capcut canva ia inteligencia artificial'},
     {t:'Contacto',d:'Correo, celular y WhatsApp',w:'contact',k:'contacto correo celular telefono whatsapp escribir'},
     {t:'Aviso legal y privacidad',d:'Datos personales, derechos y avisos',w:'legal',k:'legal privacidad datos personales habeas data derechos de autor aviso terminos'},
-    {t:'Experiencia',d:'EXECUTIVE SAS, Soluciones Audiovisuales y Laboratorios Lissia',w:'about',k:'experiencia trabajo laboral executive practicante lissia soluciones audiovisuales asistente produccion disenador grafico'},
+    {t:'Experiencia',d:'Executive, Soluciones Audiovisuales, Lissia',w:'about',k:'experiencia trabajo laboral executive practicante lissia soluciones audiovisuales auxiliar realizador audiovisual disenador grafico le collezioni'},
     {t:'Hoja de vida',d:'Descargar en PDF',cv:true,k:'hoja de vida cv curriculum descargar pdf'}
   ];
   function norm(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')}
   var q=$('#q'),res=$('#results');
   function closeResults(){res.classList.remove('on')}
+  var ICO={about:'i-user',models:'i-cube',tools:'i-grid',contact:'i-mail',legal:'i-lock',cv:'i-down',proj:'i-star'};
+  function row(x){
+    var b=document.createElement('button');b.type='button';if(x.cv){b.setAttribute('data-cv','')}else{b.dataset.win=x.w}
+    var ic=x.cv?'cv':(x.proj?'proj':x.w);
+    b.innerHTML='<span class="ri"><svg width="18" height="18"><use href="#'+(ICO[ic]||'i-search')+'"/></svg></span><span class="rt"><b></b><small></small></span><svg class="ra" width="16" height="16"><use href="#i-chev"/></svg>';
+    $('b',b).textContent=x.t;$('small',b).textContent=x.d;return b;
+  }
+  function head(t){var d=document.createElement('div');d.className='rh';d.textContent=t;return d}
   function render(){
-    var s=norm(q.value.trim()),list=IDX.filter(function(x){return !s||norm(x.t+' '+x.k).indexOf(s)>-1});
+    var s=norm(q.value.trim());
     res.innerHTML='';
+    var list=IDX.filter(function(x){return s?norm(x.t+' '+x.k).indexOf(s)>-1:!x.proj});
+    var secs=list.filter(function(x){return !x.proj}),pr=list.filter(function(x){return x.proj});
+    if(s)pr=pr.slice(0,6);
     if(!list.length){var n=document.createElement('div');n.className='none';n.textContent='No encontré nada con ese texto.';res.appendChild(n)}
-    list.forEach(function(x){
-      var b=document.createElement('button');b.type='button';if(x.cv){b.setAttribute('data-cv','')}else{b.dataset.win=x.w}
-      b.innerHTML='<b></b><small></small>';$('b',b).textContent=x.t;$('small',b).textContent=x.d;
-      res.appendChild(b);
-    });
+    if(secs.length){res.appendChild(head('Secciones'));secs.forEach(function(x){res.appendChild(row(x))})}
+    if(pr.length){res.appendChild(head('Proyectos'));pr.forEach(function(x){res.appendChild(row(x))})}
+    if(!s){var m=document.createElement('div');m.className='rm';m.textContent='Escribe para buscar entre mis proyectos.';res.appendChild(m)}
     res.classList.add('on');
+  }
+  function move(d){
+    var bs=[].slice.call(res.querySelectorAll('button'));if(!bs.length)return;
+    var i=bs.findIndex(function(x){return x.classList.contains('act')});
+    bs.forEach(function(x){x.classList.remove('act')});
+    i=i<0?(d>0?0:bs.length-1):(i+d+bs.length)%bs.length;bs[i].classList.add('act');bs[i].scrollIntoView({block:'nearest'});
   }
   q.addEventListener('focus',render);q.addEventListener('input',render);
   q.addEventListener('keydown',function(e){
-    if(e.key==='Enter'){var f=$('button',res);if(f){if(f.hasAttribute('data-cv')){f.click()}else{openWin(f.dataset.win)}closeResults();q.blur()}}
+    if(e.key==='ArrowDown'){e.preventDefault();move(1);return}
+    if(e.key==='ArrowUp'){e.preventDefault();move(-1);return}
+    if(e.key==='Enter'){var f=$('button.act',res)||$('button',res);if(f){if(f.hasAttribute('data-cv')){f.click()}else{openWin(f.dataset.win)}closeResults();q.blur()}}
   });
   document.addEventListener('pointerdown',function(e){if(!e.target.closest('#search'))closeResults()});
 })();
