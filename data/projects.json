@@ -348,6 +348,30 @@
       ],
       "model": "",
       "pdf": ""
+    },
+    {
+      "title": "Catalogo ArteSano",
+      "category": "Catálogos",
+      "brand": "ArteSano",
+      "kind": "Catálogo",
+      "summary": "",
+      "objective": "",
+      "role": "",
+      "result": "",
+      "duration": "",
+      "tools": "Illustrator/Photoshop",
+      "format": "",
+      "id": "catalogo-artesano",
+      "cover": "",
+      "thumb": "",
+      "video": "",
+      "portrait": false,
+      "images": [],
+      "skills": [
+        "Catálogos"
+      ],
+      "model": "",
+      "pdf": "media/p/catalogo-artesano/doc-mwu7ha09-catalogo-artesano-4.pdf"
     }
   ]
 }
